@@ -1,0 +1,20 @@
+Here is the new repo for our project, RedditReader (name subject to change).
+
+Starting off with just a playbook version, but once it's finished it should be relatively simple to port to android.
+
+Features Include:
+- Displays main Reddit feeds, including 'new', 'top' etc.
+- Browse through comments.
+- Allows browsing of subreddits.
+- Search reddit.
+- Login with your account, which will open up the ability to comment and rate posts.
+More obviously to come...
+
+
+If anyone could try their hand at mxml and actionscript, it would be great it you could help me out abit on the code for this one. Not the best with this language, but its relatively simple.
+
+TODO:
+- We need a 90x90 icon for the app.
+- Need a 'back' button and a 'refresh' button, as well as a 'profile' button. Would be great if someone could hand make these, rather than me just downloading a pic online.
+- SPLASHSCREEN image. Will post specs later, but we need an image to use for startup of the app.
+- Features.....

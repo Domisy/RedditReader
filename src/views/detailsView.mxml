@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" title="Details" viewActivate="getDetails()">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			[Bindable] private var rtitle:String;
+			[Bindable] private var rdate:String;
+			[Bindable] private var rcreator:String;
+			[Bindable] private var rlink:String;
+			[Bindable] private var rdesc:String;
+			
+			import valueObjects.Item;
+			
+			private function getDetails():void
+			{
+				var p:RegExp = /(-)/ig;
+				var h:RegExp = /<p(>|(\s*[^>]*>)).*?<\/p>/ig;
+				var thisItem:Item = data as Item;
+				
+				rtitle = thisItem.title;
+				rtitle = rtitle.replace(p, "-");
+				rdate = thisItem.pubDate;
+				//rcreator = thisItem.dc_creator
+				rlink = thisItem.link;
+				rdesc = thisItem.description;
+				rdesc = rdesc.replace(h, "");
+				rdesc = rdesc.replace(p, "-");
+					
+					
+				
+			}
+		]]>
+	</fx:Script>
+	<s:navigationContent>
+		<s:Button label="Back" click="navigator.popView()"/>
+	</s:navigationContent>
+	
+	<s:BorderContainer top="0" bottom="0" left="0" right="0" 
+					   backgroundColor="#336666">
+		
+		<s:Label left="10"  top="20" width="70" fontSize="18" text="Title:" 
+				 textAlign="right"/> 
+		<s:Label left="90" right="20" top="15" height="45" 
+				 backgroundColor="#FFFFFF" color="#666666" fontSize="18" 
+				 paddingBottom="5" paddingLeft="5" paddingRight="5" 
+				 paddingTop="5" text="{rtitle}"/>
+		
+		<s:Label left="10"  top="75" width="70" fontSize="18" text="Date:" 
+				 textAlign="right"/>
+		<s:Label left="90" right="20" top="70" height="40" 
+				 backgroundColor="#FEFDFD" color="#666666" fontSize="18" 
+				 paddingBottom="5" paddingLeft="5" paddingRight="5" 
+				 paddingTop="5" text="{rdate}"/>
+		
+		<s:Label left="10"  top="125" width="70" fontSize="18" text="Creator:" 
+				 textAlign="right"/>    
+		<s:Label left="90" right="20" top="120" height="40" 
+				 backgroundColor="#FFFFFF" color="#666666" fontSize="18" 
+				 paddingBottom="5" paddingLeft="5" paddingRight="5" 
+				 paddingTop="5" text="{rcreator}"/>
+		
+		<s:Label left="10"  top="175" width="70" fontSize="18" text="Link:" 
+				 textAlign="right"/>      
+		
+		<s:Label left="90" right="20" top="170" height="45" 
+				 backgroundColor="#FFFFFF" color="#1C05FB" fontSize="18" 
+				 paddingBottom="5" paddingLeft="5" paddingRight="5" 
+				 paddingTop="5" text="{rlink}" textDecoration="underline" 
+				 click="navigateToURL(new URLRequest(rlink))"/>
+		
+		<s:Label left="10"  top="230" width="70" fontSize="18" text="Item:" 
+				 textAlign="right"/>   
+		<s:Label left="90" right="20" top="225" bottom="304" color="#666666" 
+				 backgroundColor="#FFFFFF" fontSize="18" paddingBottom="5" 
+				 paddingLeft="5" paddingRight="5" paddingTop="5"
+				 text="{rdesc}" maxDisplayedLines="10"  />
+		
+		<s:Button left="50" right="50" bottom="101" label="Go see on Slashdot"
+				  click="navigateToURL(new URLRequest(rlink))"/>
+		
+		
+		<s:Label left="15" right="15" bottom="23" fontSize="11"
+				 text="All trademarks and copyrights on this page are owned by their respective owners. Comments are owned by the Poster. The Rest © 1997-2010 Geeknet, Inc."
+				 textAlign="center" verticalAlign="middle"/>
+		
+	</s:BorderContainer>
+
+	
+</s:View>

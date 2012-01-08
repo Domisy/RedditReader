@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:components="spark.components.*"
+		xmlns:redditfeedgrabber="services.redditfeedgrabber.*"
+		title="Reddit Feed" >
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.serializers.utility.TypeUtility;
+			
+			import mx.events.CollectionEvent;
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import valueObjects.Item;
+		
+	
+
+			
+			protected function fixEntityReferences(event:CollectionEvent):void
+			{
+				myList.labelFunction = replaceEntity;
+				
+				function replaceEntity(item:Item):String
+				{
+					var p1:RegExp = /(-)/ig; //perhaps add more here later
+					var thisString:String = item.title.replace(p1, "-");
+					trace(thisString);
+					return thisString;
+				}
+			}
+			
+			/* public function getRedditFeed():void
+			{
+				getRedditFeedResult.token = redditFeedGrabber.getRedditFeed();
+				//service call public function getData():void { getDataResult.token = slashdot.getData(); }
+			} */
+
+			
+			protected function myList_changeHandler(event:IndexChangeEvent):void
+			{
+				var RSSItem:Object = myList.dataProvider.getItemAt(event.newIndex);
+				navigator.pushView(detailsView, RSSItem);
+			}
+			
+			
+			
+			
+			protected function myList_creationCompleteHandler(event:FlexEvent):void
+			{
+				getRedditFeedResult.token = redditFeedGrabber.getRedditFeed();
+			}
+
+		]]>
+	</fx:Script>
+	
+	
+	
+	<fx:Declarations>
+		<s:CallResponder id="getRedditFeedResult"/>
+		<redditfeedgrabber:RedditFeedGrabber id="redditFeedGrabber"/>
+			
+	</fx:Declarations>
+		
+	
+	
+	<s:List id="myList" width="100%" height="100%" change="myList_changeHandler(event)"
+			chromeColor="#A3D2EA" color="#000000" contentBackgroundColor="#BCE0FB"
+			creationComplete="myList_creationCompleteHandler(event)" labelField="title">
+		
+		<s:AsyncListView list="{TypeUtility.convertToCollection(getRedditFeedResult.lastResult.channel.item)}"
+						 collectionChange="fixEntityReferences(event)" />  
+	</s:List>
+	
+
+	
+</s:View>

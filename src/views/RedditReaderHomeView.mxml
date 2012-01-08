@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		actionBarVisible="false" tabBarVisible="true" title="Reddit Reader by Domisy"
+		actionBarVisible.landscape="true">
+	
+	<fx:Script>
+		
+	</fx:Script>
+	
+	
+	<fx:Declarations>
+		
+	</fx:Declarations>
+	
+	<s:states>
+		<s:State name="portrait"/>
+		<s:State name="landscape"/>
+	</s:states>
+	
+	
+	<s:actionContent>
+		<s:Button includeIn="landscape" label="Profile" click="navigator.pushView(profileView)" />
+	</s:actionContent>
+	
+	
+	<s:SplitViewNavigator width="100%" height="100%" id="splitViewNavigator" autoHideFirstViewNavigator="true">
+		<s:ViewNavigator id="redditList" firstView="views.subredditList" width="300" height="100%"/>
+		<s:ViewNavigator id="redditFeed" firstView="views.redditFeed" width="100%" height="100%">
+			
+			
+			
+			<s:actionContent.landscape>
+				<s:Button id="refreshButtonlLandscape" label="Refresh" />
+			</s:actionContent.landscape>
+			
+			<s:actionContent.portrait>
+				<s:Button id="refreshButton" label="Refresh"  />
+				<s:Button id="navigatorButton" label="Search" click="splitViewNavigator.showFirstViewNavigatorInPopUp(navigatorButton)" />
+			</s:actionContent.portrait>
+		</s:ViewNavigator>
+	</s:SplitViewNavigator>
+	
+
+</s:View>

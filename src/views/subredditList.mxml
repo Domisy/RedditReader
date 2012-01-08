@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:redditfeedgrabber="services.redditfeedgrabber.*"
+		xmlns:redditsearch="services.redditsearch.*"
+		xmlns:valueObjects="valueObjects.*"
+		title="Subreddit List">
+	
+	
+	<fx:Script>
+		<![CDATA[
+	
+			
+			
+		
+			
+			import com.adobe.serializers.utility.TypeUtility;
+			import mx.events.CollectionEvent;
+			import mx.events.FlexEvent;
+			import valueObjects.Item;
+			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			
+			
+			
+			protected function redditList_creationCompleteHandler(event:FlexEvent):void
+			{
+				getSubredditsResult.token = redditFeedGrabber.getSubreddits();
+			}
+
+			
+			public function button_clickHandler(event:MouseEvent):void
+			{
+				if (qTextInput.text == "") {
+					redditSearchList.visible = false;
+					redditList.visible = true;
+				}
+				else {
+				redditSearchList.visible = true;
+				redditList.visible = false;
+				getRedditSearchResult.token = redditFeedGrabber.getRedditSearch(qTextInput.text);
+				}
+					
+				
+			}
+			
+			protected function qTextInput_changeHandler(event:TextOperationEvent):void
+			{
+				if (qTextInput.text == "") {
+					redditSearchList.visible = false;
+					redditList.visible = true;
+				}
+				else {
+					redditSearchList.visible = true;
+					redditList.visible = false;
+					getRedditSearchResult.token = redditFeedGrabber.getRedditSearch(qTextInput.text);
+				}
+			}
+			
+			protected function redditSearchList_changeHandler(event:IndexChangeEvent):void
+			{
+				
+				var RSSItem:Object = redditSearchList.dataProvider.getItemAt(event.newIndex);
+				navigator.pushView(detailsView, RSSItem);
+			}
+			
+			
+			protected function fixEntityReferences(event:CollectionEvent):void
+			{
+				redditSearchList.labelFunction = replaceEntity;
+				
+				function replaceEntity(item:Item):String
+				{
+					var p1:RegExp = /(-)/ig; //perhaps add more here later
+					var thisString:String = item.title.replace(p1, "-");
+					trace(thisString);
+					return thisString;
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	
+	
+	
+	<fx:Declarations>
+		<redditfeedgrabber:RedditFeedGrabber id="redditFeedGrabber"/>
+		<s:CallResponder id="getRedditSearchResult"/>
+		<s:CallResponder id="getSubredditsResult"/>
+	<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	
+	
+	
+	<s:titleContent>
+		
+		<s:TextInput id="qTextInput" width="100%" height="80%"
+					 change="qTextInput_changeHandler(event)" fontSize="19"
+					 prompt="Search Reddit..."/>
+				  <!--click="button_clickHandler(event)"-->
+				 
+	</s:titleContent>
+	
+	
+	
+	<s:List id="redditList" width="100%" height="100%"
+			creationComplete="redditList_creationCompleteHandler(event)" labelField="title">
+			<s:AsyncListView list="{TypeUtility.convertToCollection(getSubredditsResult.lastResult.channel.item)}"/>
+	</s:List>
+	
+	<s:List id="redditSearchList" visible="false" width="100%" height="100%" 
+			labelField="title"
+			change="redditSearchList_changeHandler(event)">
+		<s:AsyncListView list="{getRedditSearchResult.lastResult}" 
+						 collectionChange="fixEntityReferences(event)" />
+	</s:List>
+	
+	
+	
+	
+</s:View>

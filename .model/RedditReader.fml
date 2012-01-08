@@ -1,0 +1,300 @@
+
+<model xmlns="http://ns.adobe.com/Fiber/1.0">
+  <annotation name="ActionScriptGeneration">
+    <item name="FullyQualifyReferences">true</item>
+  </annotation>
+  <service name="RedditFeedGrabber">
+    <annotation name="ActionScriptGeneration">
+      <item name="ServiceType">HTTPMultiService</item>
+      <item name="Package">services.redditfeedgrabber</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">HTTPService</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="LINKED_FILE"></item>
+    </annotation>
+    <function name="getRedditFeed" return-type="RedditRss">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ActionScriptGeneration">
+        <item name="SerializationFilter">com.adobe.serializers.xml.XMLSerializationFilter</item>
+        <item name="method">GET</item>
+        <item name="url">http://www.reddit.com/.xml</item>
+      </annotation>
+      <annotation name="url group">
+        <item name="completeURL">http://www.reddit.com/.xml</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">version,channel</item>
+      </annotation>
+      <annotation name="Properties">
+        <item name="xPath">/</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getSubreddits" return-type="Subreddits">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ActionScriptGeneration">
+        <item name="SerializationFilter">com.adobe.serializers.xml.XMLSerializationFilter</item>
+        <item name="method">GET</item>
+        <item name="url">http://www.reddit.com/reddits.xml</item>
+      </annotation>
+      <annotation name="url group">
+        <item name="completeURL">http://www.reddit.com/reddits.xml</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">version,channel</item>
+      </annotation>
+      <annotation name="Properties">
+        <item name="xPath">/</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getRedditSearch" return-type="Item[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ActionScriptGeneration">
+        <item name="SerializationFilter">com.adobe.serializers.xml.XMLSerializationFilter</item>
+        <item name="method">GET</item>
+        <item name="url">http://www.reddit.com/search.xml</item>
+      </annotation>
+      <annotation name="url group">
+        <item name="completeURL">http://www.reddit.com/search.xml</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">title,link,guid,pubDate,description</item>
+      </annotation>
+      <annotation name="Properties">
+        <item name="xPath">/::channel/::item</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParamNames">q</item>
+        <item name="inputParams">string</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="q" type="string"/>
+    </function>
+  </service>
+  <entity name="Data">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Data</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditFeedGrabber</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="after" type="string" required="true"/>
+    <property name="before" type="opaque" required="true"/>
+    <property name="children" type="Children[]" required="true"/>
+    <property name="modhash" type="string" required="true"/>
+  </entity>
+  <entity name="Guid">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Guid</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditFeedGrabber</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="isPermaLink" type="string" required="true"/>
+    <property name="guid" type="string" required="true"/>
+  </entity>
+  <entity name="Channel">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Channel</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditFeedGrabber</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="copyright" type="string" required="true"/>
+    <property name="language" type="string" required="true"/>
+    <property name="lastBuildDate" type="string" required="true"/>
+    <property name="title" type="string" required="true"/>
+    <property name="link" type="string" required="true"/>
+    <property name="description" type="string" required="true"/>
+    <property name="image" type="Image" required="true"/>
+    <property name="item" type="Item[]" required="true"/>
+  </entity>
+  <entity name="Item">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Item</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditFeedGrabber,RedditFeedGrabberDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="getRedditSearch">
+      <item name="propertySpecifier">title,link,guid,pubDate,description</item>
+    </annotation>
+    <property name="media_title" type="string" required="true"/>
+    <property name="media_thumbnail" type="Media_thumbnail" required="true"/>
+    <property name="dc_date" type="string" required="true"/>
+    <property name="title" type="string" required="true"/>
+    <property name="link" type="string" required="true"/>
+    <property name="guid" type="Guid" required="true"/>
+    <property name="pubDate" type="string" required="true"/>
+    <property name="description" type="string" required="true"/>
+  </entity>
+  <entity name="Image">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Image</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditFeedGrabber</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="width" type="string" required="true"/>
+    <property name="height" type="string" required="true"/>
+    <property name="url" type="string" required="true"/>
+    <property name="title" type="string" required="true"/>
+    <property name="link" type="string" required="true"/>
+  </entity>
+  <entity name="Media_thumbnail">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Media_thumbnail</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditFeedGrabber</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="url" type="string" required="true"/>
+  </entity>
+  <entity name="Subreddits">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Rss</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditFeedGrabber,RedditFeedGrabberDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getSubreddits">
+      <item name="propertySpecifier">version,channel</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="version" type="string" required="true"/>
+    <property name="channel" type="Channel" required="true"/>
+  </entity>
+  <entity name="FeedThumbnails">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Rss</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditFeedGrabber</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getRedditFeed">
+      <item name="propertySpecifier">version,channel</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="getRedditSearch">
+      <item name="propertySpecifier">version,channel</item>
+    </annotation>
+    <property name="version" type="string" required="true"/>
+    <property name="channel" type="Channel" required="true"/>
+  </entity>
+  <entity name="Children">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Children</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditFeedGrabber</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="data" type="Data[]" required="true"/>
+    <property name="kind" type="string" required="true"/>
+  </entity>
+  <entity name="RedditSearch">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Rss</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditFeedGrabber</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getRedditSearch">
+      <item name="propertySpecifier">version,channel</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="version" type="string" required="true"/>
+    <property name="channel" type="Channel" required="true"/>
+  </entity>
+  <entity name="RedditRss">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Rss</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditFeedGrabber,RedditFeedGrabberDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getRedditFeed">
+      <item name="propertySpecifier">version,channel</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="data" type="Data" required="true"/>
+    <property name="kind" type="string" required="true"/>
+    <property name="version" type="string" required="true"/>
+    <property name="channel" type="Channel" required="true"/>
+  </entity>
+</model>

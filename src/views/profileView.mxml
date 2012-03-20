@@ -1,10 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		xmlns:s="library://ns.adobe.com/flex/spark" title="Profile">
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		currentState="Login" title="About"
+		overlayControls.Login="false">
+	
+	<fx:Script>
+		<![CDATA[
+			protected function login():void
+			{
+				
+				
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="Logout"/>
+		<s:State name="Login"/>
+	</s:states>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<s:navigationContent>
-		<s:Button width="66" label="Back" click="navigator.popToFirstView()"/>
+		<s:Button width="66" icon="@Embed('assets/images/left_arrow.png')" click="navigator.popView()"/>
 	</s:navigationContent>
+	<s:Group x="299" y="104" width="427" height="273" visible="false"
+			 x.Login="299" y.Login="79">
+		<s:Label x="171" y="23" fontSize="27" text="Sign In"
+				 text.Logout="Log Out"/>
+		<s:TextInput x="74" y="74" width="280" prompt="Username"/>
+		<s:TextInput x="74" y="117" width="280" prompt="Password"/>
+		<s:Button id="loginButton" x="179" y="174" height="40" label="Log In"
+				  click.Login="login()"/>
+		<s:Button x="106" y="222" height="28" label="Forgot Username/Password" fontSize="14"/>
+	</s:Group>
+	<s:Label includeIn="Login" x="206" y="60" fontSize="31"
+			 text="This app has been brought to you by way of..."/>
+	<s:Label includeIn="Login" x="415" y="118" fontSize="36" text="Domisy Dev"/>
+	<s:Label includeIn="Login" x="830" y="522" width="194" height="23" text="Version Number: 1.0.3"/>
+	<s:Label includeIn="Login" x="383" y="160" text="Lead Developer - Theodore Mavrakis"/>
+	<s:Label includeIn="Login" x="177" y="224" height="30" fontSize="20"
+			 text="Thank you for choosing Reddit in Motion. More features to be coming soon! "
+			 textAlign="center" verticalAlign="bottom"/>
+	<s:Label includeIn="Login" x="433" y="312" fontSize="28" text="For Support:"/>
+	<s:Label includeIn="Login" x="404" y="354" text="Email - domisydev@gmail.com"/>
+	<s:Label includeIn="Login" x="435" y="380" text="Twitter - @DomisyDev"/>
+	<s:Label includeIn="Login" x="389" y="404" text="Like us on Facebook - Domisy Dev"/>
 </s:View>

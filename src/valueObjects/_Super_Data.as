@@ -55,14 +55,27 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
     /**
      * properties
      */
+    private var _internal_cookie : String;
     private var _internal_after : String;
     private var _internal_before : Object;
     private var _internal_children : ArrayCollection;
     model_internal var _internal_children_leaf:valueObjects.Children;
     private var _internal_modhash : String;
+    private var _internal_id : String;
+    private var _internal_comment_karma : int;
+    private var _internal_has_mod_mail : Object;
+    private var _internal_created : Number = Number(0);
+    private var _internal_is_gold : Boolean;
+    private var _internal_name : String;
+    private var _internal_is_mod : Boolean;
+    private var _internal_link_karma : int;
+    private var _internal_created_utc : Number = Number(0);
+    private var _internal_has_mail : Object;
 
     private static var emptyArray:Array = new Array();
 
+    // Change this value according to your application's floating-point precision
+    private static var epsilon:Number = 0.0001;
 
     /**
      * derived property cache initialization
@@ -76,16 +89,27 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
         _model = new _DataEntityMetadata(this);
 
         // Bind to own data or source properties for cache invalidation triggering
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "cookie", model_internal::setterListenerCookie));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "after", model_internal::setterListenerAfter));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "before", model_internal::setterListenerBefore));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "children", model_internal::setterListenerChildren));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "modhash", model_internal::setterListenerModhash));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "id", model_internal::setterListenerId));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "has_mod_mail", model_internal::setterListenerHas_mod_mail));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "name", model_internal::setterListenerName));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "has_mail", model_internal::setterListenerHas_mail));
 
     }
 
     /**
      * data/source property getters
      */
+
+    [Bindable(event="propertyChange")]
+    public function get cookie() : String
+    {
+        return _internal_cookie;
+    }
 
     [Bindable(event="propertyChange")]
     public function get after() : String
@@ -111,6 +135,66 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
         return _internal_modhash;
     }
 
+    [Bindable(event="propertyChange")]
+    public function get id() : String
+    {
+        return _internal_id;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get comment_karma() : int
+    {
+        return _internal_comment_karma;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get has_mod_mail() : Object
+    {
+        return _internal_has_mod_mail;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get created() : Number
+    {
+        return _internal_created;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get is_gold() : Boolean
+    {
+        return _internal_is_gold;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get name() : String
+    {
+        return _internal_name;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get is_mod() : Boolean
+    {
+        return _internal_is_mod;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get link_karma() : int
+    {
+        return _internal_link_karma;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get created_utc() : Number
+    {
+        return _internal_created_utc;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get has_mail() : Object
+    {
+        return _internal_has_mail;
+    }
+
     public function clearAssociations() : void
     {
     }
@@ -118,6 +202,16 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
     /**
      * data/source property setters
      */
+
+    public function set cookie(value:String) : void
+    {
+        var oldValue:String = _internal_cookie;
+        if (oldValue !== value)
+        {
+            _internal_cookie = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "cookie", oldValue, _internal_cookie));
+        }
+    }
 
     public function set after(value:String) : void
     {
@@ -174,6 +268,106 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
         }
     }
 
+    public function set id(value:String) : void
+    {
+        var oldValue:String = _internal_id;
+        if (oldValue !== value)
+        {
+            _internal_id = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "id", oldValue, _internal_id));
+        }
+    }
+
+    public function set comment_karma(value:int) : void
+    {
+        var oldValue:int = _internal_comment_karma;
+        if (oldValue !== value)
+        {
+            _internal_comment_karma = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "comment_karma", oldValue, _internal_comment_karma));
+        }
+    }
+
+    public function set has_mod_mail(value:Object) : void
+    {
+        var oldValue:Object = _internal_has_mod_mail;
+        if (oldValue !== value)
+        {
+            _internal_has_mod_mail = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "has_mod_mail", oldValue, _internal_has_mod_mail));
+        }
+    }
+
+    public function set created(value:Number) : void
+    {
+        var oldValue:Number = _internal_created;
+        if (isNaN(_internal_created) == true || Math.abs(oldValue - value) > epsilon)
+        {
+            _internal_created = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "created", oldValue, _internal_created));
+        }
+    }
+
+    public function set is_gold(value:Boolean) : void
+    {
+        var oldValue:Boolean = _internal_is_gold;
+        if (oldValue !== value)
+        {
+            _internal_is_gold = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "is_gold", oldValue, _internal_is_gold));
+        }
+    }
+
+    public function set name(value:String) : void
+    {
+        var oldValue:String = _internal_name;
+        if (oldValue !== value)
+        {
+            _internal_name = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "name", oldValue, _internal_name));
+        }
+    }
+
+    public function set is_mod(value:Boolean) : void
+    {
+        var oldValue:Boolean = _internal_is_mod;
+        if (oldValue !== value)
+        {
+            _internal_is_mod = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "is_mod", oldValue, _internal_is_mod));
+        }
+    }
+
+    public function set link_karma(value:int) : void
+    {
+        var oldValue:int = _internal_link_karma;
+        if (oldValue !== value)
+        {
+            _internal_link_karma = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "link_karma", oldValue, _internal_link_karma));
+        }
+    }
+
+    public function set created_utc(value:Number) : void
+    {
+        var oldValue:Number = _internal_created_utc;
+        if (isNaN(_internal_created_utc) == true || Math.abs(oldValue - value) > epsilon)
+        {
+            _internal_created_utc = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "created_utc", oldValue, _internal_created_utc));
+        }
+    }
+
+    public function set has_mail(value:Object) : void
+    {
+        var oldValue:Object = _internal_has_mail;
+        if (oldValue !== value)
+        {
+            _internal_has_mail = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "has_mail", oldValue, _internal_has_mail));
+        }
+    }
+
     /**
      * Data/source property setter listeners
      *
@@ -185,6 +379,11 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
      *  - the validity of the property (and the containing entity) if the given data property has a length restriction.
      *  - the validity of the property (and the containing entity) if the given data property is required.
      */
+
+    model_internal function setterListenerCookie(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnCookie();
+    }
 
     model_internal function setterListenerAfter(value:flash.events.Event):void
     {
@@ -213,6 +412,26 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
         _model.invalidateDependentOnModhash();
     }
 
+    model_internal function setterListenerId(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnId();
+    }
+
+    model_internal function setterListenerHas_mod_mail(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnHas_mod_mail();
+    }
+
+    model_internal function setterListenerName(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnName();
+    }
+
+    model_internal function setterListenerHas_mail(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnHas_mail();
+    }
+
 
     /**
      * valid related derived properties
@@ -234,6 +453,11 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
         var validationFailureMessages:Array = new Array();
 
         var propertyValidity:Boolean = true;
+        if (!_model.cookieIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_cookieValidationFailureMessages);
+        }
         if (!_model.afterIsValid)
         {
             propertyValidity = false;
@@ -253,6 +477,26 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
         {
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_modhashValidationFailureMessages);
+        }
+        if (!_model.idIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_idValidationFailureMessages);
+        }
+        if (!_model.has_mod_mailIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_has_mod_mailValidationFailureMessages);
+        }
+        if (!_model.nameIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_nameValidationFailureMessages);
+        }
+        if (!_model.has_mailIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_has_mailValidationFailureMessages);
         }
 
         model_internal::_cacheInitialized_isValid = true;
@@ -333,6 +577,33 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
         }
     }
 
+    model_internal var _doValidationCacheOfCookie : Array = null;
+    model_internal var _doValidationLastValOfCookie : String;
+
+    model_internal function _doValidationForCookie(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfCookie != null && model_internal::_doValidationLastValOfCookie == value)
+           return model_internal::_doValidationCacheOfCookie ;
+
+        _model.model_internal::_cookieIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isCookieAvailable && _internal_cookie == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "cookie is required"));
+        }
+
+        model_internal::_doValidationCacheOfCookie = validationFailures;
+        model_internal::_doValidationLastValOfCookie = value;
+
+        return validationFailures;
+    }
+    
     model_internal var _doValidationCacheOfAfter : Array = null;
     model_internal var _doValidationLastValOfAfter : String;
 
@@ -437,6 +708,114 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
 
         model_internal::_doValidationCacheOfModhash = validationFailures;
         model_internal::_doValidationLastValOfModhash = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfId : Array = null;
+    model_internal var _doValidationLastValOfId : String;
+
+    model_internal function _doValidationForId(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfId != null && model_internal::_doValidationLastValOfId == value)
+           return model_internal::_doValidationCacheOfId ;
+
+        _model.model_internal::_idIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isIdAvailable && _internal_id == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "id is required"));
+        }
+
+        model_internal::_doValidationCacheOfId = validationFailures;
+        model_internal::_doValidationLastValOfId = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfHas_mod_mail : Array = null;
+    model_internal var _doValidationLastValOfHas_mod_mail : Object;
+
+    model_internal function _doValidationForHas_mod_mail(valueIn:Object):Array
+    {
+        var value : Object = valueIn as Object;
+
+        if (model_internal::_doValidationCacheOfHas_mod_mail != null && model_internal::_doValidationLastValOfHas_mod_mail == value)
+           return model_internal::_doValidationCacheOfHas_mod_mail ;
+
+        _model.model_internal::_has_mod_mailIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isHas_mod_mailAvailable && _internal_has_mod_mail == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "has_mod_mail is required"));
+        }
+
+        model_internal::_doValidationCacheOfHas_mod_mail = validationFailures;
+        model_internal::_doValidationLastValOfHas_mod_mail = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfName : Array = null;
+    model_internal var _doValidationLastValOfName : String;
+
+    model_internal function _doValidationForName(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfName != null && model_internal::_doValidationLastValOfName == value)
+           return model_internal::_doValidationCacheOfName ;
+
+        _model.model_internal::_nameIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isNameAvailable && _internal_name == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "name is required"));
+        }
+
+        model_internal::_doValidationCacheOfName = validationFailures;
+        model_internal::_doValidationLastValOfName = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfHas_mail : Array = null;
+    model_internal var _doValidationLastValOfHas_mail : Object;
+
+    model_internal function _doValidationForHas_mail(valueIn:Object):Array
+    {
+        var value : Object = valueIn as Object;
+
+        if (model_internal::_doValidationCacheOfHas_mail != null && model_internal::_doValidationLastValOfHas_mail == value)
+           return model_internal::_doValidationCacheOfHas_mail ;
+
+        _model.model_internal::_has_mailIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isHas_mailAvailable && _internal_has_mail == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "has_mail is required"));
+        }
+
+        model_internal::_doValidationCacheOfHas_mail = validationFailures;
+        model_internal::_doValidationLastValOfHas_mail = value;
 
         return validationFailures;
     }

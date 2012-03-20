@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:components="spark.components.*"
+		xmlns:redditfeedgrabber="services.redditfeedgrabber.*"
+		xmlns:r="http://ns.renaun.com/mxml/2010"
+		destructionPolicy="never" 
+		initialize="view_initializeHandler(event)"
+		xmlns:listRenderers="listRenderers.*"
+		xmlns:buttons="qnx.ui.buttons.*" xmlns:renderers="renderers.*">
+<!--viewActivate="view1_activateHandler(event)"-->
+	
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.serializers.utility.TypeUtility;
+			
+			import flash.display.Sprite;
+			import flash.events.Event;
+			
+			import model.RedditFeedModel;
+			
+			import mx.binding.utils.BindingUtils;
+			import mx.collections.*;
+			import mx.controls.*;
+			import mx.events.*;
+			import mx.events.CollectionEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			import qnx.ui.buttons.SegmentedControl;
+			import qnx.ui.data.DataProvider;
+			import qnx.ui.data.IDataProvider;
+			
+			import spark.components.supportClasses.StyleableTextField;
+			import spark.events.IndexChangeEvent;
+			import spark.events.ViewNavigatorEvent;
+			
+			import valueObjects.Data;
+			import valueObjects.Item;
+			
+			
+			//BINDABLES
+			[Bindable] public var busyBool:Boolean = false;
+			[Bindable] public var busyBoolPortrait:Boolean = false;
+			[Bindable] private var defUrl:String = new String("");
+			private var segData:Array= [
+				{label:"New"},
+				{label:"What's Hot"},
+				{label:"Controversial"} ];
+			[Bindable] private var dp:DataProvider = new DataProvider(segData);
+			[Bindable] public var subUrl:String = "";
+			[Bindable] public var orientationBool:Boolean = false;
+			
+			//VARIABLES
+			public var redditFeedDec:RedditFeed;
+			private var modelInstance : RedditFeedModel;
+			
+			
+			
+			override public function set data(value : Object) : void
+			{
+				super.data = value;
+				modelInstance = value as RedditFeedModel;
+				modelInstance.redditFeed = this;
+			}
+			
+			
+			
+			protected function fixEntityReferences(event:CollectionEvent):void
+			{
+				feedList.labelFunction = replaceEntity;
+				function replaceEntity(item:Item):String
+				{
+					var p1:RegExp = /(-)/ig; //perhaps add more here later
+					var thisString:String = item.title.replace(p1, "-");
+					trace(thisString);
+					return thisString;
+				}
+			}
+			
+			
+			
+			protected function myList_changeHandler(event:ItemClickEvent):void
+			{
+				modelInstance.currentlySelectedRSSItem = event.target.data as Item;
+				navigator.pushView(DetailsView, modelInstance);
+			}
+			
+			
+			
+			public function busyOff(event:ResultEvent):void
+			{
+					busyBool = false;
+			}
+
+			public function busyOn():void
+			{
+					busyBool = true;
+			}
+
+			public function nullSeg():void   // THIS NEEDS SOME WORK
+			{
+				segControl.selectedItem = null;
+				//segControl.destroy();
+				segControl.selectedItem.removeChild();
+			}
+			
+			
+			
+			public function myList_creationCompleteHandler(url:String):void
+			{ 
+				busyOn();
+				getRedditFeedResult.token = redditFeedGrabber.getRedditFeed(url);
+				getRedditFeedResult.addEventListener(ResultEvent.RESULT, busyOff);
+				subUrl = url; 
+			}
+			
+			
+			
+			public function refreshList():void
+			{
+				myList_creationCompleteHandler(subUrl);
+			}
+			
+		
+			
+			protected function feedSelect(whichButt:int):void
+			{
+				switch(whichButt)
+				{
+					case 0: {
+						myList_creationCompleteHandler("new/");
+						subUrl = "new/";
+						break;
+					}
+					case 1: {
+						myList_creationCompleteHandler("");
+						subUrl = "";
+						break;
+					}
+					case 2: {
+						myList_creationCompleteHandler("controversial/");
+						subUrl = "controversial/";
+						break;
+					}
+				}
+			}
+			
+			
+			
+			protected function feedList_creationCompleteHandler(event : FlexEvent) : void
+			{
+				feedList.addEventListener(ItemClickEvent.ITEM_CLICK, myList_changeHandler);
+				myList_creationCompleteHandler(subUrl);
+			}		
+			
+			
+			
+			protected function view_initializeHandler(event:FlexEvent):void
+			{	
+				busyOn();
+			}
+		]]>
+	</fx:Script>
+	
+	
+	<s:states>
+		<s:State name="landscape"/>
+		<s:State name="portrait"/>
+	</s:states>
+	
+
+	
+	<fx:Declarations>
+		<s:CallResponder id="getRedditFeedResult"/>
+		<redditfeedgrabber:RedditFeedGrabber id="redditFeedGrabber"/>
+		<s:ArrayCollection id="entries" />
+	</fx:Declarations>
+	
+	
+	
+	<s:titleContent>
+		<r:QContainer>
+			<buttons:SegmentedControl id="segControl" dataProvider="{dp}" selectedIndex="{1}" height="42" click="feedSelect(segControl.selectedIndex)"/>
+		</r:QContainer>
+	</s:titleContent>
+
+	
+	<s:List id="feedList" width="100%" height="100%" 
+			contentBackgroundColor="#deefff" creationComplete="feedList_creationCompleteHandler(event)">
+			
+	<s:AsyncListView id="asyncList" list="{getRedditFeedResult.lastResult}" collectionChange="fixEntityReferences(event)"/>
+		<s:itemRenderer>
+			<fx:Component>
+				<renderers:IconItemRendererWithClick fontSize="20"
+														 iconFunction="{myIconFunction}"
+														 iconHeight="70"
+														 
+														 iconPlaceholder="{assets.LoadingIcon}"
+														 iconWidth="70"
+														 labelField="title"
+														 messageFunction="{dateFunction}"
+														 decorator=""
+														 verticalAlign="top">
+					<fx:Script>						<![CDATA[							import assets.LoadingIcon;
+							private function myIconFunction(item:Object) : Object
+							{
+								if (item && item.media_thumbnail && item.media_thumbnail.url)
+									return item.media_thumbnail.url;
+								return null;
+							}
+							private function dateFunction(item:Object):String
+							{
+								var dateString:String = item.pubDate as String;
+								var descString:String = item.description as String;
+								var finalString:String;
+								var subUrlRef:String = this.outerDocument.subUrl;
+								
+								//Get the username
+								var searchString:String = "submitted by <a href=\"http://www.reddit.com/user/";
+								var startOfName:Number = descString.indexOf(searchString)+searchString.length;
+								var userName:String = descString.substring(startOfName, descString.indexOf("\"",startOfName));
+							
+								//Get the subreddit
+								var searchString2:String = "to <a href=\"http://www.reddit.com/r/";
+								var startOfName2:Number = descString.indexOf(searchString2)+searchString2.length;
+								var subReddit:String = descString.substring(startOfName2, descString.indexOf("\"",startOfName2));
+								var moddedSub:String = " to " + subReddit.slice(int.MIN_VALUE, -1);		
+								
+								//Get the date
+								var moddedDate:String = dateString.slice(int.MIN_VALUE, 22);
+								
+								//Add'em all up
+								if (subUrlRef == "" || subUrlRef == "new/" || subUrlRef == "controversial/") {
+									finalString = "Submitted on " + moddedDate + " by " + userName + moddedSub;
+								}
+								else {
+									finalString = "Submitted on " + moddedDate + " by " + userName;
+								}					
+								return finalString;
+							}						]]>					</fx:Script>				</renderers:IconItemRendererWithClick>			</fx:Component>
+		</s:itemRenderer>
+	</s:List>
+	
+	<!--x="330" y="210"  -->
+	<s:BusyIndicator id="throbber" includeIn="landscape" visible="{busyBool}" width="60" height="60"
+					 horizontalCenter="0" verticalCenter="-6"/>
+	<s:BusyIndicator id="throbberPortrait" visible="{busyBool}" includeIn="portrait" width="60" height="60" horizontalCenter="0"
+					 verticalCenter="3"/>
+	<!--<s:BusyIndicator id="throbberPortrait" visible="{busyBoolPortrait}" x="275" y="467" width="60" height="60"/>-->
+	
+</s:View>

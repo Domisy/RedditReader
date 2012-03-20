@@ -3,27 +3,76 @@
 		xmlns:s="library://ns.adobe.com/flex/spark"
 		xmlns:components="spark.components.*"
 		xmlns:redditfeedgrabber="services.redditfeedgrabber.*"
-		title="Reddit Feed" >
-	
+		xmlns:r="http://ns.renaun.com/mxml/2010"
+		destructionPolicy="never" 
+		initialize="view_initializeHandler(event)"
+		xmlns:listRenderers="listRenderers.*"
+		xmlns:buttons="qnx.ui.buttons.*">
 	
 	<fx:Script>
 		<![CDATA[
+			import classes.EventExtension;
+			
 			import com.adobe.serializers.utility.TypeUtility;
 			
+			import flash.display.Sprite;
+			import flash.events.Event;
+			
+			import model.RedditFeedModel;
+			
+			import mx.binding.utils.BindingUtils;
+			import mx.collections.*;
+			import mx.controls.*;
+			import mx.events.*;
 			import mx.events.CollectionEvent;
-			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
 			
+			import qnx.ui.buttons.SegmentedControl;
+			import qnx.ui.data.DataProvider;
+			import qnx.ui.data.IDataProvider;
+			
+			import spark.components.supportClasses.StyleableTextField;
 			import spark.events.IndexChangeEvent;
+			import spark.events.ViewNavigatorEvent;
 			
+			import valueObjects.Data;
 			import valueObjects.Item;
-		
-	
-
+			
+			
+			//BINDABLES
+			[Bindable] public var busyBool:Boolean = false;
+			private var segData:Array= [
+				{label:"New"},
+				{label:"What's Hot"},
+				{label:"Controversial"} ];
+			[Bindable] private var dp:DataProvider = new DataProvider(segData);
+			[Bindable] public var subUrl:String = "";
+			[Bindable] private var myListDP : ArrayCollection;
+			
+			//VARIABLES
+			private var modelInstance : RedditFeedModel;
+			private var theJsonResponse : Object;
+			
+			
+			override public function set data(value : Object) : void
+			{
+				super.data = value;
+				modelInstance = value as RedditFeedModel;
+				modelInstance.redditFeed = this;
+			}
+			
+			protected function httpservice1_resultHandler(event : ResultEvent) : void
+			{
+				trace("Result: " + event.result);
+				theJsonResponse = JSON.parse(event.result as String);
+				
+				myListDP = new ArrayCollection(theJsonResponse.data.children);
+				modelInstance.currentFeedList = myListDP;
+			}
 			
 			protected function fixEntityReferences(event:CollectionEvent):void
 			{
-				myList.labelFunction = replaceEntity;
-				
+				feedList.labelFunction = replaceEntity;
 				function replaceEntity(item:Item):String
 				{
 					var p1:RegExp = /(-)/ig; //perhaps add more here later
@@ -33,48 +82,145 @@
 				}
 			}
 			
-			/* public function getRedditFeed():void
-			{
-				getRedditFeedResult.token = redditFeedGrabber.getRedditFeed();
-				//service call public function getData():void { getDataResult.token = slashdot.getData(); }
-			} */
-
 			
-			protected function myList_changeHandler(event:IndexChangeEvent):void
+			
+			protected function myList_changeHandler(event:ItemClickEvent):void
 			{
-				var RSSItem:Object = myList.dataProvider.getItemAt(event.newIndex);
-				navigator.pushView(detailsView, RSSItem);
+				modelInstance.currentlySelectedRSSItem = event.target.data as Item;
+				navigator.pushView(DetailsView, modelInstance);
 			}
 			
 			
 			
-			
-			protected function myList_creationCompleteHandler(event:FlexEvent):void
+			public function busyOff(event:ResultEvent):void
 			{
-				getRedditFeedResult.token = redditFeedGrabber.getRedditFeed();
+					busyBool = false;
 			}
 
+			public function busyOn():void
+			{
+					busyBool = true;
+			}
+
+			public function nullSeg():void   // THIS NEEDS SOME WORK
+			{
+				segControl.selectedItem = null;
+				//segControl.destroy();
+				segControl.selectedItem.removeChild();
+			}
+			
+		
+			
+			public function refreshList():void
+			{
+				changeSub(subUrl);
+			}
+			
+			public function changeSub(url:String):void
+			{
+				busyOn();
+				redditJsonService.addEventListener(ResultEvent.RESULT, busyOff);
+				subUrl = url;				
+				redditJsonService.send();
+			}
+			
+			protected function feedSelect(whichButt:int):void
+			{
+				switch(whichButt)
+				{
+					case 0: {
+						changeSub("new/");
+						subUrl = "new/";
+						break;
+					}
+					case 1: {
+						changeSub("");
+						subUrl = "";
+						break;
+					}
+					case 2: {
+						changeSub("controversial/");
+						subUrl = "controversial/";
+						break;
+					}
+				}
+			}
+			
+			
+			
+			protected function feedList_creationCompleteHandler(event : FlexEvent) : void
+			{
+				feedList.addEventListener(ItemClickEvent.ITEM_CLICK, myList_changeHandler);
+				changeSub(subUrl);
+			}		
+			
+			
+			
+			protected function view_initializeHandler(event:FlexEvent):void
+			{	
+				redditJsonService.send();
+		
+				feedList.addEventListener("labelClicked", labelClickedHandler);
+				feedList.addEventListener("backdropClicked", labelClickedHandler);
+				feedList.addEventListener("imageClicked", imageClickedHandler);
+				feedList.addEventListener("voteClicked", voteHandler);
+				busyOn();
+			}
+			
+			private function labelClickedHandler(event : EventExtension) : void
+			{
+				modelInstance.isPic = false;
+				modelInstance.currentlySelectedRSSItem = event.data;
+				navigator.pushView(DetailsView, modelInstance);
+			}
+			
+			private function imageClickedHandler(event:EventExtension):void
+			{
+				modelInstance.isPic = true;
+				modelInstance.currentlySelectedRSSItem = event.data;
+				navigator.pushView(DetailsView, modelInstance);
+			}
+			
+			private function voteHandler(event:EventExtension):void
+			{
+				
+			}
 		]]>
 	</fx:Script>
 	
 	
-	
-	<fx:Declarations>
-		<s:CallResponder id="getRedditFeedResult"/>
-		<redditfeedgrabber:RedditFeedGrabber id="redditFeedGrabber"/>
-			
-	</fx:Declarations>
-		
-	
-	
-	<s:List id="myList" width="100%" height="100%" change="myList_changeHandler(event)"
-			chromeColor="#A3D2EA" color="#000000" contentBackgroundColor="#BCE0FB"
-			creationComplete="myList_creationCompleteHandler(event)" labelField="title">
-		
-		<s:AsyncListView list="{TypeUtility.convertToCollection(getRedditFeedResult.lastResult.channel.item)}"
-						 collectionChange="fixEntityReferences(event)" />  
-	</s:List>
+	<s:states>
+		<s:State name="landscape"/>
+		<s:State name="portrait"/>
+	</s:states>
 	
 
 	
+	<fx:Declarations>
+		<s:ArrayCollection id="entries" />
+		<s:HTTPService id="redditJsonService"
+					   result="httpservice1_resultHandler(event)"
+					   url="http://www.reddit.com/{subUrl}.json"/>
+	</fx:Declarations>
+	
+	
+	
+	<s:titleContent>
+		<r:QContainer>
+			<buttons:SegmentedControl id="segControl" dataProvider="{dp}" selectedIndex="{1}" height="42" click="feedSelect(segControl.selectedIndex)"/>
+		</r:QContainer>
+	</s:titleContent>
+
+	
+	<s:List width="100%" height="100%"
+			dataProvider="{myListDP}"
+			id="feedList" contentBackgroundColor="#deefff"
+			itemRenderer="renderers.BaseListRenderer"
+			creationComplete="feedList_creationCompleteHandler(event)">
+	</s:List>
+
+	<s:BusyIndicator id="throbber" includeIn="landscape" visible="{busyBool}" width="60" height="60"
+					 horizontalCenter="0" verticalCenter="-6"/>
+	<s:BusyIndicator id="throbberPortrait" visible="{busyBool}" includeIn="portrait" width="60" height="60" horizontalCenter="0"
+					 verticalCenter="3"/>
 </s:View>

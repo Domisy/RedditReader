@@ -1,93 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		xmlns:s="library://ns.adobe.com/flex/spark" title="Details" viewActivate="getDetails()">
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
+		xmlns:s="library://ns.adobe.com/flex/spark" title="{rtitle}" viewActivate="getDetails()" 
+		destructionPolicy="never" creationComplete="webViewComplete(event)"
+		xmlns:components="com.flexcapacitor.controls.*" xmlns:utils="utils.*">
+	
+	
 	
 	<fx:Script>
 		<![CDATA[
-			[Bindable] private var rtitle:String;
-			[Bindable] private var rdate:String;
-			[Bindable] private var rcreator:String;
-			[Bindable] private var rlink:String;
-			[Bindable] private var rdesc:String;
+			import model.RedditFeedModel;
+			
+			import mx.binding.utils.BindingUtils;
+			import mx.events.FlexEvent;
 			
 			import valueObjects.Item;
 			
-			private function getDetails():void
+			import views.RedditFeed;
+			
+			//BINDABLES
+			[Bindable] private var rtitle:String;
+			[Bindable] public var rlink:String;
+			
+			
+			//VARIABLES
+			private var modelInstance : RedditFeedModel;
+			private var index:int;
+			
+			
+			override public function set data(value : Object) : void
 			{
+				super.data = value;
+				modelInstance = value as RedditFeedModel;
+				modelInstance.detailsView = this;
+			}
+			
+			
+			
+			protected function navigateBack():void
+			{
+				//if (backBool == false) {
+					
+					//if (webView.isHistoryBackEnabled == true)
+					//{
+						//webView.historyBack();
+					//}
+					//else disposeWebView();	
+				//}
+				disposeWebView();
+			}
+			
+			
+			
+			protected function disposeWebView():void
+			{
+				navigator.popToFirstView();	
+			} 
+		
+			
+			private function busyOn(event:Event):void
+			{
+				detailsThrobber.visible = true;
+			}
+			private function busyOff(event:Event):void
+			{
+				detailsThrobber.visible = false;
+			}
+			
+			
+			
+			public function getDetails():void
+			{
+				
 				var p:RegExp = /(-)/ig;
-				var h:RegExp = /<p(>|(\s*[^>]*>)).*?<\/p>/ig;
-				var thisItem:Item = data as Item;
+				var thisItem : Object = modelInstance.currentlySelectedRSSItem.data;
+				if (modelInstance.isPic == true) {
+					rlink = thisItem.url;
+				}
+				else {rlink = "http://www.reddit.com" + thisItem.permalink;}
 				
 				rtitle = thisItem.title;
 				rtitle = rtitle.replace(p, "-");
+				/** 
+				 * Formatting things that may be useful later on...
+				var h:RegExp = /<p(>|(\s*[^>]*>)).*?<\/p>/ig;
+				var a:RegExp = /<a(>|(\s*[^>]*>)).*?<\/a>/ig;
+				
 				rdate = thisItem.pubDate;
-				//rcreator = thisItem.dc_creator
-				rlink = thisItem.link;
 				rdesc = thisItem.description;
 				rdesc = rdesc.replace(h, "");
 				rdesc = rdesc.replace(p, "-");
+				rdesc = rdesc.replace(a, "");	
+				**/
+				if (modelInstance.isPic == true) {
 					
-					
-				
+				}
+				 
+				webView.addEventListener(Event.COMPLETE, busyOff);
+				webView.addEventListener(Event.LOCATION_CHANGE, busyOn);
 			}
+			
+			
+			
+			protected function webViewComplete(event:FlexEvent):void
+			{
+				BindingUtils.bindSetter(myChangeHandler, modelInstance, "currentlySelectedRSSItem" );
+			
+			}
+			
+			private function myChangeHandler(item:Object):void
+			{
+				index = modelInstance.currentFeedList.getItemIndex(item); 
+				modelInstance.currentFeedList.getItemIndex(item);
+				
+				//toggle which navigation buttons are shown
+				if (index == 0) {
+					jumpUp.enabled = false;
+				}
+				else jumpUp.enabled = true;
+				
+				if (index == 24) {
+					jumpDown.enabled = false;
+				}
+				else jumpDown.enabled = true;
+			}
+			
+			protected function jumpUp_clickHandler(event:MouseEvent):void
+			{
+				webView.stop();
+				var previousIndex:int = index - 1;
+				modelInstance.currentlySelectedRSSItem = modelInstance.currentFeedList.getItemAt(previousIndex);
+				getDetails();
+			}
+			
+			protected function jumpDown_clickHandler(event:MouseEvent):void
+			{
+				webView.stop();
+				var nextIndex:int = index + 1;
+				modelInstance.currentlySelectedRSSItem = modelInstance.currentFeedList.getItemAt(nextIndex);
+				getDetails();
+			}
+			
 		]]>
 	</fx:Script>
+	
+	
 	<s:navigationContent>
-		<s:Button label="Back" click="navigator.popView()"/>
+		<s:Button icon="@Embed('assets/images/left_arrow.png')" click="navigateBack()"/>
+		<s:Spacer width="8"/>
+		<s:BusyIndicator id="detailsThrobber" visible="true" width="32" height="32"/>			
 	</s:navigationContent>
+	<s:actionContent>
+		<s:Button id="jumpUp" width="54" height="30" icon="assets/Up arrow.png" click="jumpUp_clickHandler(event)"/>
+		<s:Button id="jumpDown" width="54" height="30" icon="assets/Down arrow.png" click="jumpDown_clickHandler(event)"/>
+		
+	</s:actionContent>
 	
-	<s:BorderContainer top="0" bottom="0" left="0" right="0" 
-					   backgroundColor="#336666">
-		
-		<s:Label left="10"  top="20" width="70" fontSize="18" text="Title:" 
-				 textAlign="right"/> 
-		<s:Label left="90" right="20" top="15" height="45" 
-				 backgroundColor="#FFFFFF" color="#666666" fontSize="18" 
-				 paddingBottom="5" paddingLeft="5" paddingRight="5" 
-				 paddingTop="5" text="{rtitle}"/>
-		
-		<s:Label left="10"  top="75" width="70" fontSize="18" text="Date:" 
-				 textAlign="right"/>
-		<s:Label left="90" right="20" top="70" height="40" 
-				 backgroundColor="#FEFDFD" color="#666666" fontSize="18" 
-				 paddingBottom="5" paddingLeft="5" paddingRight="5" 
-				 paddingTop="5" text="{rdate}"/>
-		
-		<s:Label left="10"  top="125" width="70" fontSize="18" text="Creator:" 
-				 textAlign="right"/>    
-		<s:Label left="90" right="20" top="120" height="40" 
-				 backgroundColor="#FFFFFF" color="#666666" fontSize="18" 
-				 paddingBottom="5" paddingLeft="5" paddingRight="5" 
-				 paddingTop="5" text="{rcreator}"/>
-		
-		<s:Label left="10"  top="175" width="70" fontSize="18" text="Link:" 
-				 textAlign="right"/>      
-		
-		<s:Label left="90" right="20" top="170" height="45" 
-				 backgroundColor="#FFFFFF" color="#1C05FB" fontSize="18" 
-				 paddingBottom="5" paddingLeft="5" paddingRight="5" 
-				 paddingTop="5" text="{rlink}" textDecoration="underline" 
-				 click="navigateToURL(new URLRequest(rlink))"/>
-		
-		<s:Label left="10"  top="230" width="70" fontSize="18" text="Item:" 
-				 textAlign="right"/>   
-		<s:Label left="90" right="20" top="225" bottom="304" color="#666666" 
-				 backgroundColor="#FFFFFF" fontSize="18" paddingBottom="5" 
-				 paddingLeft="5" paddingRight="5" paddingTop="5"
-				 text="{rdesc}" maxDisplayedLines="10"  />
-		
-		<s:Button left="50" right="50" bottom="101" label="Go see on Slashdot"
-				  click="navigateToURL(new URLRequest(rlink))"/>
-		
-		
-		<s:Label left="15" right="15" bottom="23" fontSize="11"
-				 text="All trademarks and copyrights on this page are owned by their respective owners. Comments are owned by the Poster. The Rest © 1997-2010 Geeknet, Inc."
-				 textAlign="center" verticalAlign="middle"/>
-		
-	</s:BorderContainer>
 
-	
+	<utils:WebView id="webView" source="{rlink}" width="100%" height="100%" />
 </s:View>

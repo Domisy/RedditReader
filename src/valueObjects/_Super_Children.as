@@ -12,7 +12,6 @@ import flash.events.Event;
 import flash.events.EventDispatcher;
 import mx.binding.utils.ChangeWatcher;
 import mx.collections.ArrayCollection;
-import mx.events.CollectionEvent;
 import mx.events.PropertyChangeEvent;
 import mx.validators.ValidationResult;
 import valueObjects.Data;
@@ -54,8 +53,7 @@ public class _Super_Children extends flash.events.EventDispatcher implements com
     /**
      * properties
      */
-    private var _internal_data : ArrayCollection;
-    model_internal var _internal_data_leaf:valueObjects.Data;
+    private var _internal_data : valueObjects.Data;
     private var _internal_kind : String;
 
     private static var emptyArray:Array = new Array();
@@ -83,7 +81,7 @@ public class _Super_Children extends flash.events.EventDispatcher implements com
      */
 
     [Bindable(event="propertyChange")]
-    public function get data() : ArrayCollection
+    public function get data() : valueObjects.Data
     {
         return _internal_data;
     }
@@ -102,27 +100,12 @@ public class _Super_Children extends flash.events.EventDispatcher implements com
      * data/source property setters
      */
 
-    public function set data(value:*) : void
+    public function set data(value:valueObjects.Data) : void
     {
-        var oldValue:ArrayCollection = _internal_data;
+        var oldValue:valueObjects.Data = _internal_data;
         if (oldValue !== value)
         {
-            if (value is ArrayCollection)
-            {
-                _internal_data = value;
-            }
-            else if (value is Array)
-            {
-                _internal_data = new ArrayCollection(value);
-            }
-            else if (value == null)
-            {
-                _internal_data = null;
-            }
-            else
-            {
-                throw new Error("value of data must be a collection");
-            }
+            _internal_data = value;
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "data", oldValue, _internal_data));
         }
     }
@@ -151,13 +134,6 @@ public class _Super_Children extends flash.events.EventDispatcher implements com
 
     model_internal function setterListenerData(value:flash.events.Event):void
     {
-        if (value is mx.events.PropertyChangeEvent)
-        {
-            if (mx.events.PropertyChangeEvent(value).newValue)
-            {
-                mx.events.PropertyChangeEvent(value).newValue.addEventListener(mx.events.CollectionEvent.COLLECTION_CHANGE, model_internal::setterListenerData);
-            }
-        }
         _model.invalidateDependentOnData();
     }
 
@@ -277,11 +253,11 @@ public class _Super_Children extends flash.events.EventDispatcher implements com
     }
 
     model_internal var _doValidationCacheOfData : Array = null;
-    model_internal var _doValidationLastValOfData : ArrayCollection;
+    model_internal var _doValidationLastValOfData : valueObjects.Data;
 
     model_internal function _doValidationForData(valueIn:Object):Array
     {
-        var value : ArrayCollection = valueIn as ArrayCollection;
+        var value : valueObjects.Data = valueIn as valueObjects.Data;
 
         if (model_internal::_doValidationCacheOfData != null && model_internal::_doValidationLastValOfData == value)
            return model_internal::_doValidationCacheOfData ;

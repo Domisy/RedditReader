@@ -10,7 +10,6 @@ import com.adobe.fiber.styles.StyleValidator;
 import com.adobe.fiber.valueobjects.AbstractEntityMetadata;
 import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 import com.adobe.fiber.valueobjects.IPropertyIterator;
-import mx.collections.ArrayCollection;
 import mx.events.ValidationResultEvent;
 import valueObjects.Data;
 import com.adobe.fiber.core.model_internal;
@@ -33,7 +32,7 @@ internal class _ChildrenEntityMetadata extends com.adobe.fiber.valueobjects.Abst
     model_internal static var sourceProperties:Array = emptyArray
     model_internal static var nonDerivedProperties:Array = new Array("data", "kind");
     model_internal static var derivedProperties:Array = new Array();
-    model_internal static var collectionProperties:Array = new Array("data");
+    model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;
     model_internal static var entityName:String = "Children";
     model_internal static var dependentsOnMap:Object;
@@ -66,12 +65,11 @@ internal class _ChildrenEntityMetadata extends com.adobe.fiber.valueobjects.Abst
 
             // collection base map
             model_internal::collectionBaseMap = new Object();
-            model_internal::collectionBaseMap["data"] = "valueObjects.Data";
         }
 
         // Property type Map
         model_internal::propertyTypeMap = new Object();
-        model_internal::propertyTypeMap["data"] = "ArrayCollection";
+        model_internal::propertyTypeMap["data"] = "valueObjects.Data";
         model_internal::propertyTypeMap["kind"] = "String";
 
         model_internal::_instance = value;

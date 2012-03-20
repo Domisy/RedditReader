@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:IconItemRenderer click="iconitemrenderer1_clickHandler(event)"
+                    xmlns:fx="http://ns.adobe.com/mxml/2009"
+                    xmlns:s="library://ns.adobe.com/flex/spark">
+
+    <fx:Script>
+        <![CDATA[
+            import mx.events.ItemClickEvent;
+
+            protected function iconitemrenderer1_clickHandler(event : MouseEvent) : void
+            {
+                var itemClickEvent : ItemClickEvent = new ItemClickEvent(ItemClickEvent.ITEM_CLICK, true);
+                dispatchEvent(itemClickEvent);
+            }
+        ]]>
+    </fx:Script>
+
+    <fx:Declarations>
+        <!-- Place non-visual elements (e.g., services, value objects) here -->
+    </fx:Declarations>
+</s:IconItemRenderer>

@@ -1,43 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
 		xmlns:s="library://ns.adobe.com/flex/spark"
-		actionBarVisible="false" tabBarVisible="true" title="Reddit Reader by Domisy"
-		actionBarVisible.landscape="true">
+		xmlns:redditjson="services.redditjson.*"
+		actionBarVisible="{isHidden}" initialize="initializeHandler(event)" tabBarVisible="true">
+	
+	
 	
 	<fx:Script>
-		
+		<![CDATA[
+			import com.adobe.fiber.core.model_public;
+			
+			import model.RedditFeedModel;
+			
+			import mx.events.FlexEvent;
+			import mx.messaging.management.ObjectInstance;
+			import mx.rpc.events.ResultEvent;
+			
+			import qnx.events.QNXApplicationEvent;
+			import qnx.system.QNXApplication;
+			
+			import views.RedditFeed;
+			
+			[Bindable] private var redditFeedModel : RedditFeedModel = new RedditFeedModel();
+			//[Bindable] public var userData:User = new User();
+			[Bindable] public var isHidden:Boolean = false;
+			[Bindable] public var errorReturn:String;
+			[Bindable] public var modhash:String;
+			[Bindable] public var cookie:String;
+			[Bindable] public var loginBusy:Boolean = false;
+			[Bindable] public var labelColor:String = '#000000';
+			
+			//VARIABLES
+			public var defUrl:String = new String("");
+	
+			
+			
+			
+			public function loginBusyOn():void
+			{
+				loginBusy = true;
+				loginButton.visible = false;
+			}
+			
+			public function loginBusyOff():void
+			{
+				loginBusy = false;
+				loginButton.visible = true;
+			}
+			
+			
+			
+			public function refreshRSS(event:Event):void
+			{ 
+				redditFeedModel.redditFeed.refreshList();
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				QNXApplication.qnxApplication.addEventListener(QNXApplicationEvent.SWIPE_DOWN, onSwipeDown);
+			}
+			
+			
+			
+			public function onSwipeDown(event:Event):void
+			{
+				if (isHidden == true)
+				{
+					isHidden = false;
+				}
+				else isHidden = true;
+}
+			
+			
+			protected function button_clickHandler(event:MouseEvent, username:String, password:String):void
+			{
+				loginBusyOn();
+				redditJsonResult.token = redditJson.redditLogin(username, "json", username, password);
+				redditJsonResult.addEventListener(ResultEvent.RESULT, loginSuccess);
+			}
+			
+			
+			
+			protected function loginSuccess(event:ResultEvent):void
+			{
+				errorReturn = redditJsonResult.lastResult.json.errors;
+				if (errorReturn.length == 0)
+				{
+					successLabel.text = "Success!";
+					modhash = redditJsonResult.lastResult.json.data.modhash;
+					cookie = redditJsonResult.lastResult.json.data.cookie;
+					getUserInfo();
+				}
+				else {
+					successLabel.setStyle("labelColor", "#FF0000");
+					successLabel.text = "Try again!";
+				}
+				
+				loginBusyOff();
+				
+			}
+			
+			
+			protected function getUserInfo():void
+			{
+				//make calls to get user info based on cookie and modhash etc
+			}
+		]]>
 	</fx:Script>
 	
-	
-	<fx:Declarations>
-		
-	</fx:Declarations>
+
 	
 	<s:states>
 		<s:State name="portrait"/>
 		<s:State name="landscape"/>
+		<s:State name="loggedIn"/>
 	</s:states>
+	<fx:Declarations>
+		<s:CallResponder id="redditJsonResult"/>
+		<redditjson:RedditJson id="redditJson"/>
+		
+	</fx:Declarations>
 	
 	
 	<s:actionContent>
-		<s:Button includeIn="landscape" label="Profile" click="navigator.pushView(profileView)" />
+		<s:Button includeIn="landscape,loggedIn" x="5" width="95" height="90"
+				  click="navigator.pushView(ProfileView)"
+				  icon="assets/gear-icon.png"/>
+		<s:Button includeIn="portrait" x="91" width="95" height="90" label="Button"
+				  icon="assets/gear-icon.png"/>
 	</s:actionContent>
+	<s:navigationContent>
+		<s:Image width="43" height="43" source="assets/reddit Head.png"/>
+		
+	</s:navigationContent>
+	<s:titleContent>
+		<s:Group width="738" height="100"
+				 x.landscape="40"
+				 x.loggedIn="40">
+			<s:TextInput id="userField" includeIn="landscape,portrait" x="9" y="48" width="247"
+						 height="44" prompt="username"
+						 x.portrait="8" y.portrait="4" width.portrait="200"/>
+			<s:TextInput id="passField" includeIn="landscape,portrait" x="269" y="47" width="230"
+						 height="45" prompt="password"
+						 x.portrait="9" y.portrait="52" width.portrait="199"/>
+			<s:Label id="successLabel" includeIn="landscape,portrait" x="10" y="12" height="27"
+					 color="{labelColor}" fontSize="23" text="Sign in to Reddit"
+					 width.landscape="408"
+					 x.portrait="241" y.portrait="13" width.portrait="245"/>
+			<s:Button id="loginButton" includeIn="landscape,portrait" x="532" y="47" width="153"
+					  height="45" label="Login"
+					  click="button_clickHandler(event, userField.text, passField.text)"
+					  x.portrait="250" y.portrait="46"/>
+			<s:BusyIndicator id="loginBusyInd" includeIn="landscape,portrait" visible="{loginBusy}"
+							 x="589" y="48" width="40" height="43"
+							 x.portrait="306" y.portrait="49"/>
+			<s:Label includeIn="loggedIn" x="10" y="10" width="321" fontSize="23"
+					 text="Welcome, username!"/>
+		</s:Group>
+	</s:titleContent>
 	
 	
 	<s:SplitViewNavigator width="100%" height="100%" id="splitViewNavigator" autoHideFirstViewNavigator="true">
-		<s:ViewNavigator id="redditList" firstView="views.subredditList" width="300" height="100%"/>
-		<s:ViewNavigator id="redditFeed" firstView="views.redditFeed" width="100%" height="100%">
+		<s:ViewNavigator id="redditListNav" firstView="views.SubredditList" firstViewData="{redditFeedModel}" width="300" height="100%"/>
+		<s:ViewNavigator id="redditFeedNav" firstView="views.RedditFeed" firstViewData="{redditFeedModel}" width="100%" height="100%">
 			
 			
 			
 			<s:actionContent.landscape>
-				<s:Button id="refreshButtonlLandscape" label="Refresh" />
+				<fx:Array>
+					<s:Button id="refreshButtonlLandscape" icon="@Embed('assets/refresh160.png')" click="refreshRSS(event)" />
+				</fx:Array>
 			</s:actionContent.landscape>
 			
-			<s:actionContent.portrait>
-				<s:Button id="refreshButton" label="Refresh"  />
+			<s:actionContent>
+				<s:Button id="refreshButton" icon="@Embed('assets/refresh160.png')" click="refreshRSS(event)" />
 				<s:Button id="navigatorButton" label="Search" click="splitViewNavigator.showFirstViewNavigatorInPopUp(navigatorButton)" />
-			</s:actionContent.portrait>
+			</s:actionContent>
+			<s:actionContent.loggedIn>
+				<fx:Array>
+					<s:Button id="refreshButtonlLandscape0" icon="@Embed('assets/refresh160.png')" click="refreshRSS(event)" />
+				</fx:Array>
+			</s:actionContent.loggedIn>
 		</s:ViewNavigator>
 	</s:SplitViewNavigator>
 	

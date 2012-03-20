@@ -34,13 +34,13 @@ public class _Super_RedditRss extends flash.events.EventDispatcher implements co
 
     model_internal static function initRemoteClassAliasAllRelated() : void
     {
-        valueObjects.Data.initRemoteClassAliasSingleChild();
-        valueObjects.Children.initRemoteClassAliasSingleChild();
         valueObjects.Channel.initRemoteClassAliasSingleChild();
-        valueObjects.Image.initRemoteClassAliasSingleChild();
         valueObjects.Item.initRemoteClassAliasSingleChild();
         valueObjects.Media_thumbnail.initRemoteClassAliasSingleChild();
         valueObjects.Guid.initRemoteClassAliasSingleChild();
+        valueObjects.Data.initRemoteClassAliasSingleChild();
+        valueObjects.Children.initRemoteClassAliasSingleChild();
+        valueObjects.Image.initRemoteClassAliasSingleChild();
     }
 
     model_internal var _dminternal_model : _RedditRssEntityMetadata;
@@ -60,10 +60,10 @@ public class _Super_RedditRss extends flash.events.EventDispatcher implements co
     /**
      * properties
      */
-    private var _internal_data : valueObjects.Data;
-    private var _internal_kind : String;
     private var _internal_version : String;
     private var _internal_channel : valueObjects.Channel;
+    private var _internal_data : valueObjects.Data;
+    private var _internal_kind : String;
 
     private static var emptyArray:Array = new Array();
 
@@ -80,28 +80,16 @@ public class _Super_RedditRss extends flash.events.EventDispatcher implements co
         _model = new _RedditRssEntityMetadata(this);
 
         // Bind to own data or source properties for cache invalidation triggering
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "data", model_internal::setterListenerData));
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "kind", model_internal::setterListenerKind));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "version", model_internal::setterListenerVersion));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "channel", model_internal::setterListenerChannel));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "data", model_internal::setterListenerData));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "kind", model_internal::setterListenerKind));
 
     }
 
     /**
      * data/source property getters
      */
-
-    [Bindable(event="propertyChange")]
-    public function get data() : valueObjects.Data
-    {
-        return _internal_data;
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get kind() : String
-    {
-        return _internal_kind;
-    }
 
     [Bindable(event="propertyChange")]
     public function get version() : String
@@ -115,6 +103,18 @@ public class _Super_RedditRss extends flash.events.EventDispatcher implements co
         return _internal_channel;
     }
 
+    [Bindable(event="propertyChange")]
+    public function get data() : valueObjects.Data
+    {
+        return _internal_data;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get kind() : String
+    {
+        return _internal_kind;
+    }
+
     public function clearAssociations() : void
     {
     }
@@ -122,26 +122,6 @@ public class _Super_RedditRss extends flash.events.EventDispatcher implements co
     /**
      * data/source property setters
      */
-
-    public function set data(value:valueObjects.Data) : void
-    {
-        var oldValue:valueObjects.Data = _internal_data;
-        if (oldValue !== value)
-        {
-            _internal_data = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "data", oldValue, _internal_data));
-        }
-    }
-
-    public function set kind(value:String) : void
-    {
-        var oldValue:String = _internal_kind;
-        if (oldValue !== value)
-        {
-            _internal_kind = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "kind", oldValue, _internal_kind));
-        }
-    }
 
     public function set version(value:String) : void
     {
@@ -163,6 +143,26 @@ public class _Super_RedditRss extends flash.events.EventDispatcher implements co
         }
     }
 
+    public function set data(value:valueObjects.Data) : void
+    {
+        var oldValue:valueObjects.Data = _internal_data;
+        if (oldValue !== value)
+        {
+            _internal_data = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "data", oldValue, _internal_data));
+        }
+    }
+
+    public function set kind(value:String) : void
+    {
+        var oldValue:String = _internal_kind;
+        if (oldValue !== value)
+        {
+            _internal_kind = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "kind", oldValue, _internal_kind));
+        }
+    }
+
     /**
      * Data/source property setter listeners
      *
@@ -175,16 +175,6 @@ public class _Super_RedditRss extends flash.events.EventDispatcher implements co
      *  - the validity of the property (and the containing entity) if the given data property is required.
      */
 
-    model_internal function setterListenerData(value:flash.events.Event):void
-    {
-        _model.invalidateDependentOnData();
-    }
-
-    model_internal function setterListenerKind(value:flash.events.Event):void
-    {
-        _model.invalidateDependentOnKind();
-    }
-
     model_internal function setterListenerVersion(value:flash.events.Event):void
     {
         _model.invalidateDependentOnVersion();
@@ -193,6 +183,16 @@ public class _Super_RedditRss extends flash.events.EventDispatcher implements co
     model_internal function setterListenerChannel(value:flash.events.Event):void
     {
         _model.invalidateDependentOnChannel();
+    }
+
+    model_internal function setterListenerData(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnData();
+    }
+
+    model_internal function setterListenerKind(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnKind();
     }
 
 
@@ -216,16 +216,6 @@ public class _Super_RedditRss extends flash.events.EventDispatcher implements co
         var validationFailureMessages:Array = new Array();
 
         var propertyValidity:Boolean = true;
-        if (!_model.dataIsValid)
-        {
-            propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_dataValidationFailureMessages);
-        }
-        if (!_model.kindIsValid)
-        {
-            propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_kindValidationFailureMessages);
-        }
         if (!_model.versionIsValid)
         {
             propertyValidity = false;
@@ -235,6 +225,16 @@ public class _Super_RedditRss extends flash.events.EventDispatcher implements co
         {
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_channelValidationFailureMessages);
+        }
+        if (!_model.dataIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_dataValidationFailureMessages);
+        }
+        if (!_model.kindIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_kindValidationFailureMessages);
         }
 
         model_internal::_cacheInitialized_isValid = true;
@@ -315,60 +315,6 @@ public class _Super_RedditRss extends flash.events.EventDispatcher implements co
         }
     }
 
-    model_internal var _doValidationCacheOfData : Array = null;
-    model_internal var _doValidationLastValOfData : valueObjects.Data;
-
-    model_internal function _doValidationForData(valueIn:Object):Array
-    {
-        var value : valueObjects.Data = valueIn as valueObjects.Data;
-
-        if (model_internal::_doValidationCacheOfData != null && model_internal::_doValidationLastValOfData == value)
-           return model_internal::_doValidationCacheOfData ;
-
-        _model.model_internal::_dataIsValidCacheInitialized = true;
-        var validationFailures:Array = new Array();
-        var errorMessage:String;
-        var failure:Boolean;
-
-        var valRes:ValidationResult;
-        if (_model.isDataAvailable && _internal_data == null)
-        {
-            validationFailures.push(new ValidationResult(true, "", "", "data is required"));
-        }
-
-        model_internal::_doValidationCacheOfData = validationFailures;
-        model_internal::_doValidationLastValOfData = value;
-
-        return validationFailures;
-    }
-    
-    model_internal var _doValidationCacheOfKind : Array = null;
-    model_internal var _doValidationLastValOfKind : String;
-
-    model_internal function _doValidationForKind(valueIn:Object):Array
-    {
-        var value : String = valueIn as String;
-
-        if (model_internal::_doValidationCacheOfKind != null && model_internal::_doValidationLastValOfKind == value)
-           return model_internal::_doValidationCacheOfKind ;
-
-        _model.model_internal::_kindIsValidCacheInitialized = true;
-        var validationFailures:Array = new Array();
-        var errorMessage:String;
-        var failure:Boolean;
-
-        var valRes:ValidationResult;
-        if (_model.isKindAvailable && _internal_kind == null)
-        {
-            validationFailures.push(new ValidationResult(true, "", "", "kind is required"));
-        }
-
-        model_internal::_doValidationCacheOfKind = validationFailures;
-        model_internal::_doValidationLastValOfKind = value;
-
-        return validationFailures;
-    }
-    
     model_internal var _doValidationCacheOfVersion : Array = null;
     model_internal var _doValidationLastValOfVersion : String;
 
@@ -419,6 +365,60 @@ public class _Super_RedditRss extends flash.events.EventDispatcher implements co
 
         model_internal::_doValidationCacheOfChannel = validationFailures;
         model_internal::_doValidationLastValOfChannel = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfData : Array = null;
+    model_internal var _doValidationLastValOfData : valueObjects.Data;
+
+    model_internal function _doValidationForData(valueIn:Object):Array
+    {
+        var value : valueObjects.Data = valueIn as valueObjects.Data;
+
+        if (model_internal::_doValidationCacheOfData != null && model_internal::_doValidationLastValOfData == value)
+           return model_internal::_doValidationCacheOfData ;
+
+        _model.model_internal::_dataIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isDataAvailable && _internal_data == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "data is required"));
+        }
+
+        model_internal::_doValidationCacheOfData = validationFailures;
+        model_internal::_doValidationLastValOfData = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfKind : Array = null;
+    model_internal var _doValidationLastValOfKind : String;
+
+    model_internal function _doValidationForKind(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfKind != null && model_internal::_doValidationLastValOfKind == value)
+           return model_internal::_doValidationCacheOfKind ;
+
+        _model.model_internal::_kindIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isKindAvailable && _internal_kind == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "kind is required"));
+        }
+
+        model_internal::_doValidationCacheOfKind = validationFailures;
+        model_internal::_doValidationLastValOfKind = value;
 
         return validationFailures;
     }

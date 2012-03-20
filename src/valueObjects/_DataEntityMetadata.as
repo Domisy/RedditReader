@@ -24,14 +24,14 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
 {
     private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("after", "before", "children", "modhash");
+    model_internal static var allProperties:Array = new Array("cookie", "after", "before", "children", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("after", "before", "children", "modhash");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("after", "before", "children", "modhash");
+    model_internal static var allRequiredProperties:Array = new Array("cookie", "after", "before", "children", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("cookie", "after", "before", "children", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("after", "before", "children", "modhash");
+    model_internal static var dataProperties:Array = new Array("cookie", "after", "before", "children", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
     model_internal static var sourceProperties:Array = emptyArray
-    model_internal static var nonDerivedProperties:Array = new Array("after", "before", "children", "modhash");
+    model_internal static var nonDerivedProperties:Array = new Array("cookie", "after", "before", "children", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array("children");
     model_internal static var collectionBaseMap:Object;
@@ -40,6 +40,11 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
     model_internal static var dependedOnServices:Array = new Array();
     model_internal static var propertyTypeMap:Object;
 
+    
+    model_internal var _cookieIsValid:Boolean;
+    model_internal var _cookieValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _cookieIsValidCacheInitialized:Boolean = false;
+    model_internal var _cookieValidationFailureMessages:Array;
     
     model_internal var _afterIsValid:Boolean;
     model_internal var _afterValidator:com.adobe.fiber.styles.StyleValidator;
@@ -60,6 +65,26 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
     model_internal var _modhashValidator:com.adobe.fiber.styles.StyleValidator;
     model_internal var _modhashIsValidCacheInitialized:Boolean = false;
     model_internal var _modhashValidationFailureMessages:Array;
+    
+    model_internal var _idIsValid:Boolean;
+    model_internal var _idValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _idIsValidCacheInitialized:Boolean = false;
+    model_internal var _idValidationFailureMessages:Array;
+    
+    model_internal var _has_mod_mailIsValid:Boolean;
+    model_internal var _has_mod_mailValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _has_mod_mailIsValidCacheInitialized:Boolean = false;
+    model_internal var _has_mod_mailValidationFailureMessages:Array;
+    
+    model_internal var _nameIsValid:Boolean;
+    model_internal var _nameValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _nameIsValidCacheInitialized:Boolean = false;
+    model_internal var _nameValidationFailureMessages:Array;
+    
+    model_internal var _has_mailIsValid:Boolean;
+    model_internal var _has_mailValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _has_mailIsValidCacheInitialized:Boolean = false;
+    model_internal var _has_mailValidationFailureMessages:Array;
 
     model_internal var _instance:_Super_Data;
     model_internal static var _nullStyle:com.adobe.fiber.styles.Style = new com.adobe.fiber.styles.Style();
@@ -71,10 +96,21 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
         {
             // dependents map
             model_internal::dependentsOnMap = new Object();
+            model_internal::dependentsOnMap["cookie"] = new Array();
             model_internal::dependentsOnMap["after"] = new Array();
             model_internal::dependentsOnMap["before"] = new Array();
             model_internal::dependentsOnMap["children"] = new Array();
             model_internal::dependentsOnMap["modhash"] = new Array();
+            model_internal::dependentsOnMap["id"] = new Array();
+            model_internal::dependentsOnMap["comment_karma"] = new Array();
+            model_internal::dependentsOnMap["has_mod_mail"] = new Array();
+            model_internal::dependentsOnMap["created"] = new Array();
+            model_internal::dependentsOnMap["is_gold"] = new Array();
+            model_internal::dependentsOnMap["name"] = new Array();
+            model_internal::dependentsOnMap["is_mod"] = new Array();
+            model_internal::dependentsOnMap["link_karma"] = new Array();
+            model_internal::dependentsOnMap["created_utc"] = new Array();
+            model_internal::dependentsOnMap["has_mail"] = new Array();
 
             // collection base map
             model_internal::collectionBaseMap = new Object();
@@ -83,12 +119,28 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
 
         // Property type Map
         model_internal::propertyTypeMap = new Object();
+        model_internal::propertyTypeMap["cookie"] = "String";
         model_internal::propertyTypeMap["after"] = "String";
         model_internal::propertyTypeMap["before"] = "Object";
         model_internal::propertyTypeMap["children"] = "ArrayCollection";
         model_internal::propertyTypeMap["modhash"] = "String";
+        model_internal::propertyTypeMap["id"] = "String";
+        model_internal::propertyTypeMap["comment_karma"] = "int";
+        model_internal::propertyTypeMap["has_mod_mail"] = "Object";
+        model_internal::propertyTypeMap["created"] = "Number";
+        model_internal::propertyTypeMap["is_gold"] = "Boolean";
+        model_internal::propertyTypeMap["name"] = "String";
+        model_internal::propertyTypeMap["is_mod"] = "Boolean";
+        model_internal::propertyTypeMap["link_karma"] = "int";
+        model_internal::propertyTypeMap["created_utc"] = "Number";
+        model_internal::propertyTypeMap["has_mail"] = "Object";
 
         model_internal::_instance = value;
+        model_internal::_cookieValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForCookie);
+        model_internal::_cookieValidator.required = true;
+        model_internal::_cookieValidator.requiredFieldError = "cookie is required";
+        //model_internal::_cookieValidator.source = model_internal::_instance;
+        //model_internal::_cookieValidator.property = "cookie";
         model_internal::_afterValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForAfter);
         model_internal::_afterValidator.required = true;
         model_internal::_afterValidator.requiredFieldError = "after is required";
@@ -109,6 +161,26 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
         model_internal::_modhashValidator.requiredFieldError = "modhash is required";
         //model_internal::_modhashValidator.source = model_internal::_instance;
         //model_internal::_modhashValidator.property = "modhash";
+        model_internal::_idValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForId);
+        model_internal::_idValidator.required = true;
+        model_internal::_idValidator.requiredFieldError = "id is required";
+        //model_internal::_idValidator.source = model_internal::_instance;
+        //model_internal::_idValidator.property = "id";
+        model_internal::_has_mod_mailValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForHas_mod_mail);
+        model_internal::_has_mod_mailValidator.required = true;
+        model_internal::_has_mod_mailValidator.requiredFieldError = "has_mod_mail is required";
+        //model_internal::_has_mod_mailValidator.source = model_internal::_instance;
+        //model_internal::_has_mod_mailValidator.property = "has_mod_mail";
+        model_internal::_nameValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForName);
+        model_internal::_nameValidator.required = true;
+        model_internal::_nameValidator.requiredFieldError = "name is required";
+        //model_internal::_nameValidator.source = model_internal::_instance;
+        //model_internal::_nameValidator.property = "name";
+        model_internal::_has_mailValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForHas_mail);
+        model_internal::_has_mailValidator.required = true;
+        model_internal::_has_mailValidator.requiredFieldError = "has_mail is required";
+        //model_internal::_has_mailValidator.source = model_internal::_instance;
+        //model_internal::_has_mailValidator.property = "has_mail";
     }
 
     override public function getEntityName():String
@@ -336,6 +408,12 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
     }
 
     [Bindable(event="propertyChange")]
+    public function get isCookieAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
     public function get isAfterAvailable():Boolean
     {
         return true;
@@ -359,10 +437,78 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
         return true;
     }
 
+    [Bindable(event="propertyChange")]
+    public function get isIdAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isComment_karmaAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isHas_mod_mailAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isCreatedAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isIs_goldAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isNameAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isIs_modAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isLink_karmaAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isCreated_utcAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isHas_mailAvailable():Boolean
+    {
+        return true;
+    }
+
 
     /**
      * derived property recalculation
      */
+    public function invalidateDependentOnCookie():void
+    {
+        if (model_internal::_cookieIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfCookie = null;
+            model_internal::calculateCookieIsValid();
+        }
+    }
     public function invalidateDependentOnAfter():void
     {
         if (model_internal::_afterIsValidCacheInitialized )
@@ -395,10 +541,142 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
             model_internal::calculateModhashIsValid();
         }
     }
+    public function invalidateDependentOnId():void
+    {
+        if (model_internal::_idIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfId = null;
+            model_internal::calculateIdIsValid();
+        }
+    }
+    public function invalidateDependentOnHas_mod_mail():void
+    {
+        if (model_internal::_has_mod_mailIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfHas_mod_mail = null;
+            model_internal::calculateHas_mod_mailIsValid();
+        }
+    }
+    public function invalidateDependentOnName():void
+    {
+        if (model_internal::_nameIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfName = null;
+            model_internal::calculateNameIsValid();
+        }
+    }
+    public function invalidateDependentOnHas_mail():void
+    {
+        if (model_internal::_has_mailIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfHas_mail = null;
+            model_internal::calculateHas_mailIsValid();
+        }
+    }
 
     model_internal function fireChangeEvent(propertyName:String, oldValue:Object, newValue:Object):void
     {
         this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, propertyName, oldValue, newValue));
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get cookieStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get cookieValidator() : StyleValidator
+    {
+        return model_internal::_cookieValidator;
+    }
+
+    model_internal function set _cookieIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_cookieIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_cookieIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "cookieIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get cookieIsValid():Boolean
+    {
+        if (!model_internal::_cookieIsValidCacheInitialized)
+        {
+            model_internal::calculateCookieIsValid();
+        }
+
+        return model_internal::_cookieIsValid;
+    }
+
+    model_internal function calculateCookieIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_cookieValidator.validate(model_internal::_instance.cookie)
+        model_internal::_cookieIsValid_der = (valRes.results == null);
+        model_internal::_cookieIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::cookieValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::cookieValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get cookieValidationFailureMessages():Array
+    {
+        if (model_internal::_cookieValidationFailureMessages == null)
+            model_internal::calculateCookieIsValid();
+
+        return _cookieValidationFailureMessages;
+    }
+
+    model_internal function set cookieValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_cookieValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_cookieValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "cookieValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
     }
 
     [Bindable(event="propertyChange")]   
@@ -801,6 +1079,442 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
         }
     }
 
+    [Bindable(event="propertyChange")]   
+    public function get idStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get idValidator() : StyleValidator
+    {
+        return model_internal::_idValidator;
+    }
+
+    model_internal function set _idIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_idIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_idIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "idIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get idIsValid():Boolean
+    {
+        if (!model_internal::_idIsValidCacheInitialized)
+        {
+            model_internal::calculateIdIsValid();
+        }
+
+        return model_internal::_idIsValid;
+    }
+
+    model_internal function calculateIdIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_idValidator.validate(model_internal::_instance.id)
+        model_internal::_idIsValid_der = (valRes.results == null);
+        model_internal::_idIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::idValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::idValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get idValidationFailureMessages():Array
+    {
+        if (model_internal::_idValidationFailureMessages == null)
+            model_internal::calculateIdIsValid();
+
+        return _idValidationFailureMessages;
+    }
+
+    model_internal function set idValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_idValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_idValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "idValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get comment_karmaStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get has_mod_mailStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get has_mod_mailValidator() : StyleValidator
+    {
+        return model_internal::_has_mod_mailValidator;
+    }
+
+    model_internal function set _has_mod_mailIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_has_mod_mailIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_has_mod_mailIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "has_mod_mailIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get has_mod_mailIsValid():Boolean
+    {
+        if (!model_internal::_has_mod_mailIsValidCacheInitialized)
+        {
+            model_internal::calculateHas_mod_mailIsValid();
+        }
+
+        return model_internal::_has_mod_mailIsValid;
+    }
+
+    model_internal function calculateHas_mod_mailIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_has_mod_mailValidator.validate(model_internal::_instance.has_mod_mail)
+        model_internal::_has_mod_mailIsValid_der = (valRes.results == null);
+        model_internal::_has_mod_mailIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::has_mod_mailValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::has_mod_mailValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get has_mod_mailValidationFailureMessages():Array
+    {
+        if (model_internal::_has_mod_mailValidationFailureMessages == null)
+            model_internal::calculateHas_mod_mailIsValid();
+
+        return _has_mod_mailValidationFailureMessages;
+    }
+
+    model_internal function set has_mod_mailValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_has_mod_mailValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_has_mod_mailValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "has_mod_mailValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get createdStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get is_goldStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get nameStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get nameValidator() : StyleValidator
+    {
+        return model_internal::_nameValidator;
+    }
+
+    model_internal function set _nameIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_nameIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_nameIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "nameIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get nameIsValid():Boolean
+    {
+        if (!model_internal::_nameIsValidCacheInitialized)
+        {
+            model_internal::calculateNameIsValid();
+        }
+
+        return model_internal::_nameIsValid;
+    }
+
+    model_internal function calculateNameIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_nameValidator.validate(model_internal::_instance.name)
+        model_internal::_nameIsValid_der = (valRes.results == null);
+        model_internal::_nameIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::nameValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::nameValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get nameValidationFailureMessages():Array
+    {
+        if (model_internal::_nameValidationFailureMessages == null)
+            model_internal::calculateNameIsValid();
+
+        return _nameValidationFailureMessages;
+    }
+
+    model_internal function set nameValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_nameValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_nameValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "nameValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get is_modStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get link_karmaStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get created_utcStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get has_mailStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get has_mailValidator() : StyleValidator
+    {
+        return model_internal::_has_mailValidator;
+    }
+
+    model_internal function set _has_mailIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_has_mailIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_has_mailIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "has_mailIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get has_mailIsValid():Boolean
+    {
+        if (!model_internal::_has_mailIsValidCacheInitialized)
+        {
+            model_internal::calculateHas_mailIsValid();
+        }
+
+        return model_internal::_has_mailIsValid;
+    }
+
+    model_internal function calculateHas_mailIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_has_mailValidator.validate(model_internal::_instance.has_mail)
+        model_internal::_has_mailIsValid_der = (valRes.results == null);
+        model_internal::_has_mailIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::has_mailValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::has_mailValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get has_mailValidationFailureMessages():Array
+    {
+        if (model_internal::_has_mailValidationFailureMessages == null)
+            model_internal::calculateHas_mailIsValid();
+
+        return _has_mailValidationFailureMessages;
+    }
+
+    model_internal function set has_mailValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_has_mailValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_has_mailValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "has_mailValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
 
      /**
      * 
@@ -826,6 +1540,10 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
      {
          switch(propertyName)
          {
+            case("cookie"):
+            {
+                return cookieValidationFailureMessages;
+            }
             case("after"):
             {
                 return afterValidationFailureMessages;
@@ -841,6 +1559,22 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
             case("modhash"):
             {
                 return modhashValidationFailureMessages;
+            }
+            case("id"):
+            {
+                return idValidationFailureMessages;
+            }
+            case("has_mod_mail"):
+            {
+                return has_mod_mailValidationFailureMessages;
+            }
+            case("name"):
+            {
+                return nameValidationFailureMessages;
+            }
+            case("has_mail"):
+            {
+                return has_mailValidationFailureMessages;
             }
             default:
             {

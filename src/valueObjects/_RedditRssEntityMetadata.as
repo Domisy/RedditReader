@@ -24,14 +24,14 @@ internal class _RedditRssEntityMetadata extends com.adobe.fiber.valueobjects.Abs
 {
     private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("data", "kind", "version", "channel");
+    model_internal static var allProperties:Array = new Array("version", "channel", "data", "kind");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("data", "kind", "version", "channel");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("data", "kind", "version", "channel");
+    model_internal static var allRequiredProperties:Array = new Array("version", "channel", "data", "kind");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("version", "channel", "data", "kind");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("data", "kind", "version", "channel");
+    model_internal static var dataProperties:Array = new Array("version", "channel", "data", "kind");
     model_internal static var sourceProperties:Array = emptyArray
-    model_internal static var nonDerivedProperties:Array = new Array("data", "kind", "version", "channel");
+    model_internal static var nonDerivedProperties:Array = new Array("version", "channel", "data", "kind");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;
@@ -40,16 +40,6 @@ internal class _RedditRssEntityMetadata extends com.adobe.fiber.valueobjects.Abs
     model_internal static var dependedOnServices:Array = new Array();
     model_internal static var propertyTypeMap:Object;
 
-    
-    model_internal var _dataIsValid:Boolean;
-    model_internal var _dataValidator:com.adobe.fiber.styles.StyleValidator;
-    model_internal var _dataIsValidCacheInitialized:Boolean = false;
-    model_internal var _dataValidationFailureMessages:Array;
-    
-    model_internal var _kindIsValid:Boolean;
-    model_internal var _kindValidator:com.adobe.fiber.styles.StyleValidator;
-    model_internal var _kindIsValidCacheInitialized:Boolean = false;
-    model_internal var _kindValidationFailureMessages:Array;
     
     model_internal var _versionIsValid:Boolean;
     model_internal var _versionValidator:com.adobe.fiber.styles.StyleValidator;
@@ -60,6 +50,16 @@ internal class _RedditRssEntityMetadata extends com.adobe.fiber.valueobjects.Abs
     model_internal var _channelValidator:com.adobe.fiber.styles.StyleValidator;
     model_internal var _channelIsValidCacheInitialized:Boolean = false;
     model_internal var _channelValidationFailureMessages:Array;
+    
+    model_internal var _dataIsValid:Boolean;
+    model_internal var _dataValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _dataIsValidCacheInitialized:Boolean = false;
+    model_internal var _dataValidationFailureMessages:Array;
+    
+    model_internal var _kindIsValid:Boolean;
+    model_internal var _kindValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _kindIsValidCacheInitialized:Boolean = false;
+    model_internal var _kindValidationFailureMessages:Array;
 
     model_internal var _instance:_Super_RedditRss;
     model_internal static var _nullStyle:com.adobe.fiber.styles.Style = new com.adobe.fiber.styles.Style();
@@ -71,10 +71,10 @@ internal class _RedditRssEntityMetadata extends com.adobe.fiber.valueobjects.Abs
         {
             // dependents map
             model_internal::dependentsOnMap = new Object();
-            model_internal::dependentsOnMap["data"] = new Array();
-            model_internal::dependentsOnMap["kind"] = new Array();
             model_internal::dependentsOnMap["version"] = new Array();
             model_internal::dependentsOnMap["channel"] = new Array();
+            model_internal::dependentsOnMap["data"] = new Array();
+            model_internal::dependentsOnMap["kind"] = new Array();
 
             // collection base map
             model_internal::collectionBaseMap = new Object();
@@ -82,22 +82,12 @@ internal class _RedditRssEntityMetadata extends com.adobe.fiber.valueobjects.Abs
 
         // Property type Map
         model_internal::propertyTypeMap = new Object();
-        model_internal::propertyTypeMap["data"] = "valueObjects.Data";
-        model_internal::propertyTypeMap["kind"] = "String";
         model_internal::propertyTypeMap["version"] = "String";
         model_internal::propertyTypeMap["channel"] = "valueObjects.Channel";
+        model_internal::propertyTypeMap["data"] = "valueObjects.Data";
+        model_internal::propertyTypeMap["kind"] = "String";
 
         model_internal::_instance = value;
-        model_internal::_dataValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForData);
-        model_internal::_dataValidator.required = true;
-        model_internal::_dataValidator.requiredFieldError = "data is required";
-        //model_internal::_dataValidator.source = model_internal::_instance;
-        //model_internal::_dataValidator.property = "data";
-        model_internal::_kindValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForKind);
-        model_internal::_kindValidator.required = true;
-        model_internal::_kindValidator.requiredFieldError = "kind is required";
-        //model_internal::_kindValidator.source = model_internal::_instance;
-        //model_internal::_kindValidator.property = "kind";
         model_internal::_versionValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForVersion);
         model_internal::_versionValidator.required = true;
         model_internal::_versionValidator.requiredFieldError = "version is required";
@@ -108,6 +98,16 @@ internal class _RedditRssEntityMetadata extends com.adobe.fiber.valueobjects.Abs
         model_internal::_channelValidator.requiredFieldError = "channel is required";
         //model_internal::_channelValidator.source = model_internal::_instance;
         //model_internal::_channelValidator.property = "channel";
+        model_internal::_dataValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForData);
+        model_internal::_dataValidator.required = true;
+        model_internal::_dataValidator.requiredFieldError = "data is required";
+        //model_internal::_dataValidator.source = model_internal::_instance;
+        //model_internal::_dataValidator.property = "data";
+        model_internal::_kindValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForKind);
+        model_internal::_kindValidator.required = true;
+        model_internal::_kindValidator.requiredFieldError = "kind is required";
+        //model_internal::_kindValidator.source = model_internal::_instance;
+        //model_internal::_kindValidator.property = "kind";
     }
 
     override public function getEntityName():String
@@ -335,18 +335,6 @@ internal class _RedditRssEntityMetadata extends com.adobe.fiber.valueobjects.Abs
     }
 
     [Bindable(event="propertyChange")]
-    public function get isDataAvailable():Boolean
-    {
-        return true;
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get isKindAvailable():Boolean
-    {
-        return true;
-    }
-
-    [Bindable(event="propertyChange")]
     public function get isVersionAvailable():Boolean
     {
         return true;
@@ -358,26 +346,22 @@ internal class _RedditRssEntityMetadata extends com.adobe.fiber.valueobjects.Abs
         return true;
     }
 
+    [Bindable(event="propertyChange")]
+    public function get isDataAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isKindAvailable():Boolean
+    {
+        return true;
+    }
+
 
     /**
      * derived property recalculation
      */
-    public function invalidateDependentOnData():void
-    {
-        if (model_internal::_dataIsValidCacheInitialized )
-        {
-            model_internal::_instance.model_internal::_doValidationCacheOfData = null;
-            model_internal::calculateDataIsValid();
-        }
-    }
-    public function invalidateDependentOnKind():void
-    {
-        if (model_internal::_kindIsValidCacheInitialized )
-        {
-            model_internal::_instance.model_internal::_doValidationCacheOfKind = null;
-            model_internal::calculateKindIsValid();
-        }
-    }
     public function invalidateDependentOnVersion():void
     {
         if (model_internal::_versionIsValidCacheInitialized )
@@ -394,210 +378,26 @@ internal class _RedditRssEntityMetadata extends com.adobe.fiber.valueobjects.Abs
             model_internal::calculateChannelIsValid();
         }
     }
+    public function invalidateDependentOnData():void
+    {
+        if (model_internal::_dataIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfData = null;
+            model_internal::calculateDataIsValid();
+        }
+    }
+    public function invalidateDependentOnKind():void
+    {
+        if (model_internal::_kindIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfKind = null;
+            model_internal::calculateKindIsValid();
+        }
+    }
 
     model_internal function fireChangeEvent(propertyName:String, oldValue:Object, newValue:Object):void
     {
         this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, propertyName, oldValue, newValue));
-    }
-
-    [Bindable(event="propertyChange")]   
-    public function get dataStyle():com.adobe.fiber.styles.Style
-    {
-        return model_internal::_nullStyle;
-    }
-
-    public function get dataValidator() : StyleValidator
-    {
-        return model_internal::_dataValidator;
-    }
-
-    model_internal function set _dataIsValid_der(value:Boolean):void 
-    {
-        var oldValue:Boolean = model_internal::_dataIsValid;         
-        if (oldValue !== value)
-        {
-            model_internal::_dataIsValid = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "dataIsValid", oldValue, value));
-        }                             
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get dataIsValid():Boolean
-    {
-        if (!model_internal::_dataIsValidCacheInitialized)
-        {
-            model_internal::calculateDataIsValid();
-        }
-
-        return model_internal::_dataIsValid;
-    }
-
-    model_internal function calculateDataIsValid():void
-    {
-        var valRes:ValidationResultEvent = model_internal::_dataValidator.validate(model_internal::_instance.data)
-        model_internal::_dataIsValid_der = (valRes.results == null);
-        model_internal::_dataIsValidCacheInitialized = true;
-        if (valRes.results == null)
-             model_internal::dataValidationFailureMessages_der = emptyArray;
-        else
-        {
-            var _valFailures:Array = new Array();
-            for (var a:int = 0 ; a<valRes.results.length ; a++)
-            {
-                _valFailures.push(valRes.results[a].errorMessage);
-            }
-            model_internal::dataValidationFailureMessages_der = _valFailures;
-        }
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get dataValidationFailureMessages():Array
-    {
-        if (model_internal::_dataValidationFailureMessages == null)
-            model_internal::calculateDataIsValid();
-
-        return _dataValidationFailureMessages;
-    }
-
-    model_internal function set dataValidationFailureMessages_der(value:Array) : void
-    {
-        var oldValue:Array = model_internal::_dataValidationFailureMessages;
-
-        var needUpdate : Boolean = false;
-        if (oldValue == null)
-            needUpdate = true;
-    
-        // avoid firing the event when old and new value are different empty arrays
-        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
-        {
-            if (oldValue.length == value.length)
-            {
-                for (var a:int=0; a < oldValue.length; a++)
-                {
-                    if (oldValue[a] !== value[a])
-                    {
-                        needUpdate = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                needUpdate = true;
-            }
-        }
-
-        if (needUpdate)
-        {
-            model_internal::_dataValidationFailureMessages = value;   
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "dataValidationFailureMessages", oldValue, value));
-            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
-            // the entire entity.
-            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
-            {
-                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
-            }
-        }
-    }
-
-    [Bindable(event="propertyChange")]   
-    public function get kindStyle():com.adobe.fiber.styles.Style
-    {
-        return model_internal::_nullStyle;
-    }
-
-    public function get kindValidator() : StyleValidator
-    {
-        return model_internal::_kindValidator;
-    }
-
-    model_internal function set _kindIsValid_der(value:Boolean):void 
-    {
-        var oldValue:Boolean = model_internal::_kindIsValid;         
-        if (oldValue !== value)
-        {
-            model_internal::_kindIsValid = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "kindIsValid", oldValue, value));
-        }                             
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get kindIsValid():Boolean
-    {
-        if (!model_internal::_kindIsValidCacheInitialized)
-        {
-            model_internal::calculateKindIsValid();
-        }
-
-        return model_internal::_kindIsValid;
-    }
-
-    model_internal function calculateKindIsValid():void
-    {
-        var valRes:ValidationResultEvent = model_internal::_kindValidator.validate(model_internal::_instance.kind)
-        model_internal::_kindIsValid_der = (valRes.results == null);
-        model_internal::_kindIsValidCacheInitialized = true;
-        if (valRes.results == null)
-             model_internal::kindValidationFailureMessages_der = emptyArray;
-        else
-        {
-            var _valFailures:Array = new Array();
-            for (var a:int = 0 ; a<valRes.results.length ; a++)
-            {
-                _valFailures.push(valRes.results[a].errorMessage);
-            }
-            model_internal::kindValidationFailureMessages_der = _valFailures;
-        }
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get kindValidationFailureMessages():Array
-    {
-        if (model_internal::_kindValidationFailureMessages == null)
-            model_internal::calculateKindIsValid();
-
-        return _kindValidationFailureMessages;
-    }
-
-    model_internal function set kindValidationFailureMessages_der(value:Array) : void
-    {
-        var oldValue:Array = model_internal::_kindValidationFailureMessages;
-
-        var needUpdate : Boolean = false;
-        if (oldValue == null)
-            needUpdate = true;
-    
-        // avoid firing the event when old and new value are different empty arrays
-        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
-        {
-            if (oldValue.length == value.length)
-            {
-                for (var a:int=0; a < oldValue.length; a++)
-                {
-                    if (oldValue[a] !== value[a])
-                    {
-                        needUpdate = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                needUpdate = true;
-            }
-        }
-
-        if (needUpdate)
-        {
-            model_internal::_kindValidationFailureMessages = value;   
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "kindValidationFailureMessages", oldValue, value));
-            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
-            // the entire entity.
-            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
-            {
-                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
-            }
-        }
     }
 
     [Bindable(event="propertyChange")]   
@@ -800,6 +600,206 @@ internal class _RedditRssEntityMetadata extends com.adobe.fiber.valueobjects.Abs
         }
     }
 
+    [Bindable(event="propertyChange")]   
+    public function get dataStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get dataValidator() : StyleValidator
+    {
+        return model_internal::_dataValidator;
+    }
+
+    model_internal function set _dataIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_dataIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_dataIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "dataIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get dataIsValid():Boolean
+    {
+        if (!model_internal::_dataIsValidCacheInitialized)
+        {
+            model_internal::calculateDataIsValid();
+        }
+
+        return model_internal::_dataIsValid;
+    }
+
+    model_internal function calculateDataIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_dataValidator.validate(model_internal::_instance.data)
+        model_internal::_dataIsValid_der = (valRes.results == null);
+        model_internal::_dataIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::dataValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::dataValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get dataValidationFailureMessages():Array
+    {
+        if (model_internal::_dataValidationFailureMessages == null)
+            model_internal::calculateDataIsValid();
+
+        return _dataValidationFailureMessages;
+    }
+
+    model_internal function set dataValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_dataValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_dataValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "dataValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get kindStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get kindValidator() : StyleValidator
+    {
+        return model_internal::_kindValidator;
+    }
+
+    model_internal function set _kindIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_kindIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_kindIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "kindIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get kindIsValid():Boolean
+    {
+        if (!model_internal::_kindIsValidCacheInitialized)
+        {
+            model_internal::calculateKindIsValid();
+        }
+
+        return model_internal::_kindIsValid;
+    }
+
+    model_internal function calculateKindIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_kindValidator.validate(model_internal::_instance.kind)
+        model_internal::_kindIsValid_der = (valRes.results == null);
+        model_internal::_kindIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::kindValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::kindValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get kindValidationFailureMessages():Array
+    {
+        if (model_internal::_kindValidationFailureMessages == null)
+            model_internal::calculateKindIsValid();
+
+        return _kindValidationFailureMessages;
+    }
+
+    model_internal function set kindValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_kindValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_kindValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "kindValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
 
      /**
      * 
@@ -825,14 +825,6 @@ internal class _RedditRssEntityMetadata extends com.adobe.fiber.valueobjects.Abs
      {
          switch(propertyName)
          {
-            case("data"):
-            {
-                return dataValidationFailureMessages;
-            }
-            case("kind"):
-            {
-                return kindValidationFailureMessages;
-            }
             case("version"):
             {
                 return versionValidationFailureMessages;
@@ -840,6 +832,14 @@ internal class _RedditRssEntityMetadata extends com.adobe.fiber.valueobjects.Abs
             case("channel"):
             {
                 return channelValidationFailureMessages;
+            }
+            case("data"):
+            {
+                return dataValidationFailureMessages;
+            }
+            case("kind"):
+            {
+                return kindValidationFailureMessages;
             }
             default:
             {

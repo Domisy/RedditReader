@@ -11,7 +11,6 @@ import mx.rpc.AsyncToken;
 import mx.rpc.http.HTTPMultiService;
 import mx.rpc.http.Operation;
 import valueObjects.Item;
-import valueObjects.RedditRss;
 import valueObjects.Subreddits;
 
 import com.adobe.serializers.xml.XMLSerializationFilter;
@@ -31,12 +30,15 @@ internal class _Super_RedditFeedGrabber extends com.adobe.fiber.services.wrapper
          var argsArray:Array;
 
          operation = new mx.rpc.http.Operation(null, "getRedditFeed");
-         operation.url = "http://www.reddit.com/.xml";
+         operation.url = "http://www.reddit.com/{url}.xml";
          operation.method = "GET";
+         argsArray = new Array("url");
+         operation.argumentNames = argsArray;         
          operation.serializationFilter = serializer0;
          operation.properties = new Object();
-         operation.properties["xPath"] = "/";
-         operation.resultType = valueObjects.RedditRss;
+         operation.properties["xPath"] = "/::channel/::item";
+         operation.properties["urlParamNames"] = ["url"];
+         operation.resultElementType = valueObjects.Item;
          operations.push(operation);
 
          operation = new mx.rpc.http.Operation(null, "getSubreddits");
@@ -84,10 +86,10 @@ internal class _Super_RedditFeedGrabber extends com.adobe.fiber.services.wrapper
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function getRedditFeed() : mx.rpc.AsyncToken
+    public function getRedditFeed(url:String) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("getRedditFeed");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(url) ;
         return _internal_token;
     }
      

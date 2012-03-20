@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fxpProperties abbreviated="false" authoringTool="Flex Builder" compiles="true" parentProject="abe7b455-7910-4053-9242-95ce5cd9e9f3" projectUUID="abe7b455-7910-4053-9242-95ce5cd9e9f3" pureCatalystProject="false" sdkVersion="4.6.0" uuid="1bc48667-9ff2-47e0-9acb-c94e977c9248" version="15">
+  <projects/>
+  <src/>
+  <swc>
+    <linked location="sdkPlaceHolder" path="sdkPlaceHolder" position="0" uuid="1bc48667-9ff2-47e0-9acb-c94e977c9248"/>
+    <linked location="C:/Users/Theo Mavrakis/Adobe Flash Builder 4.6/RedditReader/libs" path="/libs" position="1" uuid="1bc48667-9ff2-47e0-9acb-c94e977c9248"/>
+    <linked location="${BLACKBERRY_TABLET_SDK}/frameworks/libs/air/qnx-air.swc" path="${BLACKBERRY_TABLET_SDK}/frameworks/libs/air/qnx-air.swc" position="2" uuid="1bc48667-9ff2-47e0-9acb-c94e977c9248"/>
+    <linked location="${BLACKBERRY_TABLET_SDK}/frameworks/libs/qnx" path="${BLACKBERRY_TABLET_SDK}/frameworks/libs/qnx" position="3" uuid="1bc48667-9ff2-47e0-9acb-c94e977c9248"/>
+    <linked location="${BLACKBERRY_TABLET_SDK}/frameworks/libs/blackberry" path="${BLACKBERRY_TABLET_SDK}/frameworks/libs/blackberry" position="4" uuid="1bc48667-9ff2-47e0-9acb-c94e977c9248"/>
+    <linked location="${DCD_LIB_LOCATION}" path="${DCD_LIB_LOCATION}" position="5" uuid="1bc48667-9ff2-47e0-9acb-c94e977c9248"/>
+    <linked location="${DCD_LOCALE_LOCATION}" path="${DCD_LOCALE_LOCATION}" position="6" uuid="1bc48667-9ff2-47e0-9acb-c94e977c9248"/>
+    <linked location="${DCD_FIBER_LOCATION}/fiber.swc" path="${DCD_FIBER_LOCATION}/fiber.swc" position="7" uuid="1bc48667-9ff2-47e0-9acb-c94e977c9248"/>
+    <linked location="${DCD_FIBER_LOCALE_LOCATION}/fiber_rb.swc" path="${DCD_FIBER_LOCALE_LOCATION}/fiber_rb.swc" position="8" uuid="1bc48667-9ff2-47e0-9acb-c94e977c9248"/>
+    <linked location="${DCD_FIBER_LOCATION}/playerfds.swc" path="${DCD_FIBER_LOCATION}/playerfds.swc" position="9" uuid="1bc48667-9ff2-47e0-9acb-c94e977c9248"/>
+    <linked location="C:/Users/Theo Mavrakis/Downloads/QMXML.swc" path="/linked-swc/QMXML.swc" position="10" uuid="1bc48667-9ff2-47e0-9acb-c94e977c9248"/>
+  </swc>
+  <misc/>
+  <theme/>
+  <mxmlFormattingPrefs groupAttributesByState="true" maxLineWidth="100" mxmlAlignAttributes="true" mxmlAttributeOrder="id,userLabel,includeIn,excludeFrom,visible,x,y,z,left,right,top,bottom,width,height,minWidth,minHeight,maxWidth,maxHeight,label" mxmlKeepAttributeValuesOrganized="true"/>
+</fxpProperties>

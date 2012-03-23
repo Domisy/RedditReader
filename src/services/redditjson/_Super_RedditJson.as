@@ -10,9 +10,9 @@ import mx.rpc.AbstractOperation;
 import mx.rpc.AsyncToken;
 import mx.rpc.http.HTTPMultiService;
 import mx.rpc.http.Operation;
-import valueObjects.Children;
 import valueObjects.JsonData;
 import valueObjects.RedditLoginResponse;
+import valueObjects.RedditUserInfoResponse;
 
 import com.adobe.serializers.json.JSONSerializationFilter;
 
@@ -39,7 +39,7 @@ internal class _Super_RedditJson extends com.adobe.fiber.services.wrapper.HTTPSe
          operation.properties = new Object();
          operation.properties["urlParamNames"] = ["username"];
          operation.contentType = "application/x-www-form-urlencoded";
-         operation.resultType = valueObjects.RedditLoginResponse;
+         operation.resultType = valueObjects.RedditUserInfoResponse;
          operations.push(operation);
 
          operation = new mx.rpc.http.Operation(null, "redditJsonFeed");
@@ -52,13 +52,24 @@ internal class _Super_RedditJson extends com.adobe.fiber.services.wrapper.HTTPSe
          operations.push(operation);
 
          operation = new mx.rpc.http.Operation(null, "redditUserInfo");
-         operation.url = "http://www.reddit.com/user/flaminSaganaki/about/.json";
+         operation.url = "http://www.reddit.com/api/me.json";
          operation.method = "GET";
-         argsArray = new Array("cookie");
-		 
+         argsArray = new Array("reddit_session");
          operation.argumentNames = argsArray;         
          operation.serializationFilter = serializer0;
-         operation.resultType = valueObjects.Children;
+         operation.contentType = "application/x-www-form-urlencoded";
+         operation.resultType = valueObjects.RedditLoginResponse;
+         operations.push(operation);
+
+         operation = new mx.rpc.http.Operation(null, "aboutMe");
+         operation.url = "http://www.reddit.com/user/{user}/about/.json";
+         operation.method = "GET";
+         argsArray = new Array("user");
+         operation.argumentNames = argsArray;         
+         operation.serializationFilter = serializer0;
+         operation.properties = new Object();
+         operation.properties["urlParamNames"] = ["user"];
+         operation.resultType = valueObjects.RedditUserInfoResponse;
          operations.push(operation);
 
          _serviceControl.operationList = operations;  
@@ -122,10 +133,28 @@ internal class _Super_RedditJson extends com.adobe.fiber.services.wrapper.HTTPSe
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function redditUserInfo(cookie:String) : mx.rpc.AsyncToken
+    public function redditUserInfo(reddit_session:String) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("redditUserInfo");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(cookie) ;
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(reddit_session) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'aboutMe' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function aboutMe(user:String) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("aboutMe");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(user) ;
         return _internal_token;
     }
      

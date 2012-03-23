@@ -8,8 +8,12 @@ package renderers
     import flash.events.MouseEvent;
     import flash.text.engine.FontWeight;
     
+    import model.RedditFeedModel;
+    
     import mx.graphics.BitmapFillMode;
     import mx.states.State;
+    
+    import services.redditfeedgrabber.RedditFeedGrabber;
     
     import spark.components.Button;
     import spark.components.Callout;
@@ -23,6 +27,8 @@ package renderers
     import spark.primitives.BitmapImage;
     
     import utils.DateUtil;
+    
+    import views.RedditReaderHomeView;
 
 
     /**
@@ -38,7 +44,8 @@ package renderers
 		private var messageLabel:Label;
 		private var voteButton:CalloutButton;
 		private var hgroup:HGroup;
-		
+		[Bindable] private var redditFeedModel : RedditFeedModel = RedditFeedModel.getInstance();
+
 		private var voteButtons:Array= [
 			{Button:"Up"},
 			{Button:"Down"} ];
@@ -105,7 +112,8 @@ package renderers
 			upButton.addEventListener(MouseEvent.CLICK, voteUp);
 			downButton.setStyle("icon", "assets/thumbsDown.png");
 			voteButton.calloutLayout = new VerticalLayout;;
-			voteButton.calloutContent = [upButton, downButton]; 			
+			voteButton.calloutContent = [upButton, downButton]; 
+			//voteButton.callout.close(false);
 			voteButton.width = 55;
 			voteButton.height = 55;
 			addChild(voteButton);
@@ -141,9 +149,17 @@ package renderers
 			dispatchEvent(new EventExtension("labelClicked", data, true, false));
         }
 		
-		private function voteClickHandler(event:MouseEvent):void
+		public function voteClickHandler(event:MouseEvent):void
 		{
-			dispatchEvent(new Event("voteClicked", true));
+			if (redditFeedModel.loggedIn == false) {
+				redditFeedModel.isVisible = true;
+				redditFeedModel.splitViewEnabled = false;
+				voteButton.callout.close();
+			}
+			
+			else {
+				dispatchEvent(new Event("voteClicked", true));
+			}
 			event.stopImmediatePropagation();
 		}
 		
@@ -204,7 +220,7 @@ package renderers
 			//voteButton.x = 655;
 			voteButton.y = 16;
 			
-			trace("Laying out contents width: " + unscaledWidth + " height: " + unscaledHeight);
+			//trace("Laying out contents width: " + unscaledWidth + " height: " + unscaledHeight);
             // layout all the subcomponents here      		
         }
 

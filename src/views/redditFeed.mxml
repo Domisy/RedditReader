@@ -31,6 +31,8 @@
 			import qnx.ui.data.DataProvider;
 			import qnx.ui.data.IDataProvider;
 			
+			import renderers.BaseListRenderer;
+			
 			import spark.components.supportClasses.StyleableTextField;
 			import spark.events.IndexChangeEvent;
 			import spark.events.ViewNavigatorEvent;
@@ -181,9 +183,9 @@
 				navigator.pushView(DetailsView, modelInstance);
 			}
 			
-			private function voteHandler(event:EventExtension):void
+			private function voteHandler(event:Event):void
 			{
-				
+		
 			}
 		]]>
 	</fx:Script>

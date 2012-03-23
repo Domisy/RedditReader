@@ -15,6 +15,7 @@
 			import com.adobe.fiber.core.model_public;
 			import com.adobe.serializers.utility.TypeUtility;
 			
+			import flash.display3D.IndexBuffer3D;
 			import flash.events.KeyboardEvent;
 			import flash.sampler.NewObjectSample;
 			import flash.sampler.Sample;
@@ -27,6 +28,8 @@
 			import mx.binding.utils.BindingUtils;
 			import mx.events.CollectionEvent;
 			import mx.events.FlexEvent;
+			import mx.events.IndexChangedEvent;
+			import mx.events.ItemClickEvent;
 			import mx.rpc.events.ResultEvent;
 			
 			import qnx.input.IMFConnection;
@@ -139,7 +142,8 @@
 			protected function redditSearchList_changeHandler(event:IndexChangeEvent):void
 			{
 				modelInstance.isPic = true;
-				modelInstance.currentlySelectedRSSItem = redditSearchList.dataProvider.getItemAt(event.newIndex) as Item;
+				modelInstance.currentlySelectedRSSItem = event.target.data as Item;
+				//modelInstance.currentlySelectedRSSItem = redditSearchList.dataProvider.getItemAt(event.newIndex) as Item;
 				modelInstance.redditFeed.navigator.pushView(DetailsView, modelInstance);
 			}
 			

@@ -55,11 +55,11 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
     /**
      * properties
      */
-    private var _internal_cookie : String;
     private var _internal_after : String;
     private var _internal_before : Object;
     private var _internal_children : ArrayCollection;
     model_internal var _internal_children_leaf:valueObjects.Children;
+    private var _internal_cookie : String;
     private var _internal_modhash : String;
     private var _internal_id : String;
     private var _internal_comment_karma : int;
@@ -89,10 +89,10 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
         _model = new _DataEntityMetadata(this);
 
         // Bind to own data or source properties for cache invalidation triggering
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "cookie", model_internal::setterListenerCookie));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "after", model_internal::setterListenerAfter));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "before", model_internal::setterListenerBefore));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "children", model_internal::setterListenerChildren));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "cookie", model_internal::setterListenerCookie));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "modhash", model_internal::setterListenerModhash));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "id", model_internal::setterListenerId));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "has_mod_mail", model_internal::setterListenerHas_mod_mail));
@@ -104,12 +104,6 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
     /**
      * data/source property getters
      */
-
-    [Bindable(event="propertyChange")]
-    public function get cookie() : String
-    {
-        return _internal_cookie;
-    }
 
     [Bindable(event="propertyChange")]
     public function get after() : String
@@ -127,6 +121,12 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
     public function get children() : ArrayCollection
     {
         return _internal_children;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get cookie() : String
+    {
+        return _internal_cookie;
     }
 
     [Bindable(event="propertyChange")]
@@ -203,16 +203,6 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
      * data/source property setters
      */
 
-    public function set cookie(value:String) : void
-    {
-        var oldValue:String = _internal_cookie;
-        if (oldValue !== value)
-        {
-            _internal_cookie = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "cookie", oldValue, _internal_cookie));
-        }
-    }
-
     public function set after(value:String) : void
     {
         var oldValue:String = _internal_after;
@@ -255,6 +245,16 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
                 throw new Error("value of children must be a collection");
             }
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "children", oldValue, _internal_children));
+        }
+    }
+
+    public function set cookie(value:String) : void
+    {
+        var oldValue:String = _internal_cookie;
+        if (oldValue !== value)
+        {
+            _internal_cookie = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "cookie", oldValue, _internal_cookie));
         }
     }
 
@@ -380,11 +380,6 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
      *  - the validity of the property (and the containing entity) if the given data property is required.
      */
 
-    model_internal function setterListenerCookie(value:flash.events.Event):void
-    {
-        _model.invalidateDependentOnCookie();
-    }
-
     model_internal function setterListenerAfter(value:flash.events.Event):void
     {
         _model.invalidateDependentOnAfter();
@@ -405,6 +400,11 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
             }
         }
         _model.invalidateDependentOnChildren();
+    }
+
+    model_internal function setterListenerCookie(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnCookie();
     }
 
     model_internal function setterListenerModhash(value:flash.events.Event):void
@@ -453,11 +453,6 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
         var validationFailureMessages:Array = new Array();
 
         var propertyValidity:Boolean = true;
-        if (!_model.cookieIsValid)
-        {
-            propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_cookieValidationFailureMessages);
-        }
         if (!_model.afterIsValid)
         {
             propertyValidity = false;
@@ -472,6 +467,11 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
         {
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_childrenValidationFailureMessages);
+        }
+        if (!_model.cookieIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_cookieValidationFailureMessages);
         }
         if (!_model.modhashIsValid)
         {
@@ -577,33 +577,6 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
         }
     }
 
-    model_internal var _doValidationCacheOfCookie : Array = null;
-    model_internal var _doValidationLastValOfCookie : String;
-
-    model_internal function _doValidationForCookie(valueIn:Object):Array
-    {
-        var value : String = valueIn as String;
-
-        if (model_internal::_doValidationCacheOfCookie != null && model_internal::_doValidationLastValOfCookie == value)
-           return model_internal::_doValidationCacheOfCookie ;
-
-        _model.model_internal::_cookieIsValidCacheInitialized = true;
-        var validationFailures:Array = new Array();
-        var errorMessage:String;
-        var failure:Boolean;
-
-        var valRes:ValidationResult;
-        if (_model.isCookieAvailable && _internal_cookie == null)
-        {
-            validationFailures.push(new ValidationResult(true, "", "", "cookie is required"));
-        }
-
-        model_internal::_doValidationCacheOfCookie = validationFailures;
-        model_internal::_doValidationLastValOfCookie = value;
-
-        return validationFailures;
-    }
-    
     model_internal var _doValidationCacheOfAfter : Array = null;
     model_internal var _doValidationLastValOfAfter : String;
 
@@ -681,6 +654,33 @@ public class _Super_Data extends flash.events.EventDispatcher implements com.ado
 
         model_internal::_doValidationCacheOfChildren = validationFailures;
         model_internal::_doValidationLastValOfChildren = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfCookie : Array = null;
+    model_internal var _doValidationLastValOfCookie : String;
+
+    model_internal function _doValidationForCookie(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfCookie != null && model_internal::_doValidationLastValOfCookie == value)
+           return model_internal::_doValidationCacheOfCookie ;
+
+        _model.model_internal::_cookieIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isCookieAvailable && _internal_cookie == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "cookie is required"));
+        }
+
+        model_internal::_doValidationCacheOfCookie = validationFailures;
+        model_internal::_doValidationLastValOfCookie = value;
 
         return validationFailures;
     }

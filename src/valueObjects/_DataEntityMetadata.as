@@ -24,14 +24,14 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
 {
     private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("cookie", "after", "before", "children", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
+    model_internal static var allProperties:Array = new Array("after", "before", "children", "cookie", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("cookie", "after", "before", "children", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("cookie", "after", "before", "children", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
+    model_internal static var allRequiredProperties:Array = new Array("after", "before", "children", "cookie", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("after", "before", "children", "cookie", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("cookie", "after", "before", "children", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
+    model_internal static var dataProperties:Array = new Array("after", "before", "children", "cookie", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
     model_internal static var sourceProperties:Array = emptyArray
-    model_internal static var nonDerivedProperties:Array = new Array("cookie", "after", "before", "children", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
+    model_internal static var nonDerivedProperties:Array = new Array("after", "before", "children", "cookie", "modhash", "id", "comment_karma", "has_mod_mail", "created", "is_gold", "name", "is_mod", "link_karma", "created_utc", "has_mail");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array("children");
     model_internal static var collectionBaseMap:Object;
@@ -40,11 +40,6 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
     model_internal static var dependedOnServices:Array = new Array();
     model_internal static var propertyTypeMap:Object;
 
-    
-    model_internal var _cookieIsValid:Boolean;
-    model_internal var _cookieValidator:com.adobe.fiber.styles.StyleValidator;
-    model_internal var _cookieIsValidCacheInitialized:Boolean = false;
-    model_internal var _cookieValidationFailureMessages:Array;
     
     model_internal var _afterIsValid:Boolean;
     model_internal var _afterValidator:com.adobe.fiber.styles.StyleValidator;
@@ -60,6 +55,11 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
     model_internal var _childrenValidator:com.adobe.fiber.styles.StyleValidator;
     model_internal var _childrenIsValidCacheInitialized:Boolean = false;
     model_internal var _childrenValidationFailureMessages:Array;
+    
+    model_internal var _cookieIsValid:Boolean;
+    model_internal var _cookieValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _cookieIsValidCacheInitialized:Boolean = false;
+    model_internal var _cookieValidationFailureMessages:Array;
     
     model_internal var _modhashIsValid:Boolean;
     model_internal var _modhashValidator:com.adobe.fiber.styles.StyleValidator;
@@ -96,10 +96,10 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
         {
             // dependents map
             model_internal::dependentsOnMap = new Object();
-            model_internal::dependentsOnMap["cookie"] = new Array();
             model_internal::dependentsOnMap["after"] = new Array();
             model_internal::dependentsOnMap["before"] = new Array();
             model_internal::dependentsOnMap["children"] = new Array();
+            model_internal::dependentsOnMap["cookie"] = new Array();
             model_internal::dependentsOnMap["modhash"] = new Array();
             model_internal::dependentsOnMap["id"] = new Array();
             model_internal::dependentsOnMap["comment_karma"] = new Array();
@@ -119,10 +119,10 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
 
         // Property type Map
         model_internal::propertyTypeMap = new Object();
-        model_internal::propertyTypeMap["cookie"] = "String";
         model_internal::propertyTypeMap["after"] = "String";
         model_internal::propertyTypeMap["before"] = "Object";
         model_internal::propertyTypeMap["children"] = "ArrayCollection";
+        model_internal::propertyTypeMap["cookie"] = "String";
         model_internal::propertyTypeMap["modhash"] = "String";
         model_internal::propertyTypeMap["id"] = "String";
         model_internal::propertyTypeMap["comment_karma"] = "int";
@@ -136,11 +136,6 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
         model_internal::propertyTypeMap["has_mail"] = "Object";
 
         model_internal::_instance = value;
-        model_internal::_cookieValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForCookie);
-        model_internal::_cookieValidator.required = true;
-        model_internal::_cookieValidator.requiredFieldError = "cookie is required";
-        //model_internal::_cookieValidator.source = model_internal::_instance;
-        //model_internal::_cookieValidator.property = "cookie";
         model_internal::_afterValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForAfter);
         model_internal::_afterValidator.required = true;
         model_internal::_afterValidator.requiredFieldError = "after is required";
@@ -156,6 +151,11 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
         model_internal::_childrenValidator.requiredFieldError = "children is required";
         //model_internal::_childrenValidator.source = model_internal::_instance;
         //model_internal::_childrenValidator.property = "children";
+        model_internal::_cookieValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForCookie);
+        model_internal::_cookieValidator.required = true;
+        model_internal::_cookieValidator.requiredFieldError = "cookie is required";
+        //model_internal::_cookieValidator.source = model_internal::_instance;
+        //model_internal::_cookieValidator.property = "cookie";
         model_internal::_modhashValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForModhash);
         model_internal::_modhashValidator.required = true;
         model_internal::_modhashValidator.requiredFieldError = "modhash is required";
@@ -408,12 +408,6 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
     }
 
     [Bindable(event="propertyChange")]
-    public function get isCookieAvailable():Boolean
-    {
-        return true;
-    }
-
-    [Bindable(event="propertyChange")]
     public function get isAfterAvailable():Boolean
     {
         return true;
@@ -427,6 +421,12 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
 
     [Bindable(event="propertyChange")]
     public function get isChildrenAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isCookieAvailable():Boolean
     {
         return true;
     }
@@ -501,14 +501,6 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
     /**
      * derived property recalculation
      */
-    public function invalidateDependentOnCookie():void
-    {
-        if (model_internal::_cookieIsValidCacheInitialized )
-        {
-            model_internal::_instance.model_internal::_doValidationCacheOfCookie = null;
-            model_internal::calculateCookieIsValid();
-        }
-    }
     public function invalidateDependentOnAfter():void
     {
         if (model_internal::_afterIsValidCacheInitialized )
@@ -531,6 +523,14 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
         {
             model_internal::_instance.model_internal::_doValidationCacheOfChildren = null;
             model_internal::calculateChildrenIsValid();
+        }
+    }
+    public function invalidateDependentOnCookie():void
+    {
+        if (model_internal::_cookieIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfCookie = null;
+            model_internal::calculateCookieIsValid();
         }
     }
     public function invalidateDependentOnModhash():void
@@ -577,106 +577,6 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
     model_internal function fireChangeEvent(propertyName:String, oldValue:Object, newValue:Object):void
     {
         this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, propertyName, oldValue, newValue));
-    }
-
-    [Bindable(event="propertyChange")]   
-    public function get cookieStyle():com.adobe.fiber.styles.Style
-    {
-        return model_internal::_nullStyle;
-    }
-
-    public function get cookieValidator() : StyleValidator
-    {
-        return model_internal::_cookieValidator;
-    }
-
-    model_internal function set _cookieIsValid_der(value:Boolean):void 
-    {
-        var oldValue:Boolean = model_internal::_cookieIsValid;         
-        if (oldValue !== value)
-        {
-            model_internal::_cookieIsValid = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "cookieIsValid", oldValue, value));
-        }                             
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get cookieIsValid():Boolean
-    {
-        if (!model_internal::_cookieIsValidCacheInitialized)
-        {
-            model_internal::calculateCookieIsValid();
-        }
-
-        return model_internal::_cookieIsValid;
-    }
-
-    model_internal function calculateCookieIsValid():void
-    {
-        var valRes:ValidationResultEvent = model_internal::_cookieValidator.validate(model_internal::_instance.cookie)
-        model_internal::_cookieIsValid_der = (valRes.results == null);
-        model_internal::_cookieIsValidCacheInitialized = true;
-        if (valRes.results == null)
-             model_internal::cookieValidationFailureMessages_der = emptyArray;
-        else
-        {
-            var _valFailures:Array = new Array();
-            for (var a:int = 0 ; a<valRes.results.length ; a++)
-            {
-                _valFailures.push(valRes.results[a].errorMessage);
-            }
-            model_internal::cookieValidationFailureMessages_der = _valFailures;
-        }
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get cookieValidationFailureMessages():Array
-    {
-        if (model_internal::_cookieValidationFailureMessages == null)
-            model_internal::calculateCookieIsValid();
-
-        return _cookieValidationFailureMessages;
-    }
-
-    model_internal function set cookieValidationFailureMessages_der(value:Array) : void
-    {
-        var oldValue:Array = model_internal::_cookieValidationFailureMessages;
-
-        var needUpdate : Boolean = false;
-        if (oldValue == null)
-            needUpdate = true;
-    
-        // avoid firing the event when old and new value are different empty arrays
-        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
-        {
-            if (oldValue.length == value.length)
-            {
-                for (var a:int=0; a < oldValue.length; a++)
-                {
-                    if (oldValue[a] !== value[a])
-                    {
-                        needUpdate = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                needUpdate = true;
-            }
-        }
-
-        if (needUpdate)
-        {
-            model_internal::_cookieValidationFailureMessages = value;   
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "cookieValidationFailureMessages", oldValue, value));
-            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
-            // the entire entity.
-            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
-            {
-                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
-            }
-        }
     }
 
     [Bindable(event="propertyChange")]   
@@ -970,6 +870,106 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
         {
             model_internal::_childrenValidationFailureMessages = value;   
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "childrenValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get cookieStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get cookieValidator() : StyleValidator
+    {
+        return model_internal::_cookieValidator;
+    }
+
+    model_internal function set _cookieIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_cookieIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_cookieIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "cookieIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get cookieIsValid():Boolean
+    {
+        if (!model_internal::_cookieIsValidCacheInitialized)
+        {
+            model_internal::calculateCookieIsValid();
+        }
+
+        return model_internal::_cookieIsValid;
+    }
+
+    model_internal function calculateCookieIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_cookieValidator.validate(model_internal::_instance.cookie)
+        model_internal::_cookieIsValid_der = (valRes.results == null);
+        model_internal::_cookieIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::cookieValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::cookieValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get cookieValidationFailureMessages():Array
+    {
+        if (model_internal::_cookieValidationFailureMessages == null)
+            model_internal::calculateCookieIsValid();
+
+        return _cookieValidationFailureMessages;
+    }
+
+    model_internal function set cookieValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_cookieValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_cookieValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "cookieValidationFailureMessages", oldValue, value));
             // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
             // the entire entity.
             if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
@@ -1540,10 +1540,6 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
      {
          switch(propertyName)
          {
-            case("cookie"):
-            {
-                return cookieValidationFailureMessages;
-            }
             case("after"):
             {
                 return afterValidationFailureMessages;
@@ -1555,6 +1551,10 @@ internal class _DataEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
             case("children"):
             {
                 return childrenValidationFailureMessages;
+            }
+            case("cookie"):
+            {
+                return cookieValidationFailureMessages;
             }
             case("modhash"):
             {

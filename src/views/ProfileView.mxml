@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		overlayControls="false" title="About">
+	
+	<fx:Script>
+		<![CDATA[
+
+			import spark.events.ViewNavigatorEvent;
+		
+			
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="landscape"/>
+		<s:State name="portrait"/>
+	</s:states>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:navigationContent>
+		<s:Button width="66" icon="@Embed('assets/images/left_arrow.png')" click="navigator.popView()"/>
+	</s:navigationContent>
+	
+	<s:Label x="206" y="60" fontSize="31" text="This app has been brought to you by way of..."
+			 x.portrait="40" y.portrait="107" width.portrait="520" textAlign.portrait="center"
+			 verticalAlign.portrait="middle"/>
+	<s:Label x="415" y="118" fontSize="36" text="Domisy Dev"
+			 x.portrait="203" y.portrait="256"/>
+	<s:Label id="vnumLabel" x="300" y="522" width="194" height="23" text="Version Number: 2.0.1"
+			 x.landscape="804" y.landscape="522" text.landscape="Version Number: 2.0.1"
+			 x.portrait="396" y.portrait="944" text.portrait="Version Number: 2.0.1"/>
+	<s:Label x="383" y="160" text="Lead Developer - Theodore Mavrakis"
+			 x.portrait="171" y.portrait="320"/>
+	<s:Label x="177" y="224" height="30" fontSize="20"
+			 text="Thank you for choosing Reddit in Motion. More features to be coming soon! "
+			 textAlign="center" verticalAlign="bottom"
+			 x.portrait="88" y.portrait="426" width.portrait="425" height.portrait="66"/>
+	<s:Label x="433" y="312" fontSize="28" text="For Support:"
+			 x.portrait="222" y.portrait="592"/>
+	<s:Label x="404" y="354" text="Email - domisydev@gmail.com"
+			 x.portrait="193" y.portrait="634"/>
+	<s:Label x="435" y="380" text="Twitter - @DomisyDev and @flaminSaganaki"
+			 x.portrait="224" y.portrait="660"/>
+	<s:Label x="389" y="404" text="Like us on Facebook - Domisy Dev"
+			 x.portrait="178" y.portrait="684"/>
+</s:View>

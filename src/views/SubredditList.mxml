@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:redditfeedgrabber="services.redditfeedgrabber.*"
+		xmlns:redditsearch="services.redditsearch.*"
+		xmlns:valueObjects="valueObjects.*"
+		xmlns:classes="classes.*"
+		destructionPolicy="never"
+		initialize="subView_initializeHandler(event)"
+		title="Subreddit List">
+	
+	
+	<fx:Script> 
+		<![CDATA[
+			import com.adobe.fiber.core.model_public;
+			import com.adobe.serializers.utility.TypeUtility;
+			
+			import flash.display3D.IndexBuffer3D;
+			import flash.events.KeyboardEvent;
+			import flash.sampler.NewObjectSample;
+			import flash.sampler.Sample;
+			import flash.text.TextFieldAutoSize;
+			import flash.text.TextFieldType;
+			import flash.ui.Keyboard;
+			
+			import model.RedditFeedModel;
+			
+			import mx.binding.utils.BindingUtils;
+			import mx.events.CollectionEvent;
+			import mx.events.FlexEvent;
+			import mx.events.IndexChangedEvent;
+			import mx.events.ItemClickEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			//import qnx.events.VirtualKeyboardEvent;
+			import qnx.pps.*;
+			
+			import spark.components.Application;
+			import spark.components.NavigatorContent;
+			import spark.components.SplitViewNavigator;
+			import spark.components.ViewNavigator;
+			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			import spark.events.ViewNavigatorEvent;
+			
+			import valueObjects.Item;
+			
+			import views.RedditFeed;
+			import views.RedditReaderHomeView;
+			
+			//BINDABLES
+			[Bindable] public var rlink:String;
+			[Bindable] public var searchLink:String;
+			
+			//VARIABLES
+			private var modelInstance : RedditFeedModel;
+			//private var ppsItemm:PPS = new PPS;
+			//private var imf:VirtualKeyboardEvent;
+			
+			
+			override public function set data(value:Object) : void
+			{
+				super.data = value;
+				modelInstance = value as RedditFeedModel;
+				modelInstance.subredditList = this;
+			}
+			
+			
+			
+			public function list_clickHandler(event:IndexChangeEvent):void {
+				var RSSItem:Object = redditList.dataProvider.getItemAt(event.newIndex);
+				var thisItem:Item = RSSItem as Item;
+				rlink = thisItem.link;
+				var moddedLink:String = rlink.slice(1, int.MAX_VALUE);		
+				var rrhv : RedditReaderHomeView = parentDocument as RedditReaderHomeView;
+				if (modelInstance.detailsView && modelInstance.detailsView.navigator && modelInstance.detailsView.navigator.activeView is DetailsView)
+				{
+					modelInstance.detailsView.navigator.popView();
+				}
+				modelInstance.redditFeed.changeSub(moddedLink);
+				
+				//Set the segmentedContol component selection to null somehow....
+				//((parentDocument as RedditReaderHomeView).redditFeedNav.getElementAt(0) as RedditFeed).segControl.re();
+			}
+
+			
+			
+			public function busyOn():void
+			{
+				if (subThrobber.visible == false)
+				{
+					subThrobber.visible = true;
+				}
+				else {
+					null
+				}
+			}
+			
+			public function busyOff(event:ResultEvent):void
+			{
+				if (subThrobber.visible == true)
+				{
+					subThrobber.visible = false;
+				}
+				else {
+					null
+				}
+			}
+			
+			private function hideKeyboard():void
+			{
+				//IMFConnection.imfConnection.hideInput();
+				stage.focus = null;
+			}
+			
+			
+			
+			protected function redditList_creationCompleteHandler(event:FlexEvent):void
+			{
+				
+				getSubredditsResult.token = redditFeedGrabber.getSubreddits();
+				getSubredditsResult.addEventListener(ResultEvent.RESULT,busyOff);
+			}
+
+			
+			
+			protected function qTextInput_changeHandler(event:TextOperationEvent):void
+			{
+				if (qTextInput.text == "") {
+					redditSearchList.visible = false;
+					redditSearchList.dataProvider.removeAll();
+					redditList.visible = true;
+					subThrobber.visible = false;
+				}
+				else {
+					null;
+				}
+			}
+			
+			
+			
+			protected function redditSearchList_changeHandler(event:IndexChangeEvent):void
+			{
+				modelInstance.isSearchResult = true;
+				modelInstance.isPic = false;
+				modelInstance.currentlySelectedRSSItem = event.target.selectedItem as Item;
+				//modelInstance.currentlySelectedRSSItem = redditSearchList.dataProvider.getItemAt(event.newIndex) as Item;
+				modelInstance.redditFeed.navigator.pushView(DetailsView, modelInstance);
+			}
+			
+			
+			
+			protected function fixEntityReferences(event:CollectionEvent):void
+			{
+				redditSearchList.labelFunction = replaceEntity;
+				function replaceEntity(item:Item):String
+				{
+					var p1:RegExp = /(-)/ig; //perhaps add more here later
+					var thisString:String = item.title.replace(p1, "-");
+					trace(thisString);
+					return thisString;
+				}
+			}
+			
+			
+			
+			protected function subView_initializeHandler(event:FlexEvent):void
+			{
+				qTextInput.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+				
+			}
+			
+			
+			
+			private function onKeyDown(e:KeyboardEvent):void
+			{
+				if (e.keyCode == Keyboard.ENTER)
+				{
+					busyOn();
+					hideKeyboard();
+					redditSearchList.visible = true;
+					redditList.visible = false;
+					getRedditSearchResult.token = redditFeedGrabber.getRedditSearch(qTextInput.text);
+					getRedditSearchResult.addEventListener(ResultEvent.RESULT,busyOff);
+				}
+			}
+		]]>
+	</fx:Script>
+	
+		
+	
+	<fx:Declarations>
+		<redditfeedgrabber:RedditFeedGrabber id="redditFeedGrabber"/>
+		<s:CallResponder id="getRedditSearchResult"/>
+		<s:CallResponder id="getSubredditsResult"/>
+	<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	
+	<s:titleContent>
+		<s:TextInput id="qTextInput" width="100%" height="85%"
+					 fontSize="19" change="qTextInput_changeHandler(event)"
+					 prompt="Search Reddit..."/>
+	</s:titleContent>
+	
+	
+	
+	<s:List id="redditList" x="0" y="0" width="100%" height="100%"
+			creationComplete="redditList_creationCompleteHandler(event)" labelField="title"
+			change="{list_clickHandler(event)}">
+		<s:AsyncListView list="{TypeUtility.convertToCollection(getSubredditsResult.lastResult.channel.item)}"/>
+	</s:List>
+	
+	
+	<s:List id="redditSearchList" visible="false" width="100%" height="100%" 
+			labelField="title"
+			change="redditSearchList_changeHandler(event)">
+		<s:AsyncListView list="{getRedditSearchResult.lastResult}" 
+						 collectionChange="fixEntityReferences(event)" />
+	</s:List>
+	
+	
+	<s:BusyIndicator id="subThrobber" visible="true" verticalCenter="-6" x="130"  width="40" height="40"/>
+<!--y="210"-->
+	
+</s:View>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:components="com.flexcapacitor.controls.*"
+		xmlns:utils="utils.*"
+		contentBackgroundAlpha="0" creationComplete="webViewComplete(event)"
+		destructionPolicy="never" title="{rtitle}" viewActivate="getDetails()">
+	
+
+	<fx:Script>
+		<![CDATA[
+			import model.RedditFeedModel;
+			
+			import mx.binding.utils.BindingUtils;
+			import mx.events.FlexEvent;
+			
+			import valueObjects.Item;
+			
+			import views.RedditFeed;
+			
+			//BINDABLES
+			[Bindable] private var rtitle:String;
+			[Bindable] public var rlink:String;
+			[Bindable] private var redditFeedModel : RedditFeedModel = RedditFeedModel.getInstance();
+			
+			//VARIABLES
+			private var modelInstance : RedditFeedModel;
+			private var index:int;
+			
+			
+			override public function set data(value : Object) : void
+			{
+				super.data = value;
+				modelInstance = value as RedditFeedModel;
+				modelInstance.detailsView = this;
+			}
+			
+			
+			
+			protected function navigateBack():void
+			{
+				//if (backBool == false) {
+					
+					//if (webView.isHistoryBackEnabled == true)
+					//{
+						//webView.historyBack();
+					//}
+					//else disposeWebView();	
+				//}
+				
+				disposeWebView();
+			}
+			
+			
+			
+			protected function disposeWebView():void
+			{
+				//jumpDown.visible = true;
+				//jumpUp.visible = true;
+				//webView.dispose();
+				navigator.popToFirstView();
+			} 
+		
+			
+			private function busyOn(event:Event):void
+			{
+				detailsThrobber.visible = true;
+			}
+			private function busyOff(event:Event):void
+			{
+				detailsThrobber.visible = false;
+			}
+			
+			
+			
+			public function getDetails():void
+			{
+				
+				var p:RegExp = /(-)/ig;
+				var thisItem:Object;
+				
+				if (modelInstance.isSearchResult == false) {
+					thisItem = modelInstance.currentlySelectedRSSItem.data;
+					if (modelInstance.isPic == true) {
+						rlink = thisItem.url;
+					}
+					else {rlink = "http://www.reddit.com" + thisItem.permalink;}
+				}
+				else if (modelInstance.isSearchResult == true) {
+					jumpDown.visible = false;
+					jumpUp.visible = false;
+					thisItem = modelInstance.currentlySelectedRSSItem;
+					rlink = thisItem.link;
+				}
+				
+				rtitle = thisItem.title;
+				rtitle = rtitle.replace(p, "-");
+				/** 
+				 * Formatting things that may be useful later on...
+				var h:RegExp = /<p(>|(\s*[^>]*>)).*?<\/p>/ig;
+				var a:RegExp = /<a(>|(\s*[^>]*>)).*?<\/a>/ig;
+				
+				rdate = thisItem.pubDate;
+				rdesc = thisItem.description;
+				rdesc = rdesc.replace(h, "");
+				rdesc = rdesc.replace(p, "-");
+				rdesc = rdesc.replace(a, "");	
+				**/
+				 
+				webView.addEventListener(Event.COMPLETE, busyOff);
+				webView.addEventListener(Event.LOCATION_CHANGE, busyOn);
+				//webView.loadURL(rlink);
+			}
+			
+			
+			
+			protected function webViewComplete(event:FlexEvent):void
+			{
+				BindingUtils.bindSetter(myChangeHandler, modelInstance, "currentlySelectedRSSItem" );
+			
+			}
+			
+			private function myChangeHandler(item:Object):void
+			{
+				index = modelInstance.currentFeedList.getItemIndex(item); 
+				modelInstance.currentFeedList.getItemIndex(item);
+				
+				//toggle which navigation buttons are shown
+				if (index == 0) {
+					jumpUp.enabled = false;
+				}
+				else jumpUp.enabled = true;
+				
+				if (index == 24) {
+					jumpDown.enabled = false;
+				}
+				else jumpDown.enabled = true;
+			}
+			
+			protected function jumpUp_clickHandler(event:MouseEvent):void
+			{
+				webView.stop();
+				var previousIndex:int = index - 1;
+				modelInstance.currentlySelectedRSSItem = modelInstance.currentFeedList.getItemAt(previousIndex);
+				getDetails();
+			}
+			
+			protected function jumpDown_clickHandler(event:MouseEvent):void
+			{
+				webView.stop();
+				var nextIndex:int = index + 1;
+				modelInstance.currentlySelectedRSSItem = modelInstance.currentFeedList.getItemAt(nextIndex);
+				getDetails();
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	<s:navigationContent>
+		<s:Button icon="@Embed('assets/images/left_arrow.png')" click="navigateBack()"/>
+		<s:Spacer width="8"/>
+		<s:BusyIndicator id="detailsThrobber" visible="true" width="32" height="32"/>			
+	</s:navigationContent>
+	<s:actionContent>
+		<s:Button id="jumpUp" width="54" height="30" icon="assets/Up arrow.png" click="jumpUp_clickHandler(event)"/>
+		<s:Button id="jumpDown" width="54" height="30" icon="assets/Down arrow.png" click="jumpDown_clickHandler(event)"/>
+		
+	</s:actionContent>
+	
+	<!--snapshotMode="{redditFeedModel.snapshot}"-->
+	<utils:WebView id="webView" width="100%" height="100%" source="{rlink}" />
+</s:View>

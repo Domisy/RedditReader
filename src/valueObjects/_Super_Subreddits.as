@@ -34,12 +34,12 @@ public class _Super_Subreddits extends flash.events.EventDispatcher implements c
     model_internal static function initRemoteClassAliasAllRelated() : void
     {
         valueObjects.Channel.initRemoteClassAliasSingleChild();
-        valueObjects.Item.initRemoteClassAliasSingleChild();
-        valueObjects.Media_thumbnail.initRemoteClassAliasSingleChild();
-        valueObjects.Guid.initRemoteClassAliasSingleChild();
         valueObjects.Data.initRemoteClassAliasSingleChild();
         valueObjects.Children.initRemoteClassAliasSingleChild();
         valueObjects.Image.initRemoteClassAliasSingleChild();
+        valueObjects.Item.initRemoteClassAliasSingleChild();
+        valueObjects.Guid.initRemoteClassAliasSingleChild();
+        valueObjects.Media_thumbnail.initRemoteClassAliasSingleChild();
     }
 
     model_internal var _dminternal_model : _SubredditsEntityMetadata;

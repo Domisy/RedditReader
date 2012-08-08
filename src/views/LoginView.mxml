@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:redditjson="services.redditjson.*" add="addHandler(event)"
+		actionBarVisible="false" tabBarVisible="false" title="LoginView"
+		backgroundColor="#A7CDF1" backgroundAlpha="0.1">
+	<s:states>
+		<s:State name="landscape"/>
+		<s:State name="portrait"/>
+	</s:states>
+	
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import mx.messaging.channels.StreamingAMFChannel;
+			import mx.rpc.events.ResultEvent;
+			[Bindable] private var redditFeedModel : RedditFeedModel = RedditFeedModel.getInstance();
+			import spark.managers.PersistenceManager;
+			import model.RedditFeedModel;
+			[Bindable] public var loginBusy:Boolean = false;
+			[Bindable] public var errorReturn:String;
+			public var username:String;
+		
+			
+			public function loginBusyOn():void
+			{
+				loginBusy = true;
+				loginButton.visible = false;
+			}
+			
+			public function loginBusyOff():void
+			{
+				loginBusy = false;
+				loginButton.visible = true;
+			}
+			
+			
+			protected function button_clickHandler(event:Event, username:String, password:String):void
+			{
+				loginBusyOn();
+				redditJsonResult.token = redditJson.redditLogin(username, "json", username, password);
+				redditJsonResult.addEventListener(ResultEvent.RESULT, loginSuccess);
+			}
+			
+			protected function loginSuccess(event:ResultEvent):void
+			{
+				errorReturn = redditJsonResult.lastResult.json.errors;
+				if (errorReturn.length == 0)
+				{
+					successLabel.text = "Success!";
+					
+					redditFeedModel.modhash = redditJsonResult.lastResult.json.data.modhash;
+					redditFeedModel.cookie = redditJsonResult.lastResult.json.data.cookie;
+					redditJsonResult.removeEventListener(ResultEvent.RESULT, loginSuccess); 
+					getUserInfo();
+					redditFeedModel.loggedIn = true;
+					if (username == null) {
+						username = userField.text;
+					}
+					
+					if (userField.text != "" && passField.text != "") {
+					var saveManager:PersistenceManager = new PersistenceManager();
+					saveManager.setProperty("username", userField.text);  
+					saveManager.setProperty("passwd", passField.text);
+					}
+				}
+				else {
+					successLabel.text = "Try again!";
+				}
+				
+				loginBusyOff();
+				
+			}
+			
+			protected function getUserInfo():void
+			{
+				//make calls to get user info based on cookie and modhash etc
+				redditJsonResult.token = redditJson.aboutMe(username);
+				redditJsonResult.addEventListener(ResultEvent.RESULT, userInfoRetrieved);
+			}
+			
+			protected function userInfoRetrieved(event:ResultEvent):void
+			{
+				redditFeedModel.currentUserInfo = redditJsonResult.lastResult;
+				navigator.pushView(UserInfoView, username);
+			}
+			
+			protected function addHandler(event:FlexEvent):void
+			{
+				var loadManager:PersistenceManager = new PersistenceManager();  
+				if(loadManager.load())  
+				{  
+					var savedData:Object = loadManager.getProperty("username");  
+					var savedDataPass:Object = loadManager.getProperty("passwd");
+					var savedDictionary:Object = loadManager.getProperty("dictionary");
+					if(savedData && savedDataPass) {
+						username = savedData.toString();
+						var tempPasswd:String = savedDataPass.toString();
+						button_clickHandler(event, username, tempPasswd);
+					}
+					if (savedDictionary) {
+						redditFeedModel.voteDictionary = savedDictionary;
+					}
+				}
+				
+				var saveManager:PersistenceManager = new PersistenceManager();
+				saveManager.setProperty("dictionary", redditFeedModel.voteDictionary);  
+			}
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:CallResponder id="redditJsonResult"/>
+		<redditjson:RedditJson id="redditJson"/>
+	</fx:Declarations>
+	
+	
+	<s:Group id="LoginPanel" visible="true" width="738" height="100">
+		<s:TextInput id="userField" x="9" y="48" width="247" height="44" prompt="username"
+					 x.portrait="10" y.portrait="4" width.portrait="220"/>
+		<s:TextInput id="passField" x="269" y="47" width="230" height="45" prompt="password"
+					 x.portrait="10" y.portrait="51" width.portrait="220" displayAsPassword="true"/>
+		<s:Label id="successLabel" x="10" y="12" width="408" height="27"
+				 fontSize="23" text="Sign in to vote!"
+				 x.portrait="264" y.portrait="11" width.portrait="269"/>
+		<s:Button id="loginButton" x="532" y="47" width="153" height="45" label="Login"
+				  click="button_clickHandler(event, userField.text, passField.text)"
+				  x.portrait="264" y.portrait="46"/>
+		<s:BusyIndicator id="loginBusyInd" visible="{loginBusy}" x="589" y="48" width="40"
+						 height="43"
+						 x.portrait="321" y.portrait="47"/>
+	</s:Group>
+</s:View>

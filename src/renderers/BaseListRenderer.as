@@ -1,16 +1,24 @@
 package renderers
 {
+    import classes.CalloutExtension;
     import classes.EventExtension;
     
     import flash.display.Bitmap;
     import flash.events.DataEvent;
     import flash.events.Event;
     import flash.events.MouseEvent;
+    import flash.net.URLLoader;
+    import flash.net.URLRequest;
+    import flash.net.URLRequestHeader;
+    import flash.net.URLRequestMethod;
+    import flash.net.URLVariables;
+    import flash.text.TextFormat;
     import flash.text.engine.FontWeight;
     
     import model.RedditFeedModel;
     
     import mx.graphics.BitmapFillMode;
+    import mx.rpc.events.ResultEvent;
     import mx.states.State;
     
     import services.redditfeedgrabber.RedditFeedGrabber;
@@ -42,9 +50,12 @@ package renderers
     {
         private var theImage:Image;
 		private var messageLabel:Label;
-		private var voteButton:CalloutButton;
+		private var voteButton:CalloutExtension;
 		private var hgroup:HGroup;
-		[Bindable] private var redditFeedModel : RedditFeedModel = RedditFeedModel.getInstance();
+		private var modelInstance : RedditFeedModel;
+		[Bindable] public var redditFeedModel : RedditFeedModel = RedditFeedModel.getInstance();
+		[Bindable] public var newVote:String;
+		
 
 		private var voteButtons:Array= [
 			{Button:"Up"},
@@ -62,25 +73,36 @@ package renderers
          *
          * Override this setter to respond to data changes
          */
+		
         override public function set data(value : Object) : void
         {
             super.data = value;
-			var ups:int = value.data.ups - value.data.downs;
-			var votes:String = String(ups);
+			//var ups:int = value.data.ups - value.data.downs;
+			//var votes:String = String(ups);
 			var date:String = DateUtil.convertDateToPast(value.data.created);
 			
 		
 			var messageString:String = "Submitted " + date + " by " + value.data.author + " to " + value.data.subreddit; 
-            // the data has changed.  push these changes down in to the 
-            // subcomponents here
+       
             labelDisplay.text = value.data.title;
+			voteButton.data = value.data;
 			messageLabel.text = messageString;
-			voteButton.label = value.data.score;
+			
+			if (redditFeedModel.voteLabelDictionary[data.data.name] != null) {
+				voteButton.label = redditFeedModel.voteLabelDictionary[data.data.name]
+			}
+			else {newVote = value.data.score; voteButton.label = newVote; }
 			
             if (value.data.thumbnail) {
                 theImage.source = value.data.thumbnail;
 			}
 			else  theImage.source = null;
+			
+			if (redditFeedModel.voteDictionary[data.data.name] != null) {
+				if (redditFeedModel.voteDictionary[data.data.name] == 2) {voteButton.setStyle("color", "0xFF5E00")} 
+				else if (redditFeedModel.voteDictionary[data.data.name] == 1) {voteButton.setStyle("color", "0x2F83FF")};
+			}
+			else voteButton.setStyle("color", "0x000000");
         }
 
         /**
@@ -105,15 +127,17 @@ package renderers
 			messageLabel.height = 20;
 			addChild(messageLabel);
 			
-			voteButton = new CalloutButton();
+			
 			var upButton:Button = new Button();
 			var downButton:Button =  new Button();
 			upButton.setStyle("icon", "assets/thumbsUp.png");
 			upButton.addEventListener(MouseEvent.CLICK, voteUp);
 			downButton.setStyle("icon", "assets/thumbsDown.png");
+			downButton.addEventListener(MouseEvent.CLICK, voteDown);
+			
+			voteButton = new CalloutExtension();
 			voteButton.calloutLayout = new VerticalLayout;;
 			voteButton.calloutContent = [upButton, downButton]; 
-			//voteButton.callout.close(false);
 			voteButton.width = 55;
 			voteButton.height = 55;
 			addChild(voteButton);
@@ -121,10 +145,8 @@ package renderers
 			voteButton.addEventListener(MouseEvent.CLICK, voteClickHandler);
 			
 	
-			//labelDisplay.width = 525;
 			labelDisplay.height = 30;
             labelDisplay.addEventListener(MouseEvent.CLICK, labelClickHandler);
-			//labelDisplay.setStyle("fontWeight", "bold");
 			labelDisplay.setStyle("fontSize", "20");
 			
 			addEventListener(MouseEvent.CLICK, backdropClickHandler);
@@ -152,8 +174,7 @@ package renderers
 		public function voteClickHandler(event:MouseEvent):void
 		{
 			if (redditFeedModel.loggedIn == false) {
-				redditFeedModel.isVisible = true;
-				redditFeedModel.splitViewEnabled = false;
+				dispatchEvent(new Event("voteButtonClicked", true, false));
 				voteButton.callout.close();
 			}
 			
@@ -165,8 +186,59 @@ package renderers
 		
 		private function voteUp(event:MouseEvent):void
 		{
-			//add close popup
-			dispatchEvent(new EventExtension("upvoteClicked", true, false, data.data.url));
+			voteButton.callout.close();
+			var urlLoader:URLLoader = new URLLoader();
+			
+			var urlRequest:URLRequest = new URLRequest("http://www.reddit.com/api/vote");
+			urlRequest.method = URLRequestMethod.POST;
+			
+			var cookieHeader:URLRequestHeader = new URLRequestHeader("Cookie", "reddit_session=" + redditFeedModel.cookie);
+			urlRequest.requestHeaders = [cookieHeader];
+			
+			var variables:URLVariables = new URLVariables();
+			variables.id = event.target.parent.parent.parent.owner.data.name; 
+			variables.dir = "1";
+			variables.uh = redditFeedModel.modhash;
+			urlRequest.data = variables;
+			
+			urlLoader.addEventListener(Event.COMPLETE, dataLoaded);
+			urlLoader.load(urlRequest);
+			
+			redditFeedModel.voteDictionary[data.data.name] = 2;
+			var tempVote:int = int(data.data.score) + 1;
+			redditFeedModel.voteLabelDictionary[data.data.name] = String(tempVote); 
+			data=data;
+		}
+		
+		private function voteDown(event:MouseEvent):void
+		{
+			voteButton.callout.close();
+			var urlLoader:URLLoader = new URLLoader();
+			
+			var urlRequest:URLRequest = new URLRequest("http://www.reddit.com/api/vote");
+			urlRequest.method = URLRequestMethod.POST;
+			
+			var cookieHeader:URLRequestHeader = new URLRequestHeader("Cookie", "reddit_session=" + redditFeedModel.cookie);
+			urlRequest.requestHeaders = [cookieHeader];
+			
+			var variables:URLVariables = new URLVariables();
+			variables.id = event.target.parent.parent.parent.owner.data.name; 
+			variables.dir = "-1";
+			variables.uh = redditFeedModel.modhash;
+			urlRequest.data = variables;
+			
+			urlLoader.addEventListener(Event.COMPLETE, dataLoaded);
+			urlLoader.load(urlRequest);
+			
+			redditFeedModel.voteDictionary[data.data.name] = 1;
+			var tempVote:int = int(event.target.parent.parent.parent.owner.data.score) - 1;
+			redditFeedModel.voteLabelDictionary[data.data.name] = String(tempVote); 
+			data=data;
+		}
+		
+		private function dataLoaded(event:Event):void
+		{
+			trace(event.target.data);
 		}
 
         /**
@@ -209,7 +281,6 @@ package renderers
             theImage.x = 10;
 			theImage.y = 7.5;
 			theImage.scaleMode = BitmapFillMode.SCALE;
-			//theImage.fillMode = "stretch";
             labelDisplay.x = 90;
 			labelDisplay.y = 7.5;
 			labelDisplay.width = unscaledWidth - (voteButton.width + theImage.width + 50);
@@ -217,7 +288,6 @@ package renderers
 			messageLabel.x = 92;
 			messageLabel.y = 38;
 			voteButton.x = unscaledWidth - voteButton.width - 8;
-			//voteButton.x = 655;
 			voteButton.y = 16;
 			
 			//trace("Laying out contents width: " + unscaledWidth + " height: " + unscaledHeight);

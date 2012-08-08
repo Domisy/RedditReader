@@ -11,7 +11,6 @@ import mx.rpc.AsyncToken;
 import mx.rpc.http.HTTPMultiService;
 import mx.rpc.http.Operation;
 import valueObjects.JsonData;
-import valueObjects.RedditLoginResponse;
 import valueObjects.RedditUserInfoResponse;
 
 import com.adobe.serializers.json.JSONSerializationFilter;
@@ -49,16 +48,6 @@ internal class _Super_RedditJson extends com.adobe.fiber.services.wrapper.HTTPSe
          operation.argumentNames = argsArray;         
          operation.serializationFilter = serializer0;
          operation.resultType = valueObjects.JsonData;
-         operations.push(operation);
-
-         operation = new mx.rpc.http.Operation(null, "redditUserInfo");
-         operation.url = "http://www.reddit.com/api/me.json";
-         operation.method = "GET";
-         argsArray = new Array("reddit_session");
-         operation.argumentNames = argsArray;         
-         operation.serializationFilter = serializer0;
-         operation.contentType = "application/x-www-form-urlencoded";
-         operation.resultType = valueObjects.RedditLoginResponse;
          operations.push(operation);
 
          operation = new mx.rpc.http.Operation(null, "aboutMe");
@@ -119,24 +108,6 @@ internal class _Super_RedditJson extends com.adobe.fiber.services.wrapper.HTTPSe
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("redditJsonFeed");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(modhash) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'redditUserInfo' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function redditUserInfo(reddit_session:String) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("redditUserInfo");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(reddit_session) ;
         return _internal_token;
     }
      

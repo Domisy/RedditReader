@@ -68,6 +68,178 @@
     <property name="version" type="string" required="true"/>
     <property name="channel" type="Channel" required="true"/>
   </entity>
+  <service name="RedditJson">
+    <annotation name="ActionScriptGeneration">
+      <item name="ServiceType">HTTPMultiService</item>
+      <item name="Package">services.redditjson</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">HTTPService</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="LINKED_FILE"></item>
+    </annotation>
+    <function name="redditLogin" return-type="RedditUserInfoResponse">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ActionScriptGeneration">
+        <item name="method">POST</item>
+        <item name="url">http://ssl.reddit.com/api/login/{username}</item>
+        <item name="contentType">application/x-www-form-urlencoded</item>
+        <item name="requestBodyParameter">false</item>
+        <item name="SerializationFilter">com.adobe.serializers.json.JSONSerializationFilter</item>
+      </annotation>
+      <annotation name="url group">
+        <item name="completeURL">http://ssl.reddit.com/api/login/{username}</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+        <item name="inputParamNames">username,api_type,user,passwd</item>
+        <item name="inputParams">string,string,string,string</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">json</item>
+      </annotation>
+      <annotation name="Properties">
+        <item name="urlParamNames">username</item>
+      </annotation>
+      <parameter name="username" type="string"/>
+      <parameter name="api_type" type="string"/>
+      <parameter name="user" type="string"/>
+      <parameter name="passwd" type="string"/>
+    </function>
+    <function name="redditJsonFeed" return-type="JsonData">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ActionScriptGeneration">
+        <item name="SerializationFilter">com.adobe.serializers.json.JSONSerializationFilter</item>
+        <item name="method">GET</item>
+        <item name="url">http://www.reddit.com/.json</item>
+      </annotation>
+      <annotation name="url group">
+        <item name="completeURL">http://www.reddit.com/.json</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">data,kind</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+        <item name="inputParamNames">modhash</item>
+        <item name="inputParams">string</item>
+      </annotation>
+      <parameter name="modhash" type="string"/>
+    </function>
+    <function name="aboutMe" return-type="RedditUserInfoResponse">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ActionScriptGeneration">
+        <item name="SerializationFilter">com.adobe.serializers.json.JSONSerializationFilter</item>
+        <item name="method">GET</item>
+        <item name="url">http://www.reddit.com/user/{user}/about/.json</item>
+      </annotation>
+      <annotation name="url group">
+        <item name="completeURL">http://www.reddit.com/user/{user}/about/.json</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">data,kind</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+        <item name="inputParamNames">user</item>
+        <item name="inputParams">string</item>
+      </annotation>
+      <annotation name="Properties">
+        <item name="urlParamNames">user</item>
+      </annotation>
+      <parameter name="user" type="string"/>
+    </function>
+  </service>
+  <entity name="RedditUserInfoResponse">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">RedditUserInfoResponse</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditJson,RedditJsonDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="redditUserInfo">
+      <item name="propertySpecifier">json</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="redditLogin">
+      <item name="propertySpecifier">json</item>
+    </annotation>
+    <annotation name="aboutMe">
+      <item name="propertySpecifier">data,kind</item>
+    </annotation>
+    <property name="json" type="Json" required="true"/>
+    <property name="data" type="Data" required="true"/>
+    <property name="kind" type="string" required="true"/>
+  </entity>
+  <entity name="RedditLoginResponse">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">RedditLoginResponse</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditJson,RedditJsonDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="redditJson">
+      <item name="propertySpecifier">json</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="redditUserInfo">
+      <item name="propertySpecifier">json</item>
+    </annotation>
+    <property name="json" type="Json" required="true"/>
+  </entity>
+  <entity name="Json">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Json</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditJson</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="data" type="Data" required="true"/>
+    <property name="errors" type="opaque[]" required="true"/>
+  </entity>
+  <entity name="JsonData">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">JsonData</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditJson,RedditJsonDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="redditJsonFeed">
+      <item name="propertySpecifier">data,kind</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="data" type="Data" required="true"/>
+    <property name="kind" type="string" required="true"/>
+  </entity>
   <service name="RedditFeedGrabber">
     <annotation name="ActionScriptGeneration">
       <item name="ServiceType">HTTPMultiService</item>
@@ -141,7 +313,7 @@
         <item name="completeURL">http://www.reddit.com/search.xml</item>
       </annotation>
       <annotation name="ValidProperties">
-        <item name="propertySpecifier">title,link,guid,pubDate,description</item>
+        <item name="propertySpecifier">title,link,guid,pubDate,description,media_title,media_thumbnail</item>
       </annotation>
       <annotation name="Properties">
         <item name="xPath">/::channel/::item</item>
@@ -154,6 +326,35 @@
       <parameter name="q" type="string"/>
     </function>
   </service>
+  <entity name="Data">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Data</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditFeedGrabber,RedditJson</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="after" type="string" required="true"/>
+    <property name="before" type="opaque" required="true"/>
+    <property name="children" type="Children[]" required="true"/>
+    <property name="cookie" type="string" required="true"/>
+    <property name="modhash" type="string" required="true"/>
+    <property name="id" type="string" required="true"/>
+    <property name="comment_karma" type="integer" required="true"/>
+    <property name="has_mod_mail" type="opaque" required="true"/>
+    <property name="created" type="double" required="true" default="0"/>
+    <property name="is_gold" type="boolean" required="true"/>
+    <property name="name" type="string" required="true"/>
+    <property name="is_mod" type="boolean" required="true"/>
+    <property name="link_karma" type="integer" required="true"/>
+    <property name="created_utc" type="double" required="true" default="0"/>
+    <property name="has_mail" type="opaque" required="true"/>
+  </entity>
   <entity name="Guid">
     <annotation name="EntityProperties">
       <item name="EntityOriginalName">Guid</item>
@@ -189,20 +390,20 @@
     <property name="copyright" type="string" required="true"/>
     <property name="language" type="string" required="true"/>
     <property name="lastBuildDate" type="string" required="true"/>
-    <property name="item" type="Item[]" required="true"/>
     <property name="data" type="Data" required="true"/>
     <property name="kind" type="string" required="true"/>
     <property name="title" type="string" required="true"/>
     <property name="link" type="string" required="true"/>
     <property name="description" type="string" required="true"/>
     <property name="image" type="Image" required="true"/>
+    <property name="item" type="Item[]" required="true"/>
   </entity>
   <entity name="Item">
     <annotation name="EntityProperties">
       <item name="EntityOriginalName">Item</item>
     </annotation>
     <annotation name="service Group">
-      <item name="service">RedditFeedGrabber,RedditFeedGrabberDummy</item>
+      <item name="service">RedditFeedGrabber</item>
     </annotation>
     <annotation name="ServerProperties">
       <item name="IncludeRemoteClass">nonempty</item>
@@ -211,13 +412,11 @@
       <item name="Package">valueObjects</item>
     </annotation>
     <annotation name="getRedditSearch">
-      <item name="propertySpecifier">title,link,guid,pubDate,description</item>
+      <item name="propertySpecifier">title,link,guid,pubDate,description,media_title,media_thumbnail</item>
     </annotation>
     <annotation name="getRedditFeed">
       <item name="propertySpecifier">title,link,guid,pubDate,description</item>
     </annotation>
-    <property name="media_title" type="string" required="true"/>
-    <property name="media_thumbnail" type="Media_thumbnail" required="true"/>
     <property name="dc_date" type="string" required="true"/>
     <property name="media_embed" type="opaque" required="true"/>
     <property name="author_flair_css_class" type="opaque" required="true"/>
@@ -252,6 +451,8 @@
     <property name="guid" type="Guid" required="true"/>
     <property name="pubDate" type="string" required="true"/>
     <property name="description" type="string" required="true"/>
+    <property name="media_title" type="string" required="true"/>
+    <property name="media_thumbnail" type="Media_thumbnail" required="true"/>
   </entity>
   <entity name="Image">
     <annotation name="EntityProperties">
@@ -292,7 +493,7 @@
       <item name="EntityOriginalName">Rss</item>
     </annotation>
     <annotation name="service Group">
-      <item name="service">RedditFeedGrabber,RedditFeedGrabberDummy</item>
+      <item name="service">RedditFeedGrabber</item>
     </annotation>
     <annotation name="ServerProperties">
       <item name="IncludeRemoteClass">nonempty</item>
@@ -303,214 +504,11 @@
     <annotation name="ActionScriptGeneration">
       <item name="Package">valueObjects</item>
     </annotation>
+    <annotation name="getRedditSearch">
+      <item name="propertySpecifier">version,channel</item>
+    </annotation>
     <property name="version" type="string" required="true"/>
     <property name="channel" type="Channel" required="true"/>
-  </entity>
-  <service name="RedditJson">
-    <annotation name="ActionScriptGeneration">
-      <item name="ServiceType">HTTPMultiService</item>
-      <item name="Package">services.redditjson</item>
-    </annotation>
-    <annotation name="ServiceTypeGroup">
-      <item name="ServiceBackendType">HTTPService</item>
-    </annotation>
-    <annotation name="ServiceConfig">
-      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
-      <item name="LINKED_FILE"></item>
-    </annotation>
-    <function name="redditLogin" return-type="RedditUserInfoResponse">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="ActionScriptGeneration">
-        <item name="method">POST</item>
-        <item name="url">http://ssl.reddit.com/api/login/{username}</item>
-        <item name="contentType">application/x-www-form-urlencoded</item>
-        <item name="requestBodyParameter">false</item>
-        <item name="SerializationFilter">com.adobe.serializers.json.JSONSerializationFilter</item>
-      </annotation>
-      <annotation name="url group">
-        <item name="completeURL">http://ssl.reddit.com/api/login/{username}</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-        <item name="inputParamNames">username,api_type,user,passwd</item>
-        <item name="inputParams">string,string,string,string</item>
-      </annotation>
-      <annotation name="ValidProperties">
-        <item name="propertySpecifier">json</item>
-      </annotation>
-      <annotation name="Properties">
-        <item name="urlParamNames">username</item>
-      </annotation>
-      <parameter name="username" type="string"/>
-      <parameter name="api_type" type="string"/>
-      <parameter name="user" type="string"/>
-      <parameter name="passwd" type="string"/>
-    </function>
-    <function name="redditJsonFeed" return-type="JsonData">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="ActionScriptGeneration">
-        <item name="SerializationFilter">com.adobe.serializers.json.JSONSerializationFilter</item>
-        <item name="method">GET</item>
-        <item name="url">http://www.reddit.com/.json</item>
-      </annotation>
-      <annotation name="url group">
-        <item name="completeURL">http://www.reddit.com/.json</item>
-      </annotation>
-      <annotation name="ValidProperties">
-        <item name="propertySpecifier">data,kind</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-        <item name="inputParamNames">modhash</item>
-        <item name="inputParams">string</item>
-      </annotation>
-      <parameter name="modhash" type="string"/>
-    </function>
-    <function name="redditUserInfo" return-type="RedditLoginResponse">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="ActionScriptGeneration">
-        <item name="SerializationFilter">com.adobe.serializers.json.JSONSerializationFilter</item>
-        <item name="method">GET</item>
-        <item name="url">http://www.reddit.com/api/me.json</item>
-        <item name="contentType">application/x-www-form-urlencoded</item>
-        <item name="requestBodyParameter">false</item>
-      </annotation>
-      <annotation name="url group">
-        <item name="completeURL">http://www.reddit.com/api/me.json</item>
-      </annotation>
-      <annotation name="ValidProperties">
-        <item name="propertySpecifier">json</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-        <item name="inputParamNames">reddit_session</item>
-        <item name="inputParams">string</item>
-      </annotation>
-      <parameter name="reddit_session" type="string"/>
-    </function>
-    <function name="aboutMe" return-type="RedditUserInfoResponse">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="ActionScriptGeneration">
-        <item name="SerializationFilter">com.adobe.serializers.json.JSONSerializationFilter</item>
-        <item name="method">GET</item>
-        <item name="url">http://www.reddit.com/user/{user}/about/.json</item>
-      </annotation>
-      <annotation name="url group">
-        <item name="completeURL">http://www.reddit.com/user/{user}/about/.json</item>
-      </annotation>
-      <annotation name="ValidProperties">
-        <item name="propertySpecifier">data,kind</item>
-      </annotation>
-      <annotation name="Properties">
-        <item name="urlParamNames">user</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParamNames">user</item>
-        <item name="inputParams">string</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="user" type="string"/>
-    </function>
-  </service>
-  <entity name="RedditUserInfoResponse">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">RedditUserInfoResponse</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">RedditJson,RedditJsonDummy</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="redditUserInfo">
-      <item name="propertySpecifier">json</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <annotation name="redditLogin">
-      <item name="propertySpecifier">json</item>
-    </annotation>
-    <annotation name="aboutMe">
-      <item name="propertySpecifier">data,kind</item>
-    </annotation>
-    <property name="json" type="Json" required="true"/>
-    <property name="data" type="Data" required="true"/>
-    <property name="kind" type="string" required="true"/>
-  </entity>
-  <entity name="Data">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">Data</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">RedditFeedGrabber,RedditJson</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <property name="after" type="string" required="true"/>
-    <property name="before" type="opaque" required="true"/>
-    <property name="children" type="Children[]" required="true"/>
-    <property name="cookie" type="string" required="true"/>
-    <property name="modhash" type="string" required="true"/>
-    <property name="id" type="string" required="true"/>
-    <property name="comment_karma" type="integer" required="true"/>
-    <property name="has_mod_mail" type="opaque" required="true"/>
-    <property name="created" type="double" required="true" default="0"/>
-    <property name="is_gold" type="boolean" required="true"/>
-    <property name="name" type="string" required="true"/>
-    <property name="is_mod" type="boolean" required="true"/>
-    <property name="link_karma" type="integer" required="true"/>
-    <property name="created_utc" type="double" required="true" default="0"/>
-    <property name="has_mail" type="opaque" required="true"/>
-  </entity>
-  <entity name="RedditLoginResponse">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">RedditLoginResponse</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">RedditJson</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="redditJson">
-      <item name="propertySpecifier">json</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <annotation name="redditUserInfo">
-      <item name="propertySpecifier">json</item>
-    </annotation>
-    <property name="json" type="Json" required="true"/>
-  </entity>
-  <entity name="Json">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">Json</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">RedditJson</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <property name="data" type="Data" required="true"/>
-    <property name="errors" type="opaque[]" required="true"/>
   </entity>
   <entity name="Children">
     <annotation name="EntityProperties">
@@ -534,23 +532,23 @@
     <property name="data" type="Data" required="true"/>
     <property name="kind" type="string" required="true"/>
   </entity>
-  <entity name="JsonData">
+  <entity name="SearchResponse">
     <annotation name="EntityProperties">
-      <item name="EntityOriginalName">JsonData</item>
+      <item name="EntityOriginalName">Rss</item>
     </annotation>
     <annotation name="service Group">
-      <item name="service">RedditJson,RedditJsonDummy</item>
+      <item name="service">RedditFeedGrabber</item>
     </annotation>
     <annotation name="ServerProperties">
       <item name="IncludeRemoteClass">nonempty</item>
     </annotation>
-    <annotation name="redditJsonFeed">
-      <item name="propertySpecifier">data,kind</item>
+    <annotation name="getRedditSearch">
+      <item name="propertySpecifier">version,channel</item>
     </annotation>
     <annotation name="ActionScriptGeneration">
       <item name="Package">valueObjects</item>
     </annotation>
-    <property name="data" type="Data" required="true"/>
-    <property name="kind" type="string" required="true"/>
+    <property name="version" type="string" required="true"/>
+    <property name="channel" type="Channel" required="true"/>
   </entity>
 </model>

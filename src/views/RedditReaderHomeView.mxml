@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
 		xmlns:s="library://ns.adobe.com/flex/spark"
-		xmlns:redditjson="services.redditjson.*" add="addHandler(event)"
-		actionBarVisible="{redditFeedModel.isVisible}" initialize="initializeHandler(event)" tabBarVisible="true">
+		xmlns:redditjson="services.redditjson.*"
+		actionBarVisible="{redditFeedModel.isVisible}" destructionPolicy="never"
+		initialize="initializeHandler(event)" tabBarVisible="true"
+		overlayControls.landscape="true" tabBarVisible.landscape="false"
+		overlayControls.portrait="true">
 	
 	
 	
@@ -21,6 +24,8 @@
 			
 			import spark.managers.PersistenceManager;
 			
+			import utils.DateUtil;
+			
 			import valueObjects.Item;
 			import valueObjects.RedditUserInfoResponse;
 			
@@ -35,22 +40,25 @@
 			[Bindable] public var loginBusy:Boolean = false;
 			[Bindable] public var labelColor:String = '#000000';
 			
+			
 			//VARIABLES
 			public var defUrl:String = new String("");
-	
-			
+			private var modelInstance : RedditFeedModel;
+			private var snapshot:Boolean= false;
+			private var alrtTimer:Timer;
+
 			
 			
 			public function loginBusyOn():void
 			{
 				loginBusy = true;
-				loginButton.visible = false;
+				//loginButton.visible = false;
 			}
 			
 			public function loginBusyOff():void
 			{
 				loginBusy = false;
-				loginButton.visible = true;
+				//loginButton.visible = true;
 			}
 			
 			
@@ -63,77 +71,52 @@
 			protected function initializeHandler(event:FlexEvent):void
 			{
 				QNXApplication.qnxApplication.addEventListener(QNXApplicationEvent.SWIPE_DOWN, onSwipeDown);
+				this.addEventListener("voteButtonClicked", onSwipeDown);
+				NativeApplication.nativeApplication.addEventListener(Event.EXITING, applicationExitHandler);
 			}
 			
+			protected function applicationExitHandler(event:Event):void
+			{
+				var saveManager:PersistenceManager = new PersistenceManager();
+				saveManager.setProperty("dictionary", redditFeedModel.voteDictionary);  
+			}
 			
-			
+			//event:Event
 			public function onSwipeDown(event:Event):void
 			{
 				if (redditFeedModel.isVisible == true)
 				{
 					redditFeedModel.isVisible = false;
-					//splitViewNavigator.enabled = true;
-					redditFeedModel.splitViewEnabled = true;
+					if (snapshot == true) {
+						alrtTimer = new Timer(200, 1);
+						alrtTimer.reset();
+						alrtTimer.start();
+
+						alrtTimer.addEventListener(TimerEvent.TIMER_COMPLETE, timerComplete);
+						
+					}
 				}
+				
 				else { 
+					if (redditFeedModel.detailsView) {
+						if (redditFeedModel.detailsView.isActive == true) {redditFeedModel.detailsView.webView.takeSnapshot(); snapshot=true;}
+					}
 					redditFeedModel.isVisible = true;
-					//splitViewNavigator.enabled = false;
-					redditFeedModel.splitViewEnabled = false;
-				}
-}
-			
-			
-			protected function button_clickHandler(event:MouseEvent, username:String, password:String):void
-			{
-				loginBusyOn();
-				redditJsonResult.token = redditJson.redditLogin(username, "json", username, password);
-				redditJsonResult.addEventListener(ResultEvent.RESULT, loginSuccess);
-			}
-			
-			
-			
-			protected function loginSuccess(event:ResultEvent):void
-			{
-				errorReturn = redditJsonResult.lastResult.json.errors;
-				if (errorReturn.length == 0)
-				{
-					successLabel.text = "Success!";
-					
-					modhash = redditJsonResult.lastResult.json.data.modhash;
-					cookie = redditJsonResult.lastResult.json.data.cookie;
-					getUserInfo();
-					redditFeedModel.loggedIn = true;
-					currentState = "loggedIn";
-				}
-				else {
-					successLabel.setStyle("labelColor", "#FF0000");
-					successLabel.text = "Try again!";
+					splitViewNavigator.addEventListener(MouseEvent.MOUSE_DOWN, closeAction);
 				}
 				
-				loginBusyOff();
-				
 			}
 			
 			
-			protected function getUserInfo():void
-			{
-				//make calls to get user info based on cookie and modhash etc
-				redditJsonResult.token = redditJson.aboutMe(userField.text);
-				redditFeedModel.currentUserInfo = RedditUserInfoResponse as Item;
+			public function closeAction(event:Event):void {
+				if (snapshot == true) {redditFeedModel.detailsView.webView.removeSnapshot(); snapshot=false;}
+				redditFeedModel.isVisible = false;
+				splitViewNavigator.removeEventListener(MouseEvent.MOUSE_DOWN, closeAction);
 			}
 			
-			protected function addHandler(event:FlexEvent):void
-			{
-			var loadManager:PersistenceManager = new PersistenceManager();  
-			if(loadManager.load())  
-			{  
-				var savedData:Object = loadManager.getProperty("username");  
-				//var savedDataPass:Object = loadManager.getProperty("passwd");  
-				if(savedData) {  
-				userField.text = savedData.toString();  
-				//passField.text = savedData.toString();
-				}
-			}
+			public function timerComplete(event:Event):void {
+				redditFeedModel.detailsView.webView.removeSnapshot(); 
+				snapshot=false;
 			}
 		]]>
 	</fx:Script>
@@ -143,20 +126,19 @@
 	<s:states>
 		<s:State name="portrait"/>
 		<s:State name="landscape"/>
-		<s:State name="loggedIn"/>
 	</s:states>
 	<fx:Declarations>
 		<s:CallResponder id="redditJsonResult"/>
 		<redditjson:RedditJson id="redditJson"/>
-		
 	</fx:Declarations>
 	
 	
 	<s:actionContent>
-		<s:Button includeIn="landscape,loggedIn" x="5" width="95" height="90"
+		<s:Button includeIn="landscape" x="5" width="95" height="90"
 				  click="navigator.pushView(ProfileView)"
 				  icon="assets/gear-icon.png"/>
 		<s:Button includeIn="portrait" x="91" width="95" height="90" label="Button"
+				  click="navigator.pushView(ProfileView)"
 				  icon="assets/gear-icon.png"/>
 	</s:actionContent>
 	<s:navigationContent>
@@ -164,41 +146,18 @@
 		
 	</s:navigationContent>
 	<s:titleContent>
-		<s:Group width="738" height="100"
-				 x.landscape="40"
-				 x.loggedIn="40" width.loggedIn="866">
-			<s:TextInput id="userField" includeIn="landscape,portrait" x="9" y="48" width="247"
-						 height="44" prompt="username"
-						 x.portrait="8" y.portrait="4" width.portrait="200"/>
-			<s:TextInput id="passField" includeIn="landscape,portrait" x="269" y="47" width="230"
-						 height="45" prompt="password"
-						 x.portrait="9" y.portrait="52" width.portrait="199"/>
-			<s:Label id="successLabel" includeIn="landscape,portrait" x="10" y="12" height="27"
-					 color="{labelColor}" fontSize="23" text="Sign in to Reddit"
-					 width.landscape="408" text.landscape="Sign in to vote!"
-					 x.portrait="251" y.portrait="11" width.portrait="245"
-					 text.portrait="Sign in to vote!"/>
-			<s:Button id="loginButton" includeIn="landscape,portrait" x="532" y="47" width="153"
-					  height="45" label="Login"
-					  click="button_clickHandler(event, userField.text, passField.text)"
-					  x.portrait="250" y.portrait="46"/>
-			<s:BusyIndicator id="loginBusyInd" includeIn="landscape,portrait" visible="{loginBusy}"
-							 x="589" y="48" width="40" height="43"
-							 x.portrait="306" y.portrait="49"/>
-			<s:Label includeIn="loggedIn" x="10" y="10" width="321" fontSize="23"
-					 text="Welcome, {userField.text}!"/>
-			<s:Button includeIn="loggedIn" x="764" y="29" label="Logout"/>
-			<s:Label includeIn="loggedIn" x="10" y="43" text="{redditFeedModel.currentUserInfo} link karma"/>
-			<s:Label includeIn="loggedIn" x="10" y="69" text="{} comment karma"/>
-			<s:Label includeIn="loggedIn" x="228" y="49" text="redditor for {}"/>
-			<s:Label includeIn="loggedIn" x="228" y="71" text="Is Gold - {}"/>
-		</s:Group>
+		<s:ViewNavigator firstView="views.LoginView" includeIn="landscape, portrait" width="864" height="100"/>
 	</s:titleContent>
 	
+		
 	
-	<s:SplitViewNavigator enabled="{redditFeedModel.splitViewEnabled}" width="100%" height="100%" id="splitViewNavigator" autoHideFirstViewNavigator="true">
+	
+	<s:SplitViewNavigator id="splitViewNavigator" width="100%" height="100%"
+						  autoHideFirstViewNavigator="true"
+						  enabled="{redditFeedModel.splitViewEnabled}">
 		<s:ViewNavigator id="redditListNav" firstView="views.SubredditList" firstViewData="{redditFeedModel}" width="300" height="100%"/>
-		<s:ViewNavigator id="redditFeedNav" firstView="views.RedditFeed" firstViewData="{redditFeedModel}" width="100%" height="100%">
+		<s:ViewNavigator id="redditFeedNav" width="100%" height="100%" firstView="views.RedditFeed"
+						 firstViewData="{redditFeedModel}">
 			
 			
 			
@@ -210,13 +169,10 @@
 			
 			<s:actionContent>
 				<s:Button id="refreshButton" icon="@Embed('assets/refresh160.png')" click="refreshRSS(event)" />
-				<s:Button id="navigatorButton" label="Search" click="splitViewNavigator.showFirstViewNavigatorInPopUp(navigatorButton)" />
+				<s:Button id="navigatorButton" x="56" width="52" height="43"
+						  click="splitViewNavigator.showFirstViewNavigatorInPopUp(navigatorButton)"
+						  icon="assets/images/searchIconFinal.png"/>
 			</s:actionContent>
-			<s:actionContent.loggedIn>
-				<fx:Array>
-					<s:Button id="refreshButtonlLandscape0" icon="@Embed('assets/refresh160.png')" click="refreshRSS(event)" />
-				</fx:Array>
-			</s:actionContent.loggedIn>
 		</s:ViewNavigator>
 	</s:SplitViewNavigator>
 	

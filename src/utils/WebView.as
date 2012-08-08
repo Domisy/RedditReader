@@ -18,10 +18,18 @@ package utils  {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.media.StageWebView;
+	import flash.net.URLRequestHeader;
 	import flash.ui.Keyboard;
+	
+	import model.RedditFeedModel;
 	
 	import mx.core.FlexGlobals;
 	import mx.core.UIComponent;
+	import mx.utils.object_proxy;
+	
+	import qnx.events.WebViewEvent;
+	import qnx.media.QNXStageWebView;
+	
 	
 	/**
 	 * @copy flash.media.StageWebView#ErrorEvent.ERROR
@@ -87,7 +95,7 @@ package utils  {
 		//  Class constants
 		//
 		//--------------------------------------------------------------------------
-		
+		[Bindable] public var redditFeedModel : RedditFeedModel = RedditFeedModel.getInstance();
 		
 		//--------------------------------------------------------------------------
 		//
@@ -109,6 +117,7 @@ package utils  {
 		//--------------------------------------------------------------------------
 		
 		
+
 		/**
 		 * @copy flash.media.StageWebView#assignFocus()
 		 * */
@@ -133,6 +142,12 @@ package utils  {
 			webView.dispose();            // SEND THE WEBVIEW TO GARBAGE COLLECTION RIGHT AWAY
 		}
 		
+		
+		//Made this as a substitute for the function above when called upon by the snapshot mechanism down below. In order to not destroy the webview when a snapshot is taken. 
+		public function hideWebViewForSnapshot():void {
+			webView.stage = null;
+		}
+		
 		/**
 		 * Displays the web view
 		 * 
@@ -140,6 +155,7 @@ package utils  {
 		 * */
 		public function showWebView():void {
 			webView.stage = stage;
+			
 		}
 		
 		/**
@@ -197,7 +213,7 @@ package utils  {
 			webView.drawViewPortToBitmapData(snapshotBitmapData);
 			webViewBitmap = new Bitmap(snapshotBitmapData);
 			addChild(webViewBitmap);
-			hideWebView();
+			hideWebViewForSnapshot();
 			isSnapshotVisible = true;
 			
 			return snapshotBitmapData;
@@ -358,12 +374,12 @@ package utils  {
 			value ? takeSnapshot() : removeSnapshot();
 		}
 		
-		private var _webView:StageWebView;
+		private var _webView:QNXStageWebView;
 		
 		/**
 		 * @private
 		 * */
-		public function get webView():StageWebView {
+		public function get webView():QNXStageWebView {
 			return _webView;
 		}
 		
@@ -371,7 +387,7 @@ package utils  {
 		 * @copy flash.media.StageWebView
 		 * */
 		[Bindable]
-		public function set webView(value:StageWebView):void {
+		public function set webView(value:QNXStageWebView):void {
 			_webView = value;
 			
 			if (!_webView.stage && stage) {
@@ -524,7 +540,8 @@ package utils  {
 			
 			// create webview
 			if (!webView) {
-				webView = new StageWebView();
+				//webView = new StageWebView();
+				webView = new qnx.media.QNXStageWebView();
 				webView.addEventListener(Event.COMPLETE, completeHandler);
 				webView.addEventListener(ErrorEvent.ERROR, errorHandler);
 				webView.addEventListener(FocusEvent.FOCUS_IN, focusInViewHandler);
@@ -570,6 +587,12 @@ package utils  {
 			// source URL changed
 			if (sourceChanged) {
 				if (autoLoad) {
+					//var cookiestring:String = "reddit_first=%7B%22organic_pos%22%3A%2015%2C%20%22firsttime%22%3A%20%22first%22%7D; __utma=55650728.972366857.1333673287.1333781081.1333841313.7; __utmz=55650728.1333673569.2.2.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=reddit%20api%20clicked; __utmb=55650728.2.10.1333841313; __utmc=55650728; reddit_session=11008527%2C2012-04-07T16%3A29%3A42%2Ce47a47a8414ef57c02437f8cc73a76a112c9447b; flaminSaganaki_recentclicks2=t3_ryd7o%2C; flaminSaganaki_last_thing=%7B%22href%22%3A%22http%3A%2F%2Fwww.reddit.com%2F%22%2C%22what%22%3A%22t3_ryd7o%22%2C%22organic%22%3Afalse%7D";
+					//var cookieHeader:URLRequestHeader = new URLRequestHeader("Cookie", cookiestring);
+					//var v:Vector.<URLRequestHeader> = new Vector.<URLRequestHeader>();
+					//v.push(cookieHeader);
+					//webView.customHTTPHeaders = v;
+					
 					webView.loadURL(source);
 				}
 				sourceChanged = false;

@@ -24,14 +24,14 @@ internal class _ItemEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
 {
     private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("media_title", "media_thumbnail", "dc_date", "media_embed", "author_flair_css_class", "score", "created_utc", "clicked", "id", "author", "over_18", "created", "selftext_html", "name", "domain", "author_flair_text", "levenshtein", "saved", "subreddit_id", "url", "subreddit", "is_self", "num_comments", "thumbnail", "permalink", "hidden", "likes", "downs", "ups", "selftext", "media", "title", "link", "guid", "pubDate", "description");
+    model_internal static var allProperties:Array = new Array("dc_date", "media_embed", "author_flair_css_class", "score", "created_utc", "clicked", "id", "author", "over_18", "created", "selftext_html", "name", "domain", "author_flair_text", "levenshtein", "saved", "subreddit_id", "url", "subreddit", "is_self", "num_comments", "thumbnail", "permalink", "hidden", "likes", "downs", "ups", "selftext", "media", "title", "link", "guid", "pubDate", "description", "media_title", "media_thumbnail");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("media_title", "media_thumbnail", "dc_date", "media_embed", "author_flair_css_class", "score", "created_utc", "clicked", "id", "author", "over_18", "created", "selftext_html", "name", "domain", "author_flair_text", "levenshtein", "saved", "subreddit_id", "url", "subreddit", "is_self", "num_comments", "thumbnail", "permalink", "hidden", "likes", "downs", "ups", "selftext", "media", "title", "link", "guid", "pubDate", "description");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("media_title", "media_thumbnail", "dc_date", "media_embed", "author_flair_css_class", "score", "created_utc", "clicked", "id", "author", "over_18", "created", "selftext_html", "name", "domain", "author_flair_text", "levenshtein", "saved", "subreddit_id", "url", "subreddit", "is_self", "num_comments", "thumbnail", "permalink", "hidden", "likes", "downs", "ups", "selftext", "media", "title", "link", "guid", "pubDate", "description");
+    model_internal static var allRequiredProperties:Array = new Array("dc_date", "media_embed", "author_flair_css_class", "score", "created_utc", "clicked", "id", "author", "over_18", "created", "selftext_html", "name", "domain", "author_flair_text", "levenshtein", "saved", "subreddit_id", "url", "subreddit", "is_self", "num_comments", "thumbnail", "permalink", "hidden", "likes", "downs", "ups", "selftext", "media", "title", "link", "guid", "pubDate", "description", "media_title", "media_thumbnail");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("dc_date", "media_embed", "author_flair_css_class", "score", "created_utc", "clicked", "id", "author", "over_18", "created", "selftext_html", "name", "domain", "author_flair_text", "levenshtein", "saved", "subreddit_id", "url", "subreddit", "is_self", "num_comments", "thumbnail", "permalink", "hidden", "likes", "downs", "ups", "selftext", "media", "title", "link", "guid", "pubDate", "description", "media_title", "media_thumbnail");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("media_title", "media_thumbnail", "dc_date", "media_embed", "author_flair_css_class", "score", "created_utc", "clicked", "id", "author", "over_18", "created", "selftext_html", "name", "domain", "author_flair_text", "levenshtein", "saved", "subreddit_id", "url", "subreddit", "is_self", "num_comments", "thumbnail", "permalink", "hidden", "likes", "downs", "ups", "selftext", "media", "title", "link", "guid", "pubDate", "description");
+    model_internal static var dataProperties:Array = new Array("dc_date", "media_embed", "author_flair_css_class", "score", "created_utc", "clicked", "id", "author", "over_18", "created", "selftext_html", "name", "domain", "author_flair_text", "levenshtein", "saved", "subreddit_id", "url", "subreddit", "is_self", "num_comments", "thumbnail", "permalink", "hidden", "likes", "downs", "ups", "selftext", "media", "title", "link", "guid", "pubDate", "description", "media_title", "media_thumbnail");
     model_internal static var sourceProperties:Array = emptyArray
-    model_internal static var nonDerivedProperties:Array = new Array("media_title", "media_thumbnail", "dc_date", "media_embed", "author_flair_css_class", "score", "created_utc", "clicked", "id", "author", "over_18", "created", "selftext_html", "name", "domain", "author_flair_text", "levenshtein", "saved", "subreddit_id", "url", "subreddit", "is_self", "num_comments", "thumbnail", "permalink", "hidden", "likes", "downs", "ups", "selftext", "media", "title", "link", "guid", "pubDate", "description");
+    model_internal static var nonDerivedProperties:Array = new Array("dc_date", "media_embed", "author_flair_css_class", "score", "created_utc", "clicked", "id", "author", "over_18", "created", "selftext_html", "name", "domain", "author_flair_text", "levenshtein", "saved", "subreddit_id", "url", "subreddit", "is_self", "num_comments", "thumbnail", "permalink", "hidden", "likes", "downs", "ups", "selftext", "media", "title", "link", "guid", "pubDate", "description", "media_title", "media_thumbnail");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;
@@ -40,16 +40,6 @@ internal class _ItemEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
     model_internal static var dependedOnServices:Array = new Array();
     model_internal static var propertyTypeMap:Object;
 
-    
-    model_internal var _media_titleIsValid:Boolean;
-    model_internal var _media_titleValidator:com.adobe.fiber.styles.StyleValidator;
-    model_internal var _media_titleIsValidCacheInitialized:Boolean = false;
-    model_internal var _media_titleValidationFailureMessages:Array;
-    
-    model_internal var _media_thumbnailIsValid:Boolean;
-    model_internal var _media_thumbnailValidator:com.adobe.fiber.styles.StyleValidator;
-    model_internal var _media_thumbnailIsValidCacheInitialized:Boolean = false;
-    model_internal var _media_thumbnailValidationFailureMessages:Array;
     
     model_internal var _dc_dateIsValid:Boolean;
     model_internal var _dc_dateValidator:com.adobe.fiber.styles.StyleValidator;
@@ -165,6 +155,16 @@ internal class _ItemEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
     model_internal var _descriptionValidator:com.adobe.fiber.styles.StyleValidator;
     model_internal var _descriptionIsValidCacheInitialized:Boolean = false;
     model_internal var _descriptionValidationFailureMessages:Array;
+    
+    model_internal var _media_titleIsValid:Boolean;
+    model_internal var _media_titleValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _media_titleIsValidCacheInitialized:Boolean = false;
+    model_internal var _media_titleValidationFailureMessages:Array;
+    
+    model_internal var _media_thumbnailIsValid:Boolean;
+    model_internal var _media_thumbnailValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _media_thumbnailIsValidCacheInitialized:Boolean = false;
+    model_internal var _media_thumbnailValidationFailureMessages:Array;
 
     model_internal var _instance:_Super_Item;
     model_internal static var _nullStyle:com.adobe.fiber.styles.Style = new com.adobe.fiber.styles.Style();
@@ -176,8 +176,6 @@ internal class _ItemEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
         {
             // dependents map
             model_internal::dependentsOnMap = new Object();
-            model_internal::dependentsOnMap["media_title"] = new Array();
-            model_internal::dependentsOnMap["media_thumbnail"] = new Array();
             model_internal::dependentsOnMap["dc_date"] = new Array();
             model_internal::dependentsOnMap["media_embed"] = new Array();
             model_internal::dependentsOnMap["author_flair_css_class"] = new Array();
@@ -212,6 +210,8 @@ internal class _ItemEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
             model_internal::dependentsOnMap["guid"] = new Array();
             model_internal::dependentsOnMap["pubDate"] = new Array();
             model_internal::dependentsOnMap["description"] = new Array();
+            model_internal::dependentsOnMap["media_title"] = new Array();
+            model_internal::dependentsOnMap["media_thumbnail"] = new Array();
 
             // collection base map
             model_internal::collectionBaseMap = new Object();
@@ -219,8 +219,6 @@ internal class _ItemEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
 
         // Property type Map
         model_internal::propertyTypeMap = new Object();
-        model_internal::propertyTypeMap["media_title"] = "String";
-        model_internal::propertyTypeMap["media_thumbnail"] = "valueObjects.Media_thumbnail";
         model_internal::propertyTypeMap["dc_date"] = "String";
         model_internal::propertyTypeMap["media_embed"] = "Object";
         model_internal::propertyTypeMap["author_flair_css_class"] = "Object";
@@ -255,18 +253,10 @@ internal class _ItemEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
         model_internal::propertyTypeMap["guid"] = "valueObjects.Guid";
         model_internal::propertyTypeMap["pubDate"] = "String";
         model_internal::propertyTypeMap["description"] = "String";
+        model_internal::propertyTypeMap["media_title"] = "String";
+        model_internal::propertyTypeMap["media_thumbnail"] = "valueObjects.Media_thumbnail";
 
         model_internal::_instance = value;
-        model_internal::_media_titleValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForMedia_title);
-        model_internal::_media_titleValidator.required = true;
-        model_internal::_media_titleValidator.requiredFieldError = "media_title is required";
-        //model_internal::_media_titleValidator.source = model_internal::_instance;
-        //model_internal::_media_titleValidator.property = "media_title";
-        model_internal::_media_thumbnailValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForMedia_thumbnail);
-        model_internal::_media_thumbnailValidator.required = true;
-        model_internal::_media_thumbnailValidator.requiredFieldError = "media_thumbnail is required";
-        //model_internal::_media_thumbnailValidator.source = model_internal::_instance;
-        //model_internal::_media_thumbnailValidator.property = "media_thumbnail";
         model_internal::_dc_dateValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForDc_date);
         model_internal::_dc_dateValidator.required = true;
         model_internal::_dc_dateValidator.requiredFieldError = "dc_date is required";
@@ -382,6 +372,16 @@ internal class _ItemEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
         model_internal::_descriptionValidator.requiredFieldError = "description is required";
         //model_internal::_descriptionValidator.source = model_internal::_instance;
         //model_internal::_descriptionValidator.property = "description";
+        model_internal::_media_titleValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForMedia_title);
+        model_internal::_media_titleValidator.required = true;
+        model_internal::_media_titleValidator.requiredFieldError = "media_title is required";
+        //model_internal::_media_titleValidator.source = model_internal::_instance;
+        //model_internal::_media_titleValidator.property = "media_title";
+        model_internal::_media_thumbnailValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForMedia_thumbnail);
+        model_internal::_media_thumbnailValidator.required = true;
+        model_internal::_media_thumbnailValidator.requiredFieldError = "media_thumbnail is required";
+        //model_internal::_media_thumbnailValidator.source = model_internal::_instance;
+        //model_internal::_media_thumbnailValidator.property = "media_thumbnail";
     }
 
     override public function getEntityName():String
@@ -609,18 +609,6 @@ internal class _ItemEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
     }
 
     [Bindable(event="propertyChange")]
-    public function get isMedia_titleAvailable():Boolean
-    {
-        return true;
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get isMedia_thumbnailAvailable():Boolean
-    {
-        return true;
-    }
-
-    [Bindable(event="propertyChange")]
     public function get isDc_dateAvailable():Boolean
     {
         return true;
@@ -824,26 +812,22 @@ internal class _ItemEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
         return true;
     }
 
+    [Bindable(event="propertyChange")]
+    public function get isMedia_titleAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isMedia_thumbnailAvailable():Boolean
+    {
+        return true;
+    }
+
 
     /**
      * derived property recalculation
      */
-    public function invalidateDependentOnMedia_title():void
-    {
-        if (model_internal::_media_titleIsValidCacheInitialized )
-        {
-            model_internal::_instance.model_internal::_doValidationCacheOfMedia_title = null;
-            model_internal::calculateMedia_titleIsValid();
-        }
-    }
-    public function invalidateDependentOnMedia_thumbnail():void
-    {
-        if (model_internal::_media_thumbnailIsValidCacheInitialized )
-        {
-            model_internal::_instance.model_internal::_doValidationCacheOfMedia_thumbnail = null;
-            model_internal::calculateMedia_thumbnailIsValid();
-        }
-    }
     public function invalidateDependentOnDc_date():void
     {
         if (model_internal::_dc_dateIsValidCacheInitialized )
@@ -1028,210 +1012,26 @@ internal class _ItemEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
             model_internal::calculateDescriptionIsValid();
         }
     }
+    public function invalidateDependentOnMedia_title():void
+    {
+        if (model_internal::_media_titleIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfMedia_title = null;
+            model_internal::calculateMedia_titleIsValid();
+        }
+    }
+    public function invalidateDependentOnMedia_thumbnail():void
+    {
+        if (model_internal::_media_thumbnailIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfMedia_thumbnail = null;
+            model_internal::calculateMedia_thumbnailIsValid();
+        }
+    }
 
     model_internal function fireChangeEvent(propertyName:String, oldValue:Object, newValue:Object):void
     {
         this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, propertyName, oldValue, newValue));
-    }
-
-    [Bindable(event="propertyChange")]   
-    public function get media_titleStyle():com.adobe.fiber.styles.Style
-    {
-        return model_internal::_nullStyle;
-    }
-
-    public function get media_titleValidator() : StyleValidator
-    {
-        return model_internal::_media_titleValidator;
-    }
-
-    model_internal function set _media_titleIsValid_der(value:Boolean):void 
-    {
-        var oldValue:Boolean = model_internal::_media_titleIsValid;         
-        if (oldValue !== value)
-        {
-            model_internal::_media_titleIsValid = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "media_titleIsValid", oldValue, value));
-        }                             
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get media_titleIsValid():Boolean
-    {
-        if (!model_internal::_media_titleIsValidCacheInitialized)
-        {
-            model_internal::calculateMedia_titleIsValid();
-        }
-
-        return model_internal::_media_titleIsValid;
-    }
-
-    model_internal function calculateMedia_titleIsValid():void
-    {
-        var valRes:ValidationResultEvent = model_internal::_media_titleValidator.validate(model_internal::_instance.media_title)
-        model_internal::_media_titleIsValid_der = (valRes.results == null);
-        model_internal::_media_titleIsValidCacheInitialized = true;
-        if (valRes.results == null)
-             model_internal::media_titleValidationFailureMessages_der = emptyArray;
-        else
-        {
-            var _valFailures:Array = new Array();
-            for (var a:int = 0 ; a<valRes.results.length ; a++)
-            {
-                _valFailures.push(valRes.results[a].errorMessage);
-            }
-            model_internal::media_titleValidationFailureMessages_der = _valFailures;
-        }
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get media_titleValidationFailureMessages():Array
-    {
-        if (model_internal::_media_titleValidationFailureMessages == null)
-            model_internal::calculateMedia_titleIsValid();
-
-        return _media_titleValidationFailureMessages;
-    }
-
-    model_internal function set media_titleValidationFailureMessages_der(value:Array) : void
-    {
-        var oldValue:Array = model_internal::_media_titleValidationFailureMessages;
-
-        var needUpdate : Boolean = false;
-        if (oldValue == null)
-            needUpdate = true;
-    
-        // avoid firing the event when old and new value are different empty arrays
-        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
-        {
-            if (oldValue.length == value.length)
-            {
-                for (var a:int=0; a < oldValue.length; a++)
-                {
-                    if (oldValue[a] !== value[a])
-                    {
-                        needUpdate = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                needUpdate = true;
-            }
-        }
-
-        if (needUpdate)
-        {
-            model_internal::_media_titleValidationFailureMessages = value;   
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "media_titleValidationFailureMessages", oldValue, value));
-            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
-            // the entire entity.
-            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
-            {
-                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
-            }
-        }
-    }
-
-    [Bindable(event="propertyChange")]   
-    public function get media_thumbnailStyle():com.adobe.fiber.styles.Style
-    {
-        return model_internal::_nullStyle;
-    }
-
-    public function get media_thumbnailValidator() : StyleValidator
-    {
-        return model_internal::_media_thumbnailValidator;
-    }
-
-    model_internal function set _media_thumbnailIsValid_der(value:Boolean):void 
-    {
-        var oldValue:Boolean = model_internal::_media_thumbnailIsValid;         
-        if (oldValue !== value)
-        {
-            model_internal::_media_thumbnailIsValid = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "media_thumbnailIsValid", oldValue, value));
-        }                             
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get media_thumbnailIsValid():Boolean
-    {
-        if (!model_internal::_media_thumbnailIsValidCacheInitialized)
-        {
-            model_internal::calculateMedia_thumbnailIsValid();
-        }
-
-        return model_internal::_media_thumbnailIsValid;
-    }
-
-    model_internal function calculateMedia_thumbnailIsValid():void
-    {
-        var valRes:ValidationResultEvent = model_internal::_media_thumbnailValidator.validate(model_internal::_instance.media_thumbnail)
-        model_internal::_media_thumbnailIsValid_der = (valRes.results == null);
-        model_internal::_media_thumbnailIsValidCacheInitialized = true;
-        if (valRes.results == null)
-             model_internal::media_thumbnailValidationFailureMessages_der = emptyArray;
-        else
-        {
-            var _valFailures:Array = new Array();
-            for (var a:int = 0 ; a<valRes.results.length ; a++)
-            {
-                _valFailures.push(valRes.results[a].errorMessage);
-            }
-            model_internal::media_thumbnailValidationFailureMessages_der = _valFailures;
-        }
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get media_thumbnailValidationFailureMessages():Array
-    {
-        if (model_internal::_media_thumbnailValidationFailureMessages == null)
-            model_internal::calculateMedia_thumbnailIsValid();
-
-        return _media_thumbnailValidationFailureMessages;
-    }
-
-    model_internal function set media_thumbnailValidationFailureMessages_der(value:Array) : void
-    {
-        var oldValue:Array = model_internal::_media_thumbnailValidationFailureMessages;
-
-        var needUpdate : Boolean = false;
-        if (oldValue == null)
-            needUpdate = true;
-    
-        // avoid firing the event when old and new value are different empty arrays
-        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
-        {
-            if (oldValue.length == value.length)
-            {
-                for (var a:int=0; a < oldValue.length; a++)
-                {
-                    if (oldValue[a] !== value[a])
-                    {
-                        needUpdate = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                needUpdate = true;
-            }
-        }
-
-        if (needUpdate)
-        {
-            model_internal::_media_thumbnailValidationFailureMessages = value;   
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "media_thumbnailValidationFailureMessages", oldValue, value));
-            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
-            // the entire entity.
-            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
-            {
-                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
-            }
-        }
     }
 
     [Bindable(event="propertyChange")]   
@@ -3600,6 +3400,206 @@ internal class _ItemEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
         }
     }
 
+    [Bindable(event="propertyChange")]   
+    public function get media_titleStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get media_titleValidator() : StyleValidator
+    {
+        return model_internal::_media_titleValidator;
+    }
+
+    model_internal function set _media_titleIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_media_titleIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_media_titleIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "media_titleIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get media_titleIsValid():Boolean
+    {
+        if (!model_internal::_media_titleIsValidCacheInitialized)
+        {
+            model_internal::calculateMedia_titleIsValid();
+        }
+
+        return model_internal::_media_titleIsValid;
+    }
+
+    model_internal function calculateMedia_titleIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_media_titleValidator.validate(model_internal::_instance.media_title)
+        model_internal::_media_titleIsValid_der = (valRes.results == null);
+        model_internal::_media_titleIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::media_titleValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::media_titleValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get media_titleValidationFailureMessages():Array
+    {
+        if (model_internal::_media_titleValidationFailureMessages == null)
+            model_internal::calculateMedia_titleIsValid();
+
+        return _media_titleValidationFailureMessages;
+    }
+
+    model_internal function set media_titleValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_media_titleValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_media_titleValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "media_titleValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get media_thumbnailStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get media_thumbnailValidator() : StyleValidator
+    {
+        return model_internal::_media_thumbnailValidator;
+    }
+
+    model_internal function set _media_thumbnailIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_media_thumbnailIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_media_thumbnailIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "media_thumbnailIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get media_thumbnailIsValid():Boolean
+    {
+        if (!model_internal::_media_thumbnailIsValidCacheInitialized)
+        {
+            model_internal::calculateMedia_thumbnailIsValid();
+        }
+
+        return model_internal::_media_thumbnailIsValid;
+    }
+
+    model_internal function calculateMedia_thumbnailIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_media_thumbnailValidator.validate(model_internal::_instance.media_thumbnail)
+        model_internal::_media_thumbnailIsValid_der = (valRes.results == null);
+        model_internal::_media_thumbnailIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::media_thumbnailValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::media_thumbnailValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get media_thumbnailValidationFailureMessages():Array
+    {
+        if (model_internal::_media_thumbnailValidationFailureMessages == null)
+            model_internal::calculateMedia_thumbnailIsValid();
+
+        return _media_thumbnailValidationFailureMessages;
+    }
+
+    model_internal function set media_thumbnailValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_media_thumbnailValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_media_thumbnailValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "media_thumbnailValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
 
      /**
      * 
@@ -3625,14 +3625,6 @@ internal class _ItemEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
      {
          switch(propertyName)
          {
-            case("media_title"):
-            {
-                return media_titleValidationFailureMessages;
-            }
-            case("media_thumbnail"):
-            {
-                return media_thumbnailValidationFailureMessages;
-            }
             case("dc_date"):
             {
                 return dc_dateValidationFailureMessages;
@@ -3724,6 +3716,14 @@ internal class _ItemEntityMetadata extends com.adobe.fiber.valueobjects.Abstract
             case("description"):
             {
                 return descriptionValidationFailureMessages;
+            }
+            case("media_title"):
+            {
+                return media_titleValidationFailureMessages;
+            }
+            case("media_thumbnail"):
+            {
+                return media_thumbnailValidationFailureMessages;
             }
             default:
             {

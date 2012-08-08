@@ -34,8 +34,8 @@ public class _Super_Item extends flash.events.EventDispatcher implements com.ado
 
     model_internal static function initRemoteClassAliasAllRelated() : void
     {
-        valueObjects.Media_thumbnail.initRemoteClassAliasSingleChild();
         valueObjects.Guid.initRemoteClassAliasSingleChild();
+        valueObjects.Media_thumbnail.initRemoteClassAliasSingleChild();
     }
 
     model_internal var _dminternal_model : _ItemEntityMetadata;
@@ -55,8 +55,6 @@ public class _Super_Item extends flash.events.EventDispatcher implements com.ado
     /**
      * properties
      */
-    private var _internal_media_title : String;
-    private var _internal_media_thumbnail : valueObjects.Media_thumbnail;
     private var _internal_dc_date : String;
     private var _internal_media_embed : Object;
     private var _internal_author_flair_css_class : Object;
@@ -91,6 +89,8 @@ public class _Super_Item extends flash.events.EventDispatcher implements com.ado
     private var _internal_guid : valueObjects.Guid;
     private var _internal_pubDate : String;
     private var _internal_description : String;
+    private var _internal_media_title : String;
+    private var _internal_media_thumbnail : valueObjects.Media_thumbnail;
 
     private static var emptyArray:Array = new Array();
 
@@ -109,8 +109,6 @@ public class _Super_Item extends flash.events.EventDispatcher implements com.ado
         _model = new _ItemEntityMetadata(this);
 
         // Bind to own data or source properties for cache invalidation triggering
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "media_title", model_internal::setterListenerMedia_title));
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "media_thumbnail", model_internal::setterListenerMedia_thumbnail));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "dc_date", model_internal::setterListenerDc_date));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "media_embed", model_internal::setterListenerMedia_embed));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "author_flair_css_class", model_internal::setterListenerAuthor_flair_css_class));
@@ -134,24 +132,14 @@ public class _Super_Item extends flash.events.EventDispatcher implements com.ado
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "guid", model_internal::setterListenerGuid));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "pubDate", model_internal::setterListenerPubDate));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "description", model_internal::setterListenerDescription));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "media_title", model_internal::setterListenerMedia_title));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "media_thumbnail", model_internal::setterListenerMedia_thumbnail));
 
     }
 
     /**
      * data/source property getters
      */
-
-    [Bindable(event="propertyChange")]
-    public function get media_title() : String
-    {
-        return _internal_media_title;
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get media_thumbnail() : valueObjects.Media_thumbnail
-    {
-        return _internal_media_thumbnail;
-    }
 
     [Bindable(event="propertyChange")]
     public function get dc_date() : String
@@ -357,6 +345,18 @@ public class _Super_Item extends flash.events.EventDispatcher implements com.ado
         return _internal_description;
     }
 
+    [Bindable(event="propertyChange")]
+    public function get media_title() : String
+    {
+        return _internal_media_title;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get media_thumbnail() : valueObjects.Media_thumbnail
+    {
+        return _internal_media_thumbnail;
+    }
+
     public function clearAssociations() : void
     {
     }
@@ -364,26 +364,6 @@ public class _Super_Item extends flash.events.EventDispatcher implements com.ado
     /**
      * data/source property setters
      */
-
-    public function set media_title(value:String) : void
-    {
-        var oldValue:String = _internal_media_title;
-        if (oldValue !== value)
-        {
-            _internal_media_title = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "media_title", oldValue, _internal_media_title));
-        }
-    }
-
-    public function set media_thumbnail(value:valueObjects.Media_thumbnail) : void
-    {
-        var oldValue:valueObjects.Media_thumbnail = _internal_media_thumbnail;
-        if (oldValue !== value)
-        {
-            _internal_media_thumbnail = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "media_thumbnail", oldValue, _internal_media_thumbnail));
-        }
-    }
 
     public function set dc_date(value:String) : void
     {
@@ -725,6 +705,26 @@ public class _Super_Item extends flash.events.EventDispatcher implements com.ado
         }
     }
 
+    public function set media_title(value:String) : void
+    {
+        var oldValue:String = _internal_media_title;
+        if (oldValue !== value)
+        {
+            _internal_media_title = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "media_title", oldValue, _internal_media_title));
+        }
+    }
+
+    public function set media_thumbnail(value:valueObjects.Media_thumbnail) : void
+    {
+        var oldValue:valueObjects.Media_thumbnail = _internal_media_thumbnail;
+        if (oldValue !== value)
+        {
+            _internal_media_thumbnail = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "media_thumbnail", oldValue, _internal_media_thumbnail));
+        }
+    }
+
     /**
      * Data/source property setter listeners
      *
@@ -736,16 +736,6 @@ public class _Super_Item extends flash.events.EventDispatcher implements com.ado
      *  - the validity of the property (and the containing entity) if the given data property has a length restriction.
      *  - the validity of the property (and the containing entity) if the given data property is required.
      */
-
-    model_internal function setterListenerMedia_title(value:flash.events.Event):void
-    {
-        _model.invalidateDependentOnMedia_title();
-    }
-
-    model_internal function setterListenerMedia_thumbnail(value:flash.events.Event):void
-    {
-        _model.invalidateDependentOnMedia_thumbnail();
-    }
 
     model_internal function setterListenerDc_date(value:flash.events.Event):void
     {
@@ -862,6 +852,16 @@ public class _Super_Item extends flash.events.EventDispatcher implements com.ado
         _model.invalidateDependentOnDescription();
     }
 
+    model_internal function setterListenerMedia_title(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnMedia_title();
+    }
+
+    model_internal function setterListenerMedia_thumbnail(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnMedia_thumbnail();
+    }
+
 
     /**
      * valid related derived properties
@@ -883,16 +883,6 @@ public class _Super_Item extends flash.events.EventDispatcher implements com.ado
         var validationFailureMessages:Array = new Array();
 
         var propertyValidity:Boolean = true;
-        if (!_model.media_titleIsValid)
-        {
-            propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_media_titleValidationFailureMessages);
-        }
-        if (!_model.media_thumbnailIsValid)
-        {
-            propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_media_thumbnailValidationFailureMessages);
-        }
         if (!_model.dc_dateIsValid)
         {
             propertyValidity = false;
@@ -1008,6 +998,16 @@ public class _Super_Item extends flash.events.EventDispatcher implements com.ado
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_descriptionValidationFailureMessages);
         }
+        if (!_model.media_titleIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_media_titleValidationFailureMessages);
+        }
+        if (!_model.media_thumbnailIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_media_thumbnailValidationFailureMessages);
+        }
 
         model_internal::_cacheInitialized_isValid = true;
         model_internal::invalidConstraints_der = violatedConsts;
@@ -1087,60 +1087,6 @@ public class _Super_Item extends flash.events.EventDispatcher implements com.ado
         }
     }
 
-    model_internal var _doValidationCacheOfMedia_title : Array = null;
-    model_internal var _doValidationLastValOfMedia_title : String;
-
-    model_internal function _doValidationForMedia_title(valueIn:Object):Array
-    {
-        var value : String = valueIn as String;
-
-        if (model_internal::_doValidationCacheOfMedia_title != null && model_internal::_doValidationLastValOfMedia_title == value)
-           return model_internal::_doValidationCacheOfMedia_title ;
-
-        _model.model_internal::_media_titleIsValidCacheInitialized = true;
-        var validationFailures:Array = new Array();
-        var errorMessage:String;
-        var failure:Boolean;
-
-        var valRes:ValidationResult;
-        if (_model.isMedia_titleAvailable && _internal_media_title == null)
-        {
-            validationFailures.push(new ValidationResult(true, "", "", "media_title is required"));
-        }
-
-        model_internal::_doValidationCacheOfMedia_title = validationFailures;
-        model_internal::_doValidationLastValOfMedia_title = value;
-
-        return validationFailures;
-    }
-    
-    model_internal var _doValidationCacheOfMedia_thumbnail : Array = null;
-    model_internal var _doValidationLastValOfMedia_thumbnail : valueObjects.Media_thumbnail;
-
-    model_internal function _doValidationForMedia_thumbnail(valueIn:Object):Array
-    {
-        var value : valueObjects.Media_thumbnail = valueIn as valueObjects.Media_thumbnail;
-
-        if (model_internal::_doValidationCacheOfMedia_thumbnail != null && model_internal::_doValidationLastValOfMedia_thumbnail == value)
-           return model_internal::_doValidationCacheOfMedia_thumbnail ;
-
-        _model.model_internal::_media_thumbnailIsValidCacheInitialized = true;
-        var validationFailures:Array = new Array();
-        var errorMessage:String;
-        var failure:Boolean;
-
-        var valRes:ValidationResult;
-        if (_model.isMedia_thumbnailAvailable && _internal_media_thumbnail == null)
-        {
-            validationFailures.push(new ValidationResult(true, "", "", "media_thumbnail is required"));
-        }
-
-        model_internal::_doValidationCacheOfMedia_thumbnail = validationFailures;
-        model_internal::_doValidationLastValOfMedia_thumbnail = value;
-
-        return validationFailures;
-    }
-    
     model_internal var _doValidationCacheOfDc_date : Array = null;
     model_internal var _doValidationLastValOfDc_date : String;
 
@@ -1758,6 +1704,60 @@ public class _Super_Item extends flash.events.EventDispatcher implements com.ado
 
         model_internal::_doValidationCacheOfDescription = validationFailures;
         model_internal::_doValidationLastValOfDescription = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfMedia_title : Array = null;
+    model_internal var _doValidationLastValOfMedia_title : String;
+
+    model_internal function _doValidationForMedia_title(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfMedia_title != null && model_internal::_doValidationLastValOfMedia_title == value)
+           return model_internal::_doValidationCacheOfMedia_title ;
+
+        _model.model_internal::_media_titleIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isMedia_titleAvailable && _internal_media_title == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "media_title is required"));
+        }
+
+        model_internal::_doValidationCacheOfMedia_title = validationFailures;
+        model_internal::_doValidationLastValOfMedia_title = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfMedia_thumbnail : Array = null;
+    model_internal var _doValidationLastValOfMedia_thumbnail : valueObjects.Media_thumbnail;
+
+    model_internal function _doValidationForMedia_thumbnail(valueIn:Object):Array
+    {
+        var value : valueObjects.Media_thumbnail = valueIn as valueObjects.Media_thumbnail;
+
+        if (model_internal::_doValidationCacheOfMedia_thumbnail != null && model_internal::_doValidationLastValOfMedia_thumbnail == value)
+           return model_internal::_doValidationCacheOfMedia_thumbnail ;
+
+        _model.model_internal::_media_thumbnailIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isMedia_thumbnailAvailable && _internal_media_thumbnail == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "media_thumbnail is required"));
+        }
+
+        model_internal::_doValidationCacheOfMedia_thumbnail = validationFailures;
+        model_internal::_doValidationLastValOfMedia_thumbnail = value;
 
         return validationFailures;
     }

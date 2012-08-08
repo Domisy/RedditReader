@@ -36,12 +36,12 @@ public class _Super_Channel extends flash.events.EventDispatcher implements com.
 
     model_internal static function initRemoteClassAliasAllRelated() : void
     {
-        valueObjects.Item.initRemoteClassAliasSingleChild();
-        valueObjects.Media_thumbnail.initRemoteClassAliasSingleChild();
-        valueObjects.Guid.initRemoteClassAliasSingleChild();
         valueObjects.Data.initRemoteClassAliasSingleChild();
         valueObjects.Children.initRemoteClassAliasSingleChild();
         valueObjects.Image.initRemoteClassAliasSingleChild();
+        valueObjects.Item.initRemoteClassAliasSingleChild();
+        valueObjects.Guid.initRemoteClassAliasSingleChild();
+        valueObjects.Media_thumbnail.initRemoteClassAliasSingleChild();
     }
 
     model_internal var _dminternal_model : _ChannelEntityMetadata;
@@ -64,14 +64,14 @@ public class _Super_Channel extends flash.events.EventDispatcher implements com.
     private var _internal_copyright : String;
     private var _internal_language : String;
     private var _internal_lastBuildDate : String;
-    private var _internal_item : ArrayCollection;
-    model_internal var _internal_item_leaf:valueObjects.Item;
     private var _internal_data : valueObjects.Data;
     private var _internal_kind : String;
     private var _internal_title : String;
     private var _internal_link : String;
     private var _internal_description : String;
     private var _internal_image : valueObjects.Image;
+    private var _internal_item : ArrayCollection;
+    model_internal var _internal_item_leaf:valueObjects.Item;
 
     private static var emptyArray:Array = new Array();
 
@@ -91,13 +91,13 @@ public class _Super_Channel extends flash.events.EventDispatcher implements com.
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "copyright", model_internal::setterListenerCopyright));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "language", model_internal::setterListenerLanguage));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "lastBuildDate", model_internal::setterListenerLastBuildDate));
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "item", model_internal::setterListenerItem));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "data", model_internal::setterListenerData));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "kind", model_internal::setterListenerKind));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "title", model_internal::setterListenerTitle));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "link", model_internal::setterListenerLink));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "description", model_internal::setterListenerDescription));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "image", model_internal::setterListenerImage));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "item", model_internal::setterListenerItem));
 
     }
 
@@ -121,12 +121,6 @@ public class _Super_Channel extends flash.events.EventDispatcher implements com.
     public function get lastBuildDate() : String
     {
         return _internal_lastBuildDate;
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get item() : ArrayCollection
-    {
-        return _internal_item;
     }
 
     [Bindable(event="propertyChange")]
@@ -165,6 +159,12 @@ public class _Super_Channel extends flash.events.EventDispatcher implements com.
         return _internal_image;
     }
 
+    [Bindable(event="propertyChange")]
+    public function get item() : ArrayCollection
+    {
+        return _internal_item;
+    }
+
     public function clearAssociations() : void
     {
     }
@@ -200,31 +200,6 @@ public class _Super_Channel extends flash.events.EventDispatcher implements com.
         {
             _internal_lastBuildDate = value;
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "lastBuildDate", oldValue, _internal_lastBuildDate));
-        }
-    }
-
-    public function set item(value:*) : void
-    {
-        var oldValue:ArrayCollection = _internal_item;
-        if (oldValue !== value)
-        {
-            if (value is ArrayCollection)
-            {
-                _internal_item = value;
-            }
-            else if (value is Array)
-            {
-                _internal_item = new ArrayCollection(value);
-            }
-            else if (value == null)
-            {
-                _internal_item = null;
-            }
-            else
-            {
-                throw new Error("value of item must be a collection");
-            }
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "item", oldValue, _internal_item));
         }
     }
 
@@ -288,6 +263,31 @@ public class _Super_Channel extends flash.events.EventDispatcher implements com.
         }
     }
 
+    public function set item(value:*) : void
+    {
+        var oldValue:ArrayCollection = _internal_item;
+        if (oldValue !== value)
+        {
+            if (value is ArrayCollection)
+            {
+                _internal_item = value;
+            }
+            else if (value is Array)
+            {
+                _internal_item = new ArrayCollection(value);
+            }
+            else if (value == null)
+            {
+                _internal_item = null;
+            }
+            else
+            {
+                throw new Error("value of item must be a collection");
+            }
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "item", oldValue, _internal_item));
+        }
+    }
+
     /**
      * Data/source property setter listeners
      *
@@ -313,18 +313,6 @@ public class _Super_Channel extends flash.events.EventDispatcher implements com.
     model_internal function setterListenerLastBuildDate(value:flash.events.Event):void
     {
         _model.invalidateDependentOnLastBuildDate();
-    }
-
-    model_internal function setterListenerItem(value:flash.events.Event):void
-    {
-        if (value is mx.events.PropertyChangeEvent)
-        {
-            if (mx.events.PropertyChangeEvent(value).newValue)
-            {
-                mx.events.PropertyChangeEvent(value).newValue.addEventListener(mx.events.CollectionEvent.COLLECTION_CHANGE, model_internal::setterListenerItem);
-            }
-        }
-        _model.invalidateDependentOnItem();
     }
 
     model_internal function setterListenerData(value:flash.events.Event):void
@@ -355,6 +343,18 @@ public class _Super_Channel extends flash.events.EventDispatcher implements com.
     model_internal function setterListenerImage(value:flash.events.Event):void
     {
         _model.invalidateDependentOnImage();
+    }
+
+    model_internal function setterListenerItem(value:flash.events.Event):void
+    {
+        if (value is mx.events.PropertyChangeEvent)
+        {
+            if (mx.events.PropertyChangeEvent(value).newValue)
+            {
+                mx.events.PropertyChangeEvent(value).newValue.addEventListener(mx.events.CollectionEvent.COLLECTION_CHANGE, model_internal::setterListenerItem);
+            }
+        }
+        _model.invalidateDependentOnItem();
     }
 
 
@@ -393,11 +393,6 @@ public class _Super_Channel extends flash.events.EventDispatcher implements com.
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_lastBuildDateValidationFailureMessages);
         }
-        if (!_model.itemIsValid)
-        {
-            propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_itemValidationFailureMessages);
-        }
         if (!_model.dataIsValid)
         {
             propertyValidity = false;
@@ -427,6 +422,11 @@ public class _Super_Channel extends flash.events.EventDispatcher implements com.
         {
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_imageValidationFailureMessages);
+        }
+        if (!_model.itemIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_itemValidationFailureMessages);
         }
 
         model_internal::_cacheInitialized_isValid = true;
@@ -584,33 +584,6 @@ public class _Super_Channel extends flash.events.EventDispatcher implements com.
 
         model_internal::_doValidationCacheOfLastBuildDate = validationFailures;
         model_internal::_doValidationLastValOfLastBuildDate = value;
-
-        return validationFailures;
-    }
-    
-    model_internal var _doValidationCacheOfItem : Array = null;
-    model_internal var _doValidationLastValOfItem : ArrayCollection;
-
-    model_internal function _doValidationForItem(valueIn:Object):Array
-    {
-        var value : ArrayCollection = valueIn as ArrayCollection;
-
-        if (model_internal::_doValidationCacheOfItem != null && model_internal::_doValidationLastValOfItem == value)
-           return model_internal::_doValidationCacheOfItem ;
-
-        _model.model_internal::_itemIsValidCacheInitialized = true;
-        var validationFailures:Array = new Array();
-        var errorMessage:String;
-        var failure:Boolean;
-
-        var valRes:ValidationResult;
-        if (_model.isItemAvailable && _internal_item == null)
-        {
-            validationFailures.push(new ValidationResult(true, "", "", "item is required"));
-        }
-
-        model_internal::_doValidationCacheOfItem = validationFailures;
-        model_internal::_doValidationLastValOfItem = value;
 
         return validationFailures;
     }
@@ -773,6 +746,33 @@ public class _Super_Channel extends flash.events.EventDispatcher implements com.
 
         model_internal::_doValidationCacheOfImage = validationFailures;
         model_internal::_doValidationLastValOfImage = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfItem : Array = null;
+    model_internal var _doValidationLastValOfItem : ArrayCollection;
+
+    model_internal function _doValidationForItem(valueIn:Object):Array
+    {
+        var value : ArrayCollection = valueIn as ArrayCollection;
+
+        if (model_internal::_doValidationCacheOfItem != null && model_internal::_doValidationLastValOfItem == value)
+           return model_internal::_doValidationCacheOfItem ;
+
+        _model.model_internal::_itemIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isItemAvailable && _internal_item == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "item is required"));
+        }
+
+        model_internal::_doValidationCacheOfItem = validationFailures;
+        model_internal::_doValidationLastValOfItem = value;
 
         return validationFailures;
     }

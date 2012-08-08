@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		actionBarVisible="false" backgroundColor="#A7CDF1" backgroundAlpha="0.1" tabBarVisible="false">
+	
+	<fx:Script>
+		<![CDATA[
+			import model.RedditFeedModel;
+			
+			import mx.effects.Fade;
+			
+			import spark.effects.Fade;
+			import spark.effects.supportClasses.FadeInstance;
+			import spark.managers.PersistenceManager;
+			import spark.transitions.ViewTransitionBase;
+			
+			import utils.DateUtil;
+			
+			
+			[Bindable] private var redditFeedModel : RedditFeedModel = RedditFeedModel.getInstance();
+			
+			
+			protected function logoutClick(event:MouseEvent):void
+			{
+				currentState = "landscape";
+				redditFeedModel.currentUserInfo = null;
+				redditFeedModel.loggedIn = false;
+				
+				var persistenceManager:PersistenceManager = new PersistenceManager();  
+				persistenceManager.clear();
+				
+				navigator.popView();
+			}
+			
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="landscape"/>
+		<s:State name="portrait"/>
+	</s:states>
+	
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:Group id="userInfoPanel" visible="true" width="738" height="100"
+			 width.landscape="848"
+			 width.portrait="847">
+		<s:Label x="15" y="10" width="321" fontSize="25" text="Welcome, {data}!"/>
+		<s:Button id="logoutButton" x="764" y="29" label="Logout" click="logoutClick(event)"
+				  x.portrait="320" y.portrait="4" height.portrait="35"/>
+		<s:Label x="15" y="43" fontSize="20"
+				 text="{redditFeedModel.currentUserInfo.data.link_karma} link karma"/>
+		<s:Label x="15" y="70" fontSize="20"
+				 text="{redditFeedModel.currentUserInfo.data.comment_karma} comment karma"/>
+		<s:Label x="240" y="43" fontSize="20"
+				 text="redditor since {DateUtil.convertDateToPast(redditFeedModel.currentUserInfo.data.created)}"
+				 x.landscape="267" y.landscape="43"
+				 x.portrait="205" y.portrait="43"/>
+		<s:Label x="240" y="70" fontSize="20"
+				 text="is gold - {redditFeedModel.currentUserInfo.data.is_gold}"
+				 x.landscape="267" y.landscape="70"
+				 x.portrait="205" y.portrait="70"/>
+	</s:Group>
+</s:View>

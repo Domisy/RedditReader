@@ -25,7 +25,7 @@
    <splashscreen>redditReader-Splash.png:redditReader-SplashPortrait.png</splashscreen>
 
    <!--  The permissions requested by your application. -->
-   <!-- <permission>access_shared</permission> -->
+   <permission>access_shared</permission>
    <!-- <permission>record_audio</permission> -->
    <!-- <permission>read_geolocation</permission> -->
    <!-- <permission>use_camera</permission> -->

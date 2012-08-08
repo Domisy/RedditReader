@@ -7,9 +7,10 @@ Features Include:
 - Browse through comments.
 - Allows browsing of subreddits.
 - Search reddit.
-- Login with your account, which will open up the ability to comment and rate posts.
-More obviously to come...
+- Login with your account
+- Upvote and Downvote posts
 
 
 TODO:
-- Add in login support
+- Add comment support
+- Subreddits change to reflect user's favorites

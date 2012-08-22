@@ -89,8 +89,8 @@
 				else if (modelInstance.isSearchResult == true) {
 					jumpDown.visible = false;
 					jumpUp.visible = false;
-					thisItem = modelInstance.currentlySelectedRSSItem;
-					rlink = thisItem.link;
+					thisItem = modelInstance.currentlySelectedRSSItem.data;
+					rlink = thisItem.url;
 				}
 				
 				rtitle = thisItem.title;

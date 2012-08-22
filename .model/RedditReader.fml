@@ -240,6 +240,25 @@
     <property name="data" type="Data" required="true"/>
     <property name="kind" type="string" required="true"/>
   </entity>
+  <entity name="SearchResponse">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Rss</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">RedditFeedGrabber</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getRedditSearch">
+      <item name="propertySpecifier">version,channel</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="version" type="string" required="true"/>
+    <property name="channel" type="Channel" required="true"/>
+  </entity>
   <service name="RedditFeedGrabber">
     <annotation name="ActionScriptGeneration">
       <item name="ServiceType">HTTPMultiService</item>
@@ -278,20 +297,20 @@
       </annotation>
       <parameter name="url" type="string"/>
     </function>
-    <function name="getSubreddits" return-type="Subreddits">
+    <function name="getSubreddits" return-type="Children">
       <annotation name="analyze group">
         <item name="analyzed">true</item>
       </annotation>
       <annotation name="ActionScriptGeneration">
-        <item name="SerializationFilter">com.adobe.serializers.xml.XMLSerializationFilter</item>
+        <item name="SerializationFilter">com.adobe.serializers.json.JSONSerializationFilter</item>
         <item name="method">GET</item>
-        <item name="url">http://www.reddit.com/reddits.xml</item>
+        <item name="url">http://www.reddit.com/reddits/popular.json</item>
       </annotation>
       <annotation name="url group">
-        <item name="completeURL">http://www.reddit.com/reddits.xml</item>
+        <item name="completeURL">http://www.reddit.com/reddits/popular.json</item>
       </annotation>
       <annotation name="ValidProperties">
-        <item name="propertySpecifier">version,channel</item>
+        <item name="propertySpecifier">data,kind</item>
       </annotation>
       <annotation name="Properties">
         <item name="xPath">/</item>
@@ -305,12 +324,12 @@
         <item name="analyzed">true</item>
       </annotation>
       <annotation name="ActionScriptGeneration">
-        <item name="SerializationFilter">com.adobe.serializers.xml.XMLSerializationFilter</item>
+        <item name="SerializationFilter">com.adobe.serializers.json.JSONSerializationFilter</item>
         <item name="method">GET</item>
-        <item name="url">http://www.reddit.com/search.xml</item>
+        <item name="url">http://www.reddit.com/search.json</item>
       </annotation>
       <annotation name="url group">
-        <item name="completeURL">http://www.reddit.com/search.xml</item>
+        <item name="completeURL">http://www.reddit.com/search.json</item>
       </annotation>
       <annotation name="ValidProperties">
         <item name="propertySpecifier">title,link,guid,pubDate,description,media_title,media_thumbnail</item>
@@ -339,11 +358,7 @@
     <annotation name="ActionScriptGeneration">
       <item name="Package">valueObjects</item>
     </annotation>
-    <property name="after" type="string" required="true"/>
-    <property name="before" type="opaque" required="true"/>
-    <property name="children" type="Children[]" required="true"/>
     <property name="cookie" type="string" required="true"/>
-    <property name="modhash" type="string" required="true"/>
     <property name="id" type="string" required="true"/>
     <property name="comment_karma" type="integer" required="true"/>
     <property name="has_mod_mail" type="opaque" required="true"/>
@@ -354,6 +369,10 @@
     <property name="link_karma" type="integer" required="true"/>
     <property name="created_utc" type="double" required="true" default="0"/>
     <property name="has_mail" type="opaque" required="true"/>
+    <property name="after" type="string" required="true"/>
+    <property name="before" type="opaque" required="true"/>
+    <property name="children" type="Children[]" required="true"/>
+    <property name="modhash" type="string" required="true"/>
   </entity>
   <entity name="Guid">
     <annotation name="EntityProperties">
@@ -403,7 +422,7 @@
       <item name="EntityOriginalName">Item</item>
     </annotation>
     <annotation name="service Group">
-      <item name="service">RedditFeedGrabber</item>
+      <item name="service">RedditFeedGrabber,RedditFeedGrabberDummy</item>
     </annotation>
     <annotation name="ServerProperties">
       <item name="IncludeRemoteClass">nonempty</item>
@@ -515,7 +534,7 @@
       <item name="EntityOriginalName">Children</item>
     </annotation>
     <annotation name="service Group">
-      <item name="service">RedditFeedGrabber,RedditJson</item>
+      <item name="service">RedditFeedGrabber,RedditJson,RedditFeedGrabberDummy</item>
     </annotation>
     <annotation name="ServerProperties">
       <item name="IncludeRemoteClass">nonempty</item>
@@ -529,26 +548,10 @@
     <annotation name="redditUserInfo">
       <item name="propertySpecifier">data,kind</item>
     </annotation>
+    <annotation name="getSubreddits">
+      <item name="propertySpecifier">data,kind</item>
+    </annotation>
     <property name="data" type="Data" required="true"/>
     <property name="kind" type="string" required="true"/>
-  </entity>
-  <entity name="SearchResponse">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">Rss</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">RedditFeedGrabber</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="getRedditSearch">
-      <item name="propertySpecifier">version,channel</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <property name="version" type="string" required="true"/>
-    <property name="channel" type="Channel" required="true"/>
   </entity>
 </model>

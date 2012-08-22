@@ -76,7 +76,7 @@ package renderers
 		
         override public function set data(value : Object) : void
         {
-            super.data = value;
+            super.data = value; 
 			//var ups:int = value.data.ups - value.data.downs;
 			//var votes:String = String(ups);
 			var date:String = DateUtil.convertDateToPast(value.data.created);
@@ -148,6 +148,7 @@ package renderers
 			labelDisplay.height = 30;
             labelDisplay.addEventListener(MouseEvent.CLICK, labelClickHandler);
 			labelDisplay.setStyle("fontSize", "20");
+			
 			
 			addEventListener(MouseEvent.CLICK, backdropClickHandler);
             // create any additional children for your item renderer here
@@ -282,7 +283,7 @@ package renderers
 			theImage.y = 7.5;
 			theImage.scaleMode = BitmapFillMode.SCALE;
             labelDisplay.x = 90;
-			labelDisplay.y = 7.5;
+			labelDisplay.y = 7.5; 
 			labelDisplay.width = unscaledWidth - (voteButton.width + theImage.width + 50);
 			
 			messageLabel.x = 92;

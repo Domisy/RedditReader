@@ -29,7 +29,9 @@
 				var persistenceManager:PersistenceManager = new PersistenceManager();  
 				persistenceManager.clear();
 				
+				redditFeedModel.subredditList.redditList_creationCompleteHandler(null); //clear user's subscriptions from subreddit list.
 				navigator.popView();
+				
 			}
 			
 		]]>

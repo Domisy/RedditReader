@@ -83,6 +83,7 @@
 			
 			protected function userInfoRetrieved(event:ResultEvent):void
 			{
+				redditFeedModel.subredditList.userLoaded();
 				redditFeedModel.currentUserInfo = redditJsonResult.lastResult;
 				navigator.pushView(UserInfoView, username);
 			}
@@ -96,6 +97,8 @@
 					var savedDataPass:Object = loadManager.getProperty("passwd");
 					var savedDictionary:Object = loadManager.getProperty("dictionary");
 					if(savedData && savedDataPass) {
+						userField.enabled = false;
+						passField.enabled = false;
 						username = savedData.toString();
 						var tempPasswd:String = savedDataPass.toString();
 						button_clickHandler(event, username, tempPasswd);

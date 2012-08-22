@@ -26,6 +26,7 @@ package model
 		public var isSearchResult:Boolean = false;
 		[Bindable] public var loggedIn:Boolean = false;
 		[Bindable] public var splitViewEnabled:Boolean = true;
+		public var currentSub:String = "r/all/";
 		
 		public var voteLabelDictionary:Object = {};
 		public var voteDictionary:Object = {}; 

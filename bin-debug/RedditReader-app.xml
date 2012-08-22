@@ -266,8 +266,4 @@
         <requestedDisplayResolution>high</requestedDisplayResolution>
     </iPhone>
 
-<extensions>
-        <extensionID>qnx.system.QNXDevice</extensionID>
-        <extensionID>qnx.fuse.ui.skins.QNXSkins</extensionID>
-    </extensions>
 </application>

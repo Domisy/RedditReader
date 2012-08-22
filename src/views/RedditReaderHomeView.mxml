@@ -70,9 +70,11 @@
 			
 			protected function initializeHandler(event:FlexEvent):void
 			{
-				QNXApplication.qnxApplication.addEventListener(QNXApplicationEvent.SWIPE_DOWN, onSwipeDown);
+				CONFIG::device {
+					QNXApplication.qnxApplication.addEventListener(QNXApplicationEvent.SWIPE_DOWN, onSwipeDown);
+					NativeApplication.nativeApplication.addEventListener(Event.EXITING, applicationExitHandler);
+				}
 				this.addEventListener("voteButtonClicked", onSwipeDown);
-				NativeApplication.nativeApplication.addEventListener(Event.EXITING, applicationExitHandler);
 			}
 			
 			protected function applicationExitHandler(event:Event):void

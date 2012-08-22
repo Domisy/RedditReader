@@ -3,8 +3,10 @@
  * Charities must pay 1 billion dollars. 
  * License is WTFYW 2.0
  * */
+//For use in Reddit in Motion
 
 //Added a dispose method on line 129
+//Recently changed to StageWebView from QNXStageWebView
 
 package utils  {
 	
@@ -374,12 +376,12 @@ package utils  {
 			value ? takeSnapshot() : removeSnapshot();
 		}
 		
-		private var _webView:QNXStageWebView;
+		private var _webView:StageWebView;
 		
 		/**
 		 * @private
 		 * */
-		public function get webView():QNXStageWebView {
+		public function get webView():StageWebView {
 			return _webView;
 		}
 		
@@ -387,7 +389,7 @@ package utils  {
 		 * @copy flash.media.StageWebView
 		 * */
 		[Bindable]
-		public function set webView(value:QNXStageWebView):void {
+		public function set webView(value:StageWebView):void {
 			_webView = value;
 			
 			if (!_webView.stage && stage) {
@@ -540,8 +542,8 @@ package utils  {
 			
 			// create webview
 			if (!webView) {
-				//webView = new StageWebView();
-				webView = new qnx.media.QNXStageWebView();
+				webView = new StageWebView();
+				//webView = new qnx.media.QNXStageWebView();
 				webView.addEventListener(Event.COMPLETE, completeHandler);
 				webView.addEventListener(ErrorEvent.ERROR, errorHandler);
 				webView.addEventListener(FocusEvent.FOCUS_IN, focusInViewHandler);

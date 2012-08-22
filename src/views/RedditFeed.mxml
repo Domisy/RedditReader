@@ -25,7 +25,7 @@
 			import mx.events.CollectionEvent;
 			import mx.rpc.events.ResultEvent;
 			
-			import qnx.fuse.ui.buttons.SegmentedControl;
+			import qnx.ui.buttons.SegmentedControl;
 			import qnx.ui.data.DataProvider;
 			import qnx.ui.data.IDataProvider;
 			
@@ -52,7 +52,7 @@
 			//VARIABLES
 			private var modelInstance : RedditFeedModel;
 			private var theJsonResponse : Object;
-			public var segControl:SegmentedControl = new SegmentedControl();
+			//public var segControl:SegmentedControl = new SegmentedControl();
 			
 			
 			override public function set data(value : Object) : void
@@ -64,12 +64,17 @@
 			
 			protected function httpservice1_resultHandler(event : ResultEvent) : void
 			{
-				trace("Result: " + event.result);
+				errorMessage.visible = false;
+				
+				busyOff(null);
 				theJsonResponse = JSON.parse(event.result as String);
 				
 				myListDP = new ArrayCollection(theJsonResponse.data.children);
 				modelInstance.currentFeedList = myListDP;
 				
+				if (feedList.dataProvider.length == 0) {
+					errorMessage.visible = true;
+				}
 			}
 			
 			protected function fixEntityReferences(event:CollectionEvent):void
@@ -114,14 +119,23 @@
 			
 			public function refreshList():void
 			{
-				changeSub(subUrl);
+				busyOn();
+				redditJsonService.send();				
 			}
 			
 			public function changeSub(url:String):void
 			{
 				busyOn();
-				redditJsonService.addEventListener(ResultEvent.RESULT, busyOff);
 				subUrl = url;
+				modelInstance.voteLabelDictionary = {};
+				redditJsonService.send();
+				radiogroup1.selectedValue = "What's Hot";
+			}
+			
+			public function changeSubCategory(url:String):void
+			{
+				busyOn();
+				subUrl = modelInstance.currentSub + url;
 				modelInstance.voteLabelDictionary = {};
 				redditJsonService.send();
 			}
@@ -131,17 +145,17 @@
 				switch(whichButt)
 				{
 					case 0: {
-						changeSub("new/");
+						changeSubCategory("new/");
 						subUrl = "new/";
 						break;
 					}
 					case 1: {
-						changeSub("");
+						changeSubCategory("");
 						subUrl = "";
 						break;
 					}
 					case 2: {
-						changeSub("controversial/");
+						changeSubCategory("controversial/");
 						subUrl = "controversial/";
 						break;
 					}
@@ -165,16 +179,16 @@
 				feedList.addEventListener("labelClicked", labelClickedHandler);
 				feedList.addEventListener("backdropClicked", labelClickedHandler);
 				feedList.addEventListener("imageClicked", imageClickedHandler);
-				feedList.addEventListener("voteClicked", voteHandler);
+				//feedList.addEventListener("voteClicked", voteHandler);
 				busyOn();
 				splitViewLoad(event);
 			}
 			
 			protected function splitViewLoad(event:Event):void {
-					segControl.dataProvider = new DataProvider(segData);
-					segControl.height = 42;
-					segControl.selectedIndex = 1;
-					segControl.addEventListener(MouseEvent.CLICK, feedSelect);		
+					//segControl.dataProvider = new DataProvider(segData);
+					//segControl.height = 42;
+					//segControl.selectedIndex = 1;
+					//segControl.addEventListener(MouseEvent.CLICK, feedSelect);		
 			}
 			
 			private function labelClickedHandler(event : EventExtension) : void
@@ -193,10 +207,6 @@
 				navigator.pushView(DetailsView, modelInstance);
 			}
 			
-			private function voteHandler(event:Event):void
-			{
-		
-			}
 		]]>
 	</fx:Script>
 	
@@ -213,8 +223,32 @@
 		<s:HTTPService id="redditJsonService"
 					   result="httpservice1_resultHandler(event)"
 					   url="http://www.reddit.com/{subUrl}.json"/>
+		<s:RadioButtonGroup id="radiogroup1"/>
 	</fx:Declarations>
-	
+	<s:titleContent>
+		<s:Spacer width="150"/>
+		<s:Group>
+			<s:Rect width="100%" height="100%" radiusX="3">
+				<s:stroke>
+					<s:SolidColorStroke color="0x696969" />
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor color="0xFFFFFF"/>
+				</s:fill>
+			</s:Rect>
+			<s:HGroup>
+				<s:RadioButton width="110" height="36" label="New" click="feedSelect(0)"
+							   groupName="radiogroup1" horizontalCenter="0"
+							   skinClass="skins.SegmentedControlSkin"/>
+				<s:RadioButton id="hotSegment" width="115" height="36" label="What's Hot" click="feedSelect(1)"
+							   groupName="radiogroup1" horizontalCenter="0" selected="true"
+							   skinClass="skins.SegmentedControlSkin"/>
+				<s:RadioButton width="125" height="36" label="Controversial" click="feedSelect(2)"
+							   groupName="radiogroup1" horizontalCenter="0"
+							   skinClass="skins.SegmentedControlSkin"/>
+			</s:HGroup>
+		</s:Group>
+	</s:titleContent>
 
 	
 	<s:List width="100%" height="100%"
@@ -223,7 +257,9 @@
 			itemRenderer="renderers.BaseListRenderer"
 			creationComplete="feedList_creationCompleteHandler(event)">
 	</s:List>
-
+	<s:Label id="errorMessage" fontSize="20" horizontalCenter="0" verticalCenter="0" 
+			 text="there doesn't seem to be anything here" color="0xFF4500" visible="false"/>
+	
 	<s:BusyIndicator id="throbber" includeIn="landscape" visible="{busyBool}" width="60" height="60"
 					 horizontalCenter="0" verticalCenter="-6"/>
 	<s:BusyIndicator id="throbberPortrait" visible="{busyBool}" includeIn="portrait" width="60" height="60" horizontalCenter="0"

@@ -10,14 +10,16 @@ import mx.rpc.AbstractOperation;
 import mx.rpc.AsyncToken;
 import mx.rpc.http.HTTPMultiService;
 import mx.rpc.http.Operation;
+import valueObjects.Children;
 import valueObjects.Item;
-import valueObjects.Subreddits;
 
+import com.adobe.serializers.json.JSONSerializationFilter;
 import com.adobe.serializers.xml.XMLSerializationFilter;
 
 [ExcludeClass]
 internal class _Super_RedditFeedGrabber extends com.adobe.fiber.services.wrapper.HTTPServiceWrapper
 {
+    private static var serializer1:JSONSerializationFilter = new JSONSerializationFilter();
     private static var serializer0:XMLSerializationFilter = new XMLSerializationFilter();
 
     // Constructor
@@ -42,20 +44,20 @@ internal class _Super_RedditFeedGrabber extends com.adobe.fiber.services.wrapper
          operations.push(operation);
 
          operation = new mx.rpc.http.Operation(null, "getSubreddits");
-         operation.url = "http://www.reddit.com/reddits.xml";
+         operation.url = "http://www.reddit.com/reddits/popular.json";
          operation.method = "GET";
-         operation.serializationFilter = serializer0;
+         operation.serializationFilter = serializer1;
          operation.properties = new Object();
          operation.properties["xPath"] = "/";
-         operation.resultType = valueObjects.Subreddits;
+         operation.resultType = valueObjects.Children;
          operations.push(operation);
 
          operation = new mx.rpc.http.Operation(null, "getRedditSearch");
-         operation.url = "http://www.reddit.com/search.xml";
+         operation.url = "http://www.reddit.com/search.json";
          operation.method = "GET";
          argsArray = new Array("q");
          operation.argumentNames = argsArray;         
-         operation.serializationFilter = serializer0;
+         operation.serializationFilter = serializer1;
          operation.properties = new Object();
          operation.properties["xPath"] = "/::channel/::item";
          operation.resultElementType = valueObjects.Item;

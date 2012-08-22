@@ -21,19 +21,17 @@
 			import flash.sampler.Sample;
 			import flash.text.TextFieldAutoSize;
 			import flash.text.TextFieldType;
-			import flash.ui.Keyboard;
+			import flash.ui.Keyboard; 
 			
 			import model.RedditFeedModel;
 			
 			import mx.binding.utils.BindingUtils;
+			import mx.collections.ArrayCollection;
 			import mx.events.CollectionEvent;
 			import mx.events.FlexEvent;
 			import mx.events.IndexChangedEvent;
 			import mx.events.ItemClickEvent;
 			import mx.rpc.events.ResultEvent;
-			
-			//import qnx.events.VirtualKeyboardEvent;
-			import qnx.pps.*;
 			
 			import spark.components.Application;
 			import spark.components.NavigatorContent;
@@ -51,11 +49,17 @@
 			//BINDABLES
 			[Bindable] public var rlink:String;
 			[Bindable] public var searchLink:String;
+			[Bindable] private var myListDP : ArrayCollection;
+			[Bindable] private var mySearchListDP : ArrayCollection;
 			
 			//VARIABLES
 			private var modelInstance : RedditFeedModel;
-			//private var ppsItemm:PPS = new PPS;
-			//private var imf:VirtualKeyboardEvent;
+			private var theJsonResponse : Object;
+			private var allItem:Object = 
+				{data:
+					{title: "All",
+					public_description:"",
+					url:"/r/all/"}};
 			
 			
 			override public function set data(value:Object) : void
@@ -69,18 +73,15 @@
 			
 			public function list_clickHandler(event:IndexChangeEvent):void {
 				var RSSItem:Object = redditList.dataProvider.getItemAt(event.newIndex);
-				var thisItem:Item = RSSItem as Item;
-				rlink = thisItem.link;
+				rlink = RSSItem.data.url;
 				var moddedLink:String = rlink.slice(1, int.MAX_VALUE);		
 				var rrhv : RedditReaderHomeView = parentDocument as RedditReaderHomeView;
 				if (modelInstance.detailsView && modelInstance.detailsView.navigator && modelInstance.detailsView.navigator.activeView is DetailsView)
 				{
 					modelInstance.detailsView.navigator.popView();
 				}
+				modelInstance.currentSub = moddedLink;
 				modelInstance.redditFeed.changeSub(moddedLink);
-				
-				//Set the segmentedContol component selection to null somehow....
-				//((parentDocument as RedditReaderHomeView).redditFeedNav.getElementAt(0) as RedditFeed).segControl.re();
 			}
 
 			
@@ -107,19 +108,17 @@
 				}
 			}
 			
-			private function hideKeyboard():void
+			private function hideKeyboard():void 
 			{
-				//IMFConnection.imfConnection.hideInput();
-				stage.focus = null;
+				stage.focus = null; //hides the keyboard somehow
 			}
 			
 			
 			
-			protected function redditList_creationCompleteHandler(event:FlexEvent):void
+			public function redditList_creationCompleteHandler(event:FlexEvent):void
 			{
-				
-				getSubredditsResult.token = redditFeedGrabber.getSubreddits();
-				getSubredditsResult.addEventListener(ResultEvent.RESULT,busyOff);
+				busyOn();
+				subRedditJsonService.send();
 			}
 
 			
@@ -127,8 +126,9 @@
 			protected function qTextInput_changeHandler(event:TextOperationEvent):void
 			{
 				if (qTextInput.text == "") {
-					redditSearchList.visible = false;
-					redditSearchList.dataProvider.removeAll();
+					errorMessage.visible = false;
+					searchList.visible = false;
+					searchList.dataProvider.removeAll();
 					redditList.visible = true;
 					subThrobber.visible = false;
 				}
@@ -143,7 +143,7 @@
 			{
 				modelInstance.isSearchResult = true;
 				modelInstance.isPic = false;
-				modelInstance.currentlySelectedRSSItem = event.target.selectedItem as Item;
+				modelInstance.currentlySelectedRSSItem = event.target.selectedItem;
 				//modelInstance.currentlySelectedRSSItem = redditSearchList.dataProvider.getItemAt(event.newIndex) as Item;
 				modelInstance.redditFeed.navigator.pushView(DetailsView, modelInstance);
 			}
@@ -152,7 +152,7 @@
 			
 			protected function fixEntityReferences(event:CollectionEvent):void
 			{
-				redditSearchList.labelFunction = replaceEntity;
+				searchList.labelFunction = replaceEntity;
 				function replaceEntity(item:Item):String
 				{
 					var p1:RegExp = /(-)/ig; //perhaps add more here later
@@ -167,7 +167,6 @@
 			protected function subView_initializeHandler(event:FlexEvent):void
 			{
 				qTextInput.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-				
 			}
 			
 			
@@ -178,11 +177,41 @@
 				{
 					busyOn();
 					hideKeyboard();
-					redditSearchList.visible = true;
+					searchList.visible = true;
 					redditList.visible = false;
-					getRedditSearchResult.token = redditFeedGrabber.getRedditSearch(qTextInput.text);
-					getRedditSearchResult.addEventListener(ResultEvent.RESULT,busyOff);
+					var variables:URLVariables = new URLVariables();
+					variables.q = qTextInput.text;
+					searchRedditJsonService.send(variables);
 				}
+			}
+			
+			private function httpservice1_resultHandler(event:ResultEvent):void {
+				busyOff(null);
+				theJsonResponse = JSON.parse(event.result as String);
+				var tempDP:ArrayCollection = new ArrayCollection(theJsonResponse.data.children);
+				tempDP.addItemAt(allItem, 0);
+				myListDP = tempDP;
+				redditList.selectedIndex = 0;
+			}
+			
+			private function search_resultHandler(event:ResultEvent):void {
+				errorMessage.visible = false;
+				busyOff(null);
+				theJsonResponse = JSON.parse(event.result as String);
+				var tempDP:ArrayCollection = new ArrayCollection(theJsonResponse.data.children);
+				mySearchListDP = tempDP;
+				if (searchList.dataProvider.length == 0) {
+					errorMessage.visible = true;
+				}
+			}
+	
+			
+			public function userLoaded():void 
+			{
+				busyOn();
+				var cookieHeader:URLRequestHeader = new URLRequestHeader("Cookie", "reddit_session=" + modelInstance.cookie); 
+				userSubRedditJsonService.headers = [cookieHeader];
+				userSubRedditJsonService.send();
 			}
 		]]>
 	</fx:Script>
@@ -190,10 +219,15 @@
 		
 	
 	<fx:Declarations>
-		<redditfeedgrabber:RedditFeedGrabber id="redditFeedGrabber"/>
-		<s:CallResponder id="getRedditSearchResult"/>
-		<s:CallResponder id="getSubredditsResult"/>
-	<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:HTTPService id="subRedditJsonService"
+					   result="httpservice1_resultHandler(event)"
+					   url="http://www.reddit.com/reddits/popular.json"/>
+		<s:HTTPService id="userSubRedditJsonService"
+					   result="httpservice1_resultHandler(event)"
+					   url="http://www.reddit.com/reddits/mine/subscriber.json"/>
+		<s:HTTPService id="searchRedditJsonService"
+					   result="search_resultHandler(event)"
+					   url="http://www.reddit.com/search.json"/>
 	</fx:Declarations>
 	
 	
@@ -205,22 +239,20 @@
 	
 	
 	
-	<s:List id="redditList" x="0" y="0" width="100%" height="100%"
-			creationComplete="redditList_creationCompleteHandler(event)" labelField="title"
-			change="{list_clickHandler(event)}">
-		<s:AsyncListView list="{TypeUtility.convertToCollection(getSubredditsResult.lastResult.channel.item)}"/>
+	<s:List id="redditList" x="0" y="0" width="100%" height="100%" selectionColor="0xFF7F2A"
+			creationComplete="redditList_creationCompleteHandler(event)" itemRenderer="renderers.SubListRenderer"
+			change="{list_clickHandler(event)}" dataProvider="{myListDP}">
 	</s:List>
 	
 	
-	<s:List id="redditSearchList" visible="false" width="100%" height="100%" 
-			labelField="title"
+	<s:List id="searchList" visible="false" width="100%" height="100%" selectionColor="0xFF7F2A"
+			dataProvider="{mySearchListDP}" itemRenderer="renderers.SubListRenderer" 
 			change="redditSearchList_changeHandler(event)">
-		<s:AsyncListView list="{getRedditSearchResult.lastResult}" 
-						 collectionChange="fixEntityReferences(event)" />
 	</s:List>
+	<s:Label id="errorMessage" fontSize="20" horizontalCenter="0" verticalCenter="-6" textAlign="center" 
+			 text="nothing was found" color="0xFF4500" visible="false"/>
 	
 	
 	<s:BusyIndicator id="subThrobber" visible="true" verticalCenter="-6" x="130"  width="40" height="40"/>
-<!--y="210"-->
 	
 </s:View>

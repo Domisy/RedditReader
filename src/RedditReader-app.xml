@@ -265,10 +265,5 @@
 		]]></InfoAdditions>
         <requestedDisplayResolution>high</requestedDisplayResolution>
     </iPhone>
-<extensions>
-        <extensionID>qnx.system.QNXDevice</extensionID>
-        <extensionID>qnx.net.QNXNetwork.ane</extensionID>
-        <extensionID>qnx.sensors.QNXSensors</extensionID>
-        <extensionID>qnx.fuse.ui.skins.QNXSkins</extensionID>
-    </extensions>
+
 </application>

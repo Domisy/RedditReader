@@ -9,8 +9,9 @@ Features Include:
 - Search reddit.
 - Login with your account
 - Upvote and Downvote posts
+- Subreddits change to reflect user's favorites
 
 
 TODO:
 - Add comment support
-- Subreddits change to reflect user's favorites
+- Enhance webview experience

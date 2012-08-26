@@ -226,8 +226,8 @@
 		<s:RadioButtonGroup id="radiogroup1"/>
 	</fx:Declarations>
 	<s:titleContent>
-		<s:Spacer width="150"/>
-		<s:Group>
+		<s:Spacer width.landscape="22%" width.portrait="11%"/>
+		<s:Group >
 			<s:Rect width="100%" height="100%" radiusX="3">
 				<s:stroke>
 					<s:SolidColorStroke color="0x696969" />

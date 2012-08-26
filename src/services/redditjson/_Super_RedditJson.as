@@ -30,7 +30,7 @@ internal class _Super_RedditJson extends com.adobe.fiber.services.wrapper.HTTPSe
          var argsArray:Array;
 
          operation = new mx.rpc.http.Operation(null, "redditLogin");
-         operation.url = "http://ssl.reddit.com/api/login/{username}";
+         operation.url = "https://ssl.reddit.com/api/login/{username}";
          operation.method = "POST";
          argsArray = new Array("username","api_type","user","passwd");
          operation.argumentNames = argsArray;         

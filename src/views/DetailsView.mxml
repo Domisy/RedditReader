@@ -3,6 +3,7 @@
 		xmlns:s="library://ns.adobe.com/flex/spark"
 		xmlns:components="com.flexcapacitor.controls.*"
 		xmlns:utils="utils.*"
+		xmlns:classes="classes.*"
 		contentBackgroundAlpha="0" creationComplete="webViewComplete(event)"
 		destructionPolicy="never" title="{rtitle}" viewActivate="getDetails()">
 	
@@ -14,6 +15,12 @@
 			import mx.binding.utils.BindingUtils;
 			import mx.events.FlexEvent;
 			
+			import renderers.BaseListRenderer;
+			
+			import spark.events.DropDownEvent;
+			import spark.layouts.HorizontalLayout;
+			import spark.layouts.VerticalLayout;
+			
 			import valueObjects.Item;
 			
 			import views.RedditFeed;
@@ -22,10 +29,12 @@
 			[Bindable] private var rtitle:String;
 			[Bindable] public var rlink:String;
 			[Bindable] private var redditFeedModel : RedditFeedModel = RedditFeedModel.getInstance();
+			[Bindable] public var newVote:String;
 			
 			//VARIABLES
 			private var modelInstance : RedditFeedModel;
 			private var index:int;
+			
 			
 			
 			override public function set data(value : Object) : void
@@ -37,21 +46,18 @@
 			
 			
 			
-			protected function navigateBack():void
+			protected function navigateBack(back:Boolean):void
 			{
-				//if (backBool == false) {
-					
-					//if (webView.isHistoryBackEnabled == true)
-					//{
-						//webView.historyBack();
-					//}
-					//else disposeWebView();	
-				//}
-				
-				disposeWebView();
+				if (back == true)
+					webView.historyBack();
+				else
+					webView.historyForward();
 			}
 			
-			
+			protected function returnFeed():void
+			{
+				disposeWebView();
+			}
 			
 			protected function disposeWebView():void
 			{
@@ -153,21 +159,168 @@
 				getDetails();
 			}
 			
+			
+			protected function webView_CompleteChangeHandler(event:Event):void
+			{
+				voteCallout.enabled = true;
+				
+				if (webView.isHistoryBackEnabled == true)
+					historyBackButton.enabled = true;
+				else
+					historyBackButton.enabled = false;
+				
+				if (webView.isHistoryForwardEnabled == true)
+					historyForButton.enabled = true;
+				else
+					historyForButton.enabled = false;
+			}
+			
+			protected function calloutextension1_clickHandler(event:MouseEvent):void
+			{
+				webView.takeSnapshot(); 
+			}
+			
+			protected function voteCallout_closeHandler(event:DropDownEvent):void
+			{
+				webView.removeSnapshot();
+			}
+			
+			protected function upButton_clickHandler(event:MouseEvent):void
+			{
+				voteCallout.callout.close();
+				var urlLoader:URLLoader = new URLLoader();
+				
+				var urlRequest:URLRequest = new URLRequest("http://www.reddit.com/api/vote");
+				urlRequest.method = URLRequestMethod.POST;
+				
+				var cookieHeader:URLRequestHeader = new URLRequestHeader("Cookie", "reddit_session=" + redditFeedModel.cookie);
+				urlRequest.requestHeaders = [cookieHeader];
+				
+				var variables:URLVariables = new URLVariables();
+				variables.id = redditFeedModel.currentlySelectedRSSItem.data.name; 
+				variables.dir = "1";
+				variables.uh = redditFeedModel.modhash;
+				urlRequest.data = variables;
+				
+				//urlLoader.addEventListener(Event.COMPLETE, dataLoaded);
+				urlLoader.load(urlRequest);
+				
+				redditFeedModel.voteDictionary[redditFeedModel.currentlySelectedRSSItem.data.name] = 2;
+				var tempVote:int = int(redditFeedModel.currentlySelectedRSSItem.data.score) + 1;
+				redditFeedModel.voteLabelDictionary[redditFeedModel.currentlySelectedRSSItem.data.name] = String(tempVote); 
+				view1_initializeHandler(null);
+			}
+			
+			protected function downButton_clickHandler(event:MouseEvent):void
+			{
+				voteCallout.callout.close();
+				var urlLoader:URLLoader = new URLLoader();
+				
+				var urlRequest:URLRequest = new URLRequest("http://www.reddit.com/api/vote");
+				urlRequest.method = URLRequestMethod.POST;
+				
+				var cookieHeader:URLRequestHeader = new URLRequestHeader("Cookie", "reddit_session=" + redditFeedModel.cookie);
+				urlRequest.requestHeaders = [cookieHeader];
+				
+				var variables:URLVariables = new URLVariables();
+				variables.id = redditFeedModel.currentlySelectedRSSItem.data.name; 
+				variables.dir = "-1";
+				variables.uh = redditFeedModel.modhash;
+				urlRequest.data = variables;
+				
+				//urlLoader.addEventListener(Event.COMPLETE, dataLoaded);
+				urlLoader.load(urlRequest);
+				
+				redditFeedModel.voteDictionary[redditFeedModel.currentlySelectedRSSItem.data.name] = 1;
+				var tempVote:int = int(redditFeedModel.currentlySelectedRSSItem.data.score) - 1;
+				redditFeedModel.voteLabelDictionary[redditFeedModel.currentlySelectedRSSItem.data.name] = String(tempVote); 
+				view1_initializeHandler(null);
+			}
+			
+			protected function view1_initializeHandler(event:Event):void
+			{
+				if (redditFeedModel.voteLabelDictionary[redditFeedModel.currentlySelectedRSSItem.data.name] != null) {
+					voteCallout.label = redditFeedModel.voteLabelDictionary[redditFeedModel.currentlySelectedRSSItem.data.name]
+				}
+				else {newVote = redditFeedModel.currentlySelectedRSSItem.data.score; voteCallout.label = newVote; }
+				
+				if (redditFeedModel.voteDictionary[redditFeedModel.currentlySelectedRSSItem.data.name] != null) {
+					if (redditFeedModel.voteDictionary[redditFeedModel.currentlySelectedRSSItem.data.name] == 2) {voteCallout.setStyle("color", "0xFF5E00")} 
+					else if (redditFeedModel.voteDictionary[redditFeedModel.currentlySelectedRSSItem.data.name] == 1) {voteCallout.setStyle("color", "0x2F83FF")};
+				}
+				else voteCallout.setStyle("color", "0x000000");
+			}
+			
+			protected function webView_locationChangeHandler(event:LocationChangeEvent):void
+			{
+				voteCallout.enabled = false;
+			}
+			
 		]]>
 	</fx:Script>
-	
+	<s:states>
+		<s:State name="landscape"/>
+		<s:State name="portrait"/>
+	</s:states>
 	
 	<s:navigationContent>
-		<s:Button icon="@Embed('assets/images/left_arrow.png')" click="navigateBack()"/>
+		<s:Button click="returnFeed()" icon="@Embed('assets/images/left_arrow.png')"/>
 		<s:Spacer width="8"/>
 		<s:BusyIndicator id="detailsThrobber" visible="true" width="32" height="32"/>			
 	</s:navigationContent>
 	<s:actionContent>
-		<s:Button id="jumpUp" width="54" height="30" icon="assets/Up arrow.png" click="jumpUp_clickHandler(event)"/>
-		<s:Button id="jumpDown" width="54" height="30" icon="assets/Down arrow.png" click="jumpDown_clickHandler(event)"/>
+		<s:Button id="jumpUp" width="54" height="30" click="jumpUp_clickHandler(event)"
+				  icon="assets/Up arrow.png"/>
+		<s:Button id="jumpDown" width="54" height="30" click="jumpDown_clickHandler(event)"
+				  icon="assets/Down arrow.png"/>
 		
 	</s:actionContent>
 	
-	<!--snapshotMode="{redditFeedModel.snapshot}"-->
-	<utils:WebView id="webView" width="100%" height="100%" source="{rlink}" />
-</s:View>
+	<!--Container dimensions landscape: height=555 width=979-->
+	<utils:WebView id="webView" x="0" y="0" width="100%" height.landscape="520" height.portrait="944" locationChange="webView_locationChangeHandler(event)"
+				   complete="webView_CompleteChangeHandler(event)" source="{rlink}"/>
+	<s:Group y.landscape="520" y.portrait="944" width="100%" height="35">
+		<s:Rect width="100%" height="100%">
+			<s:fill>
+				<s:SolidColor color="0xA7CDF1"/>
+			</s:fill>
+		</s:Rect>
+		<s:Rect x="0" y="0" width="100%" height="20">
+			<s:fill>
+				<s:LinearGradient rotation="-90">
+					<s:GradientEntry alpha=".0" color="0x000000" ratio=".9"/>
+					<s:GradientEntry alpha=".1" color="0x000000" ratio=".95"/>
+					<s:GradientEntry alpha=".7" color="0x000000" ratio="1"/>
+				</s:LinearGradient>
+			</s:fill>
+		</s:Rect>
+		<s:HGroup width="100%">
+			<s:Group width="100%" height="100%">
+				
+				<s:Button id="historyBackButton" width="30" height="30" click="navigateBack(true)"
+					  enabled="false" icon="assets/left_arrow.png" y="3" x="15"
+					  skinClass="skins.NoChromeButtonSkin"/>
+				
+				<s:Button id="historyForButton" width="30" height="30" click="navigateBack(false)"
+					  enabled="false" icon="assets/right_arrow.png" y="3" x="65"
+					  skinClass="skins.NoChromeButtonSkin"/>
+			</s:Group>
+			
+		
+			<s:Spacer width="100%"/>
+			<classes:CalloutExtension id="voteCallout" height="35" creationComplete="view1_initializeHandler(event)"
+									  label="{redditFeedModel.currentlySelectedRSSItem.data.score}"
+									  click="calloutextension1_clickHandler(event)"
+									  close="voteCallout_closeHandler(event)" enabled="false"
+									  verticalPosition="before" skinClass="skins.browserVoteButtonSkin">
+				<classes:calloutContent>
+					<s:VGroup>
+						<s:Button id="upButton" icon="assets/thumbsUp.png" click="upButton_clickHandler(event)"/>
+						<s:Button id="downButton" icon="assets/thumbsDown.png" click="downButton_clickHandler(event)"/>
+					</s:VGroup>
+				</classes:calloutContent>
+			</classes:CalloutExtension>
+			<!--<s:Spacer width="0"/>-->
+		</s:HGroup>
+	</s:Group>
+	</s:View>

@@ -52,7 +52,6 @@
 			//VARIABLES
 			private var modelInstance : RedditFeedModel;
 			private var theJsonResponse : Object;
-			//public var segControl:SegmentedControl = new SegmentedControl();
 			
 			
 			override public function set data(value : Object) : void
@@ -109,13 +108,6 @@
 					busyBool = true;
 			}
 
-			public function nullSeg():void   // THIS NEEDS SOME WORK
-			{
-				//segControl.selectedItem = null;
-				//segControl.selectedItem.removeChild();
-			}
-			
-		
 			
 			public function refreshList():void
 			{
@@ -166,7 +158,6 @@
 			
 			protected function feedList_creationCompleteHandler(event : FlexEvent) : void
 			{
-				feedList.addEventListener(ItemClickEvent.ITEM_CLICK, myList_changeHandler);
 				changeSub(subUrl);
 			}		
 			
@@ -174,25 +165,20 @@
 			
 			protected function view_initializeHandler(event:FlexEvent):void
 			{	
+				subUrl = "/r/all/";
 				redditJsonService.send();
 		
 				feedList.addEventListener("labelClicked", labelClickedHandler);
 				feedList.addEventListener("backdropClicked", labelClickedHandler);
 				feedList.addEventListener("imageClicked", imageClickedHandler);
-				//feedList.addEventListener("voteClicked", voteHandler);
 				busyOn();
-				splitViewLoad(event);
 			}
 			
-			protected function splitViewLoad(event:Event):void {
-					//segControl.dataProvider = new DataProvider(segData);
-					//segControl.height = 42;
-					//segControl.selectedIndex = 1;
-					//segControl.addEventListener(MouseEvent.CLICK, feedSelect);		
-			}
 			
 			private function labelClickedHandler(event : EventExtension) : void
 			{
+				modelInstance.lastClickedRenderer = event.target as BaseListRenderer;
+				modelInstance.updateRendererCallback = updateLastClickedRenderer;
 				modelInstance.isPic = false;
 				modelInstance.isSearchResult = false;
 				modelInstance.currentlySelectedRSSItem = event.data;
@@ -201,10 +187,17 @@
 			
 			private function imageClickedHandler(event:EventExtension):void
 			{
+				modelInstance.lastClickedRenderer = event.target as BaseListRenderer;
+				modelInstance.updateRendererCallback = updateLastClickedRenderer; 
 				modelInstance.isPic = true;
 				modelInstance.isSearchResult = false;
 				modelInstance.currentlySelectedRSSItem = event.data;
 				navigator.pushView(DetailsView, modelInstance);
+			}
+			private function updateLastClickedRenderer():void
+			{
+				//Forced refresh of the last clicked renderer using the same data function just resets data
+				modelInstance.lastClickedRenderer.data = modelInstance.lastClickedRenderer.data;
 			}
 			
 		]]>

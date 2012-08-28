@@ -4,11 +4,8 @@ package classes
 	
 	public class NestedList extends List
 	{
-		
 		[Bindable]
 		public var nestedDataField:String;
-		
-		
 		
 		public function NestedList()
 		{

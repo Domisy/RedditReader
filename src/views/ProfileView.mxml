@@ -28,9 +28,9 @@
 			 verticalAlign.portrait="middle"/>
 	<s:Label x="415" y="118" fontSize="36" text="Domisy Dev"
 			 x.portrait="203" y.portrait="256"/>
-	<s:Label id="vnumLabel" x="300" y="522" width="194" height="23" text="Version Number: 2.0.1"
-			 x.landscape="804" y.landscape="522" text.landscape="Version Number: 2.0.1"
-			 x.portrait="396" y.portrait="944" text.portrait="Version Number: 2.0.1"/>
+	<s:Label id="vnumLabel" x="300" y="522" width="194" height="23" text="Version Number: 2.2.0"
+			 x.landscape="804" y.landscape="522"
+			 x.portrait="396" y.portrait="944"/>
 	<s:Label x="383" y="160" text="Lead Developer - Theodore Mavrakis"
 			 x.portrait="171" y.portrait="320"/>
 	<s:Label x="177" y="224" height="30" fontSize="20"
@@ -41,7 +41,7 @@
 			 x.portrait="222" y.portrait="592"/>
 	<s:Label x="404" y="354" text="Email - domisydev@gmail.com"
 			 x.portrait="193" y.portrait="634"/>
-	<s:Label x="435" y="380" text="Twitter - @DomisyDev and @flaminSaganaki"
+	<s:Label horizontalCenter="0" y="380" text="Twitter - @DomisyDev and @flaminSaganaki"
 			 x.portrait="224" y.portrait="660"/>
 	<s:Label x="389" y="404" text="Like us on Facebook - Domisy Dev"
 			 x.portrait="178" y.portrait="684"/>

@@ -3,8 +3,6 @@
 							xmlns:s="library://ns.adobe.com/flex/spark" 
 							firstView="views.RedditReaderHomeView"
 							applicationDPI="160" >
-		
-	
 		<fx:Style>        
 			@namespace s "library://ns.adobe.com/flex/spark";         
 			s|ActionBar        
@@ -16,22 +14,6 @@
 			{            
 				color: #ff653c;            
 				fontSize: 20;                    
-			}
-			
-			                
+			}          
 		</fx:Style>
-	
-	
-	<fx:Script>
-		<![CDATA[
-			import views.RedditFeed;
-						
-		]]>
-	</fx:Script>
-
-	
-	
-
-		
-
 </s:ViewNavigatorApplication>

@@ -3,8 +3,6 @@ package renderers
     import classes.CalloutExtension;
     import classes.EventExtension;
     
-    import flash.display.Bitmap;
-    import flash.events.DataEvent;
     import flash.events.Event;
     import flash.events.MouseEvent;
     import flash.net.URLLoader;
@@ -12,37 +10,24 @@ package renderers
     import flash.net.URLRequestHeader;
     import flash.net.URLRequestMethod;
     import flash.net.URLVariables;
-    import flash.text.TextFormat;
-    import flash.text.engine.FontWeight;
     
     import model.RedditFeedModel;
     
     import mx.graphics.BitmapFillMode;
-    import mx.rpc.events.ResultEvent;
-    import mx.states.State;
-    
-    import services.redditfeedgrabber.RedditFeedGrabber;
     
     import spark.components.Button;
-    import spark.components.Callout;
-    import spark.components.CalloutButton;
     import spark.components.HGroup;
     import spark.components.Image;
     import spark.components.Label;
     import spark.components.LabelItemRenderer;
-    import spark.layouts.HorizontalLayout;
     import spark.layouts.VerticalLayout;
-    import spark.primitives.BitmapImage;
     
     import utils.DateUtil;
-    
-    import views.RedditReaderHomeView;
 
 
     /**
      *
      * ASDoc comments for this item renderer class
-     *
      */
 
 

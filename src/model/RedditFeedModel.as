@@ -2,9 +2,7 @@ package model
 {
     import mx.collections.ArrayCollection;
     
-    import spark.managers.PersistenceManager;
-    
-    import valueObjects.Item;
+    import renderers.BaseListRenderer;
     
     import views.DetailsView;
     import views.RedditFeed;
@@ -13,6 +11,7 @@ package model
 	
     public class RedditFeedModel
     {
+		//can't do true singleton enforcement due to automatic persistence
 		private static var instance:RedditFeedModel = new RedditFeedModel();
 			
 		
@@ -20,36 +19,29 @@ package model
         public var subredditList : SubredditList;
         public var detailsView : DetailsView;
 		public var homeView:RedditReaderHomeView;
-		
-        [Bindable] public var currentlySelectedRSSItem : Object;
 		public var isPic:Boolean;
 		public var isSearchResult:Boolean = false;
-		[Bindable] public var loggedIn:Boolean = false;
-		[Bindable] public var splitViewEnabled:Boolean = true;
 		public var currentSub:String = "r/all/";
-		
 		public var voteLabelDictionary:Object = {};
 		public var voteDictionary:Object = {}; 
+		public var currentFeedList:ArrayCollection;
+		public var lastClickedRenderer:BaseListRenderer;
+		public var updateRendererCallback:Function;
+		
+        [Bindable] public var currentlySelectedRSSItem : Object;
+		[Bindable] public var loggedIn:Boolean = false;
+		[Bindable] public var splitViewEnabled:Boolean = true;
 		
 		[Bindable] public var currentUserInfo : Object;
 		[Bindable] public var isVisible:Boolean = false;
 		[Bindable] public var modhash:String;
 		[Bindable] public var cookie:String;
-		public var currentFeedList:ArrayCollection;
 		
 		public static function getInstance():RedditFeedModel
 		{
 			return instance;
 		}
 		
-		
-        public function RedditFeedModel()
-        {
-			if(instance)
-			{
-				throw new Error ("We cannot create a new instance. Please use Singleton.getInstance()");
-			}
-        }
+        public function RedditFeedModel(){if(instance)throw new Error("There can be only one SINGLETON!")}
     }
 }
-

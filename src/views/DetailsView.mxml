@@ -26,7 +26,7 @@
 			//VARIABLES
 			private var modelInstance : RedditFeedModel;
 			private var index:int;
-			
+			private var removeSnapshotOnClose:Boolean = true;
 			
 			
 			override public function set data(value : Object) : void
@@ -169,12 +169,29 @@
 			
 			protected function calloutextension1_clickHandler(event:MouseEvent):void
 			{
-				webView.takeSnapshot(); 
+				
+				if (redditFeedModel.loggedIn == false) {
+					removeSnapshotOnClose = false;
+					dispatchEvent(new Event("voteButtonClicked", true, false));
+					voteCallout.callout.close();
+				}
+					
+				else {
+					removeSnapshotOnClose = true;
+					webView.takeSnapshot();
+				}
+				//event.stopImmediatePropagation();
+				
 			}
 			
 			protected function voteCallout_closeHandler(event:DropDownEvent):void
 			{
-				webView.removeSnapshot();
+				if (removeSnapshotOnClose == true) {
+					webView.removeSnapshot();
+				}
+				else 
+					null;
+				
 			}
 			
 			protected function upButton_clickHandler(event:MouseEvent):void

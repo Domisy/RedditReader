@@ -28,7 +28,7 @@
 			 verticalAlign.portrait="middle"/>
 	<s:Label x="415" y="118" fontSize="36" text="Domisy Dev"
 			 x.portrait="203" y.portrait="256"/>
-	<s:Label id="vnumLabel" x="300" y="522" width="194" height="23" text="Version Number: 2.2.0"
+	<s:Label id="vnumLabel" x="300" y="522" width="194" height="23" text="Version Number: 2.2.1"
 			 x.landscape="804" y.landscape="522"
 			 x.portrait="396" y.portrait="944"/>
 	<s:Label x="383" y="160" text="Lead Developer - Theodore Mavrakis"
